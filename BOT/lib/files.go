@@ -27,7 +27,6 @@ var MainPathExeFile string
 
 func GetMainPathExeFile() string {
 	//	mainPathExeFile=os.Args[0] - путь с самим файлом
-	return os.Getenv("PWD")
 	ex, err := os.Executable()
 	if err != nil {
 		panic(err)
