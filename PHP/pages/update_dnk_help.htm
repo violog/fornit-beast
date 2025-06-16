@@ -1,0 +1,82 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:8.0pt;
+	margin-left:0cm;
+	line-height:107%;
+	font-size:12.0pt;
+	font-family:"Arial",sans-serif;}
+.MsoChpDefault
+	{font-size:12.0pt;
+	font-family:"Arial",sans-serif;}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:107%;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:2.0cm 42.5pt 2.0cm 3.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+</head>
+
+<body lang=RU style='word-wrap:break-word'>
+<div class=WordSection1 style="max-width:1000px;">
+<p class=MsoNormal style='margin-bottom:3.75pt;line-height:normal'><b><span
+style='color:black'>Обмен данными между Beast</span></b></p>
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>В первичной стадии 0, до рождения, происходит заполнение 
+	базовых настроек. При этом для ускорения 	процесса набивки данных предусмотрена процедура обмена.</span></p>
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>Однако просто так нельзя подменить файлы данных от 
+	одного Beast к другому потому, что у каждой особи формируются свои идентификаторы записей, коды которых могут совпадать, но означать 
+	совершенно разное. Кроме того, у них могут отличаться кол-во базовых параметров, стилей, что означает уже принципиальную 
+	несовместимость схем. Поэтому обмен подразумевает специальные проверки перед импортом. </span></p>
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>Так же необходимы предварительные настройки 
+	сервиса обмена:
+<ol>
+	<li>Заводится общий каталог (OSPanel\domains\update), в который будут выводиться данные Beast в виде структурированных файлов, 
+		которыми они хотят обменяться. Имя файла должно быть в формате: имя Beast_имя файла. Например: bot1_update_phrase_tree.txt. 
+		Такие файлы формируются автоматически при экспорте.
+</li>
+	<li>В каталоге проекта memory_save создается файл каталога обмена update_dir.txt, в котором указывается список файлов для обновления 
+		в виде строк в формате: 1|bot2|update_phrase_tree|2022-07-12 09:40:48|200|1</li>
+</ol>
+<ul>
+	<li><strong>1</strong> - номер очередности загрузки</li>
+	<li><strong>bot2</strong> - имя внешнего бота (C:\OSPanel\domains\go\common\linking_address.txt)</li>
+	<li><strong>update_phrase_tree</strong> - имя файла обмена (см. константы ниже)</li>
+	<li><strong>2022-07-12 09:40:48</strong> - дата/время, заполняется автоматом после успешного обновления</li>
+	<li><strong>1</strong> - статус блокировки записи: 0 - обмен заблокирован, 1 - обмен разрешен</li>
+	<li><strong>200</strong> - ID последней записи при экспорте</li>
+</ul>
+
+Файлы обмена должны указываться в определенной последовательности, так как это влияет на синхронизацию:</p>
+1|bot2|update_phrase_tree|2000-07-12 09:40:48|230|1</br>
+2|bot2|update_terminal_actons|2000-07-06 19:22:22|110|1</br>
+3|bot2|update_dnk_reflexes|2000-06-19 19:40:45|5500|1</br>
+4|bot2|update_trigger_stimuls_images|2000-06-19 19:40:45|200|1</br>
+5|bot2|update_condition_reflexes|2000-06-19 19:40:45|350|1</p>
+
+Каждый Beast следит за своим файлом, обновляя их, чужие только читает. При экспорте файлы подменяются на новые и в update_dir.txt 
+редактируются соответствующие строки с изменением даты/времени обмена на текущее. 
+При импорте смотрится дата/время последнего изменения файла в его свойствах, и если файл оказывается новее, запускается процедура 
+импорта. Если данные в файле определяются как несовместимые, то соответствующая запись в update_dir.txt меняет статус на 0 (заблокирован). 
+При экпорте фиксируется ID последней записи массива, и при следующем экспорте будут выводиться записи начианая с ID + 1.
+</span></p>
+</div>
+</body>
+</html>

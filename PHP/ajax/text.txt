@@ -1,0 +1,18 @@
+Это поддержка клиентских запросов ajax 
+
+Использование:
+<script Language="JavaScript" src="/ajax/ajax.js"></script>
+// делаем ajax запрос, 
+//в котором задаем адрес скрипта для обработки, с нужными GET-параметрами
+// и задаем javascript фунцию для получения ответа в виде ее имени (не строка, а объект)
+// а если ответ не нужен, то ставим просто ''
+var AJAX = new ajax_support('<?=$script_url?>',sent_request_mess);
+// или
+var AJAX = new ajax_support('<?=$script_url?>','');// результат обработки не нужен
+AJAX.send_reqest();
+
+// совя функция для получения результата обработки:
+function sent_request_mess(resOut)
+{
+alert(resOut);
+}

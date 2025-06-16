@@ -1,0 +1,22 @@
+
+AddDefaultCharset UTF-8
+
+# Максимальный размер данных 
+php_value post_max_size 1000M
+ 
+# Максимальный размер файлов
+php_value upload_max_filesize 100M  
+ 
+# Максимальное количество переменных
+php_value max_input_vars 100000
+ 
+# Максимальное время выполнения скрипта
+#php_value max_execution_time 600    
+ 
+# Максимальное время обработки данных
+#php_value max_input_time 600      
+ 
+# Память для скрипта
+php_value memory_limit 2000M    
+
+

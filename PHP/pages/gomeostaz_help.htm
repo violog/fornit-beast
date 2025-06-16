@@ -1,0 +1,73 @@
+<html>
+
+<head>
+<meta charset="UTF-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:8.0pt;
+	margin-left:0cm;
+	line-height:107%;
+	font-size:12.0pt;
+	font-family:"Arial",sans-serif;}
+.MsoChpDefault
+	{font-size:12.0pt;
+	font-family:"Arial",sans-serif;}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:107%;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:2.0cm 42.5pt 2.0cm 3.0cm;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=RU style='word-wrap:break-word'>
+
+<div class=WordSection1 style="max-width:1000px;">
+
+<p class=MsoNormal style='margin-bottom:3.75pt;line-height:normal'><b><span
+style='color:black'>Жизненные параметры гомеостаза</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>Эти параметры определяют состояния Норма, Плохо, Хорошо.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>Выход из нормы задается колонкой “Порог нормы в %”, т.е. значениями от 0 до 100. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>Как только параметр выйдет из нормы (на Пульте – область розового в слайдере данного параметра), он начинает оцениваться для определения состояния Плохо (в BAD_detector.go func commonBadDetecting()). Оценка делается следующим образом.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>Для всех параметров, вышедшие из нормы, суммируются произведение их веса значимости (задаваемым в колонке “Вес значимости в %”) на значение "насколько плохо" (т.е. CommonBadValue+=BadValue[id]*GomeostazParamsWeight[id]) </span></p>
+
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>Полученная сумма сравнивается с порогом оценки состояния Плохо (var compareLevel=100) и если сумма превышает порог, то возникает состояния Плохо.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>Понятно, что если из нормы вышел только один параметр, а его вес значимости меньше порога, то состояние Плохо не возникает.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>Так, для таких параметров гомеостаза как Гон, Потребность в общении и Потребность в обучении вес значимости небольшой и не сможет вызвать состояние Плохо, но в совокупности с выходом из нормы других параметров – сможет.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>Этот алгоритм мог бы быть выбран и другим по каким-то соображениям выгодности для адаптивности (и тогда это будет другой вид живого существа), но в данной реализации оценка Базового состояния сделана именно так. Это позволяет сделать любой параметр или менее значимым, не влияющим сам по себе на состояние Плохо. Но можно установить высокие значимости для всех параметров и тогда любой выход из нормы будет оценен как состояние Плохо.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>Возникновение состояния Плохо используется как сигнал НЕ верности совершенного действия.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>Состояние Хорошо возникает при возвращении параметра в норму и удерживается (var dinamicTimeFromBad=50) 50 секунд. Возникает как бы облегчение, что используется как сигнал верности совершенного действия.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.5pt;line-height:107%;color:black'>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>
