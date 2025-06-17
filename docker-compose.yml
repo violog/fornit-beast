@@ -1,26 +1,22 @@
 services:
-#  go-server:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    volumes:
-      # that sucks? I need a binary outside the container now
-      # It seems I understand: I can't run a binary from outside the container
-      # I need both binary inside and a directory, which is unachievable without code changes
-      # I can run go-server without docker-compose and have just PHP server
-#      - ./PHP:/app/PHP
-#    container_name: go
-#    ports:
-#      - "8181:8181"
-#    restart: unless-stopped
+  go-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./PHP:/app/PHP
+    container_name: go
+    ports:
+      - "8181:8181"
+    restart: unless-stopped
 
   php-server:
-    image: php:7.3-cli
+    image: php:5.6-cli
     working_dir: /var/www/html
     stop_grace_period: 1s
     volumes:
       - ./PHP:/var/www/html
-    command: php -S 0.0.0.0:8000 index.php
+    command: php -S 0.0.0.0:8000 -t /var/www/html
     ports:
       - "8000:8000"
     restart: unless-stopped
