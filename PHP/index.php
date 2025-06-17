@@ -4,6 +4,9 @@ http://go/  связь с GO include($_SERVER["DOCUMENT_ROOT"]."/common/linking_
 ПУЛЬТ связи с Beast
 ///////////////////// главная Пульта test ///////////////
 */
+// Fix of timezone warning
+date_default_timezone_set('UTC');
+
 $reflex_quick_working=0;
 if(isset($_GET['reflex_quick_working'])&&$_GET['reflex_quick_working']==1)
 $reflex_quick_working=1;// режим быстрой набивки б.рефлексов в зависимости от выставляемых условий без коннекта с Beast.
