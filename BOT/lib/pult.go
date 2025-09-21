@@ -160,24 +160,11 @@ Eсли noReflexWithAutomatizm==true и если в ActionsForPultStr есть �
 ActionsForPultStr=SharedRflexWithAutomatizm(true)
 */
 
-var NoReflexWithAutomatizm = false
-
+// TODO @violog из-за этого кода не работают условные рефлексы, т.к. id == 1 для них;
+// по сути, он не делает ничего хорошего, кроме как выкидывает из строки всё с ID <= 1
+//
+// нужно не давать активироваться одновременно рефлексу и автоматизму, вместо того,
+// чтобы скрывать на пульте то, что уже активировалось
 func SharedReflexWithAutomatizm() string {
-	if !NoReflexWithAutomatizm {
-		//		return ActionsForPultStr  НИКОГДА НЕЛЬЗЯ показывать акции рефлексов с автоматизмами в одной плашке!
-	}
-	out := ""
-	sArr := strings.Split(ActionsForPultStr, "||")
-	n := 0
-	for i := 0; i < len(sArr); i++ {
-		id, _ := strconv.Atoi(sArr[i][:1]) // первый символ - идентификатор типа акции
-		if id > 1 || sArr[i][:2] == "10" { // нужно еще учесть активацию infoFunc(13)
-			if n > 0 {
-				out += "||"
-			}
-			out += sArr[i]
-			n++
-		}
-	}
-	return out
+	return ActionsForPultStr
 }

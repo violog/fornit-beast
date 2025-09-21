@@ -1597,7 +1597,6 @@ func infoMirroringStimul(c *cycleInfo) bool {
 				atmz.Usefulness = 0 //если попугайский был заблокирован и получен его код - открываем его, иначе не получится задать вопрос
 				atmz.Count = 1
 			}
-			lib.NoReflexWithAutomatizm = true // не показывать акции рефлексов с автоматизмами в одной плашке действия Beast на пульте
 			if RumAutomatizmID(motorID) {
 				c.log += "Инфо-функция 13: запуск моторного автоматизма <b> <span style='cursor:pointer;color:blue' onClick='show_automatizms(" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + ")'>" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + "</span>" + "</b>.<br>"
 				runningMotAutmtzmID = motorID
@@ -1876,8 +1875,7 @@ func infoFunc17(c *cycleInfo) bool { //запустить моторный ав�
 		//!!! extremImportanceObject=nil
 		mentalInfoStruct.motorAtmzmID = 0
 		mentalInfoStruct.noStaffAtmzmID = false
-		lib.NoReflexWithAutomatizm = true // не показывать акции рефлексов с автоматизмами в одной плашке действия Beast на пульте
-		wasRunPurposeActionFunc = true    // уже был запущен автоматизм
+		wasRunPurposeActionFunc = true // уже был запущен автоматизм
 		// итак успевает
 		//infoFuncSequence = append(infoFuncSequence, 17)// т.к. после не будет наполняться infoFuncSequence
 		motorActionEffect = autmzm.Usefulness
@@ -2592,9 +2590,9 @@ func infoFunc26(c *cycleInfo) {
 	if LastRunAutomatizmPulsCount > 0 { // не запускать в период ожидания
 		return
 	}
-	runVolutionString(c)
+	runVolutionString()
 }
-func runVolutionString(c *cycleInfo) {
+func runVolutionString() {
 	levelOfRunAutomatizm = 3 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
 
 	infoFuncSequence = append(infoFuncSequence, 26) // т.к. после не будет наполняться infoFuncSequence
@@ -2602,8 +2600,7 @@ func runVolutionString(c *cycleInfo) {
 	// запуск с энергией == 5
 	showNextAtmtzmAction(0, mentalInfoStruct.AmtzmNextStringID, 5)
 
-	lib.NoReflexWithAutomatizm = true // не показывать акции рефлексов с автоматизмами в одной плашке действия Beast на пульте
-	wasRunPurposeActionFunc = true    // уже была запущена цепочка действий
+	wasRunPurposeActionFunc = true // уже была запущена цепочка действий
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2925,7 +2922,6 @@ func infoFunc31(c *cycleInfo) bool {
 			if !isInterruptAutmtzm { // не выполнился, например если уже был запущен штатный автоматизм после Стимула и т.п.
 				wasRunPurposeActionFunc = false //иначе не пропускает на исполнение
 				// судя по всему, происходит наложение активации lib.SentActionsForPult(out) от рефлексов и автоматизмов, и выдает действия обоих.
-				lib.NoReflexWithAutomatizm = true // не показывать акции рефлексов с автоматизмами в одной плашке действия Beast на пульте
 				//action_sensor.DeactivationTriggers()
 				//notAllowReflexRuning = true
 				return true

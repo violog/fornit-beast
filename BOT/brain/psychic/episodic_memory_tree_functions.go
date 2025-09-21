@@ -382,7 +382,7 @@ func getWellRoolesFromPhraseId(phraseID int, exactlyCond bool) []Rule {
 		if !ok {
 			continue
 		}
-		if act.PhraseID[0] != phraseID {
+		if act == nil || len(act.PhraseID) == 0 || act.PhraseID[0] != phraseID {
 			continue
 		}
 		effectCompare := 0
