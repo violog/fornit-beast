@@ -118,6 +118,9 @@ var WakeUppingActivation = true
 func PsychicCountPuls(evolushnStage int, lifeTime int, puls int, sleepingType int) {
 
 	if evolushnStage < 2 { // недостаточная стадия развития
+		if IsFirstActivation {
+			ReadiStatus = 1 //готовность Beast Для пульта:
+		}
 		return
 	}
 
