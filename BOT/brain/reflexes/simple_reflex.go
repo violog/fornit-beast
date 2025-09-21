@@ -16,10 +16,8 @@ import (
 // найти и выполнить простейший безусловный рефлекс
 func findAndExecuteSimpeReflex() {
 	// только если нет другого рефлекса
-	if len(lib.ActionsForPultStr) > 0 {
-		return
-	}
-	_, actID, _ := TerminalActions.ChooseSimpleReflexexAction()
+	if len(lib.ActionsForPultStr) > 0 { return }
+	_, actID,_ := TerminalActions.ChooseSimpleReflexexAction()
 	if actID > 0 { // совершить это действие
 		// очистить буфер передачи действий на пульт
 		// lib.ActionsForPultStr = ""

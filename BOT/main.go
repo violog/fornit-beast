@@ -937,11 +937,9 @@ func main() {
 	brain.Puls()
 
 	http.HandleFunc("/", receiveSend)
-	err := http.ListenAndServe(address, nil)
-	if err != nil {
-		log.Fatal("Error running server: ", err)
-	}
-	fmt.Println("Сервер запущен...")
+	_ = http.ListenAndServe(address, nil)
+	//	fmt.Println("Сервер запущен...")
+
 }
 
 // отключение Beast - по запросу со страницы Пульта

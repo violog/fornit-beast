@@ -1,5 +1,5 @@
 /*  Функция сохранения всех текущих данных, записываемых в файлы
- */
+*/
 
 package brain
 
@@ -15,26 +15,22 @@ func init() {
 	//if res{	}
 }
 
-/*
-	все данные сохраняются при нажатии на Пульте Выключить Beast,
-
+/* все данные сохраняются при нажатии на Пульте Выключить Beast,
 при ручном сохранении файлов (шестеренка)
 и в main.go при выходе
 !!! только после того, как все данные будут загружены
-*/
+ */
 func SaveAll() bool {
-	if PulsCount < 5 {
-		return true
-	}
+	if PulsCount < 5 { return true }
 	var success = true
 	defer func() { // ловим панику
 		if err := recover(); err != nil {
-			success = false
+			success=false
 		}
 	}()
 	// сохранения всего
 	// pppp()
-	saveLifeTime()
+	saveLifeTime() 
 	word_sensor.SaveWordTree()
 	word_sensor.SavePhraseTree()
 	termineteAction.SaveTerminalActons()
@@ -47,6 +43,5 @@ func SaveAll() bool {
 func pppp() { // паника для тектирования
 	var n = 1
 	p := 12 / (n - 1)
-	if p > 0 {
-	}
+	if p > 0{	}
 }

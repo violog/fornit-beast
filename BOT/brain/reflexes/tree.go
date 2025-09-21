@@ -37,68 +37,61 @@ func initReflexTree() { // после инициализации loadGeneticRefl
 	readyForRecognitionRflexes() // ини для дерева распознавания рефлексов
 }
 
-/*
-	Структура дерева рефлексов
-
-ID|parentID|baseID|styleID|actionID|GeneticReflexID|ConditionedReflex
-*/
+/* Структура дерева рефлексов
+ID|parentID|baseID|styleID|actionID|GeneticReflexID|ConditionedReflex */
 type ReflexNode struct { // узел дерева рефлексов
-	ID       int
-	baseID   int // базовое состояние
-	StyleID  int // стиль поведения - сочетание активностей Базовых контекстов  - ID BaseStyleArr
-	ActionID int // сочетание пусковых стимулов  - ID TriggerStimulsArr
+	ID int
+	baseID int 		// базовое состояние
+	StyleID int 	// стиль поведения - сочетание активностей Базовых контекстов  - ID BaseStyleArr
+	ActionID int 	// сочетание пусковых стимулов  - ID TriggerStimulsArr
 
-	GeneticReflexID   int // безусловный рефлекс
-	ConditionedReflex int // условный рефлекс, если есть, блокирует GeneticReflexID узла
+	GeneticReflexID int 		// безусловный рефлекс
+	ConditionedReflex int 	// условный рефлекс, если есть, блокирует GeneticReflexID узла
 
-	Children   []ReflexNode // дочерние узлы (ветвление) НЕ АДРЕСА, А РЕАЛЬНЫЕ ОБЪЕКТЫ
-	ParentID   int          // ID родителя
+	Children []ReflexNode 	// дочерние узлы (ветвление) НЕ АДРЕСА, А РЕАЛЬНЫЕ ОБЪЕКТЫ
+	ParentID int     				// ID родителя
 	ParentNode *ReflexNode  // адрес родителя
 }
 
 var ReflexTree ReflexNode // дерево рефлексов
-// var ReflexTreeFromID = make(map[int]*ReflexNode) // карта для поиска рефлексов
-var ReflexTreeFromID []*ReflexNode // сам массив
-// var AFromID = make([]*aNode, len(strArr))//задать сразу имеющиеся в файле число при загрузке
+//var ReflexTreeFromID = make(map[int]*ReflexNode) // карта для поиска рефлексов
+var ReflexTreeFromID []*ReflexNode  // сам массив
+//var AFromID = make([]*aNode, len(strArr))//задать сразу имеющиеся в файле число при загрузке
 // запись члена
 func WriteReflexTreeFromID(index int, value *ReflexNode) {
 	addReflexTreeFromID(index)
 	ReflexTreeFromID[index] = value
 }
-func addReflexTreeFromID(index int) {
+func addReflexTreeFromID(index int){
 	if index >= len(ReflexTreeFromID) {
 		newSlice := make([]*ReflexNode, index+1)
 		copy(newSlice, ReflexTreeFromID)
 		ReflexTreeFromID = newSlice
 	}
 }
-
 // считывание члена
-func ReadeReflexTreeFromID(index int) (*ReflexNode, bool) {
-	if index >= len(ReflexTreeFromID) || ReflexTreeFromID[index] == nil {
-		return nil, false
+func ReadeReflexTreeFromID(index int) (*ReflexNode,bool){
+	if index >= len(ReflexTreeFromID) || ReflexTreeFromID[index]==nil {
+		return nil,false
 	}
-	return ReflexTreeFromID[index], true
+	return ReflexTreeFromID[index],true
 }
-
 ////////////////////////////////////////////////////
 /* запрет показа карты на пульте (func GetReflexesTreeForPult()) при обновлении
 против паники типа "одновременная запись и считывание карты"
 Использовать для всех операций записи узлов дерева
-*/
+ */
 var notAllowScanInReflexesThisTime = false
 
 var lastReflexNodeID = 0 // последний узео в дереве автоматизмов
 
 // Создать новый узел дерева рефлексов
 func createNewReflexNode(parent *ReflexNode, id int, baseID int, StyleID int,
-	ActionID int, GeneticReflexID int, ConditionedReflex int, CheckUnicum bool) (int, *ReflexNode) {
+				ActionID int, GeneticReflexID int, ConditionedReflex int,CheckUnicum bool)(int, *ReflexNode) {
 	// если есть такой узел, то не создавать
 	if CheckUnicum {
 		idOld, nodeOld := FindReflexTreeNodeFromCondition(baseID, StyleID, ActionID)
-		if idOld > 0 {
-			return idOld, nodeOld
-		}
+		if idOld > 0 { return idOld,nodeOld }
 	}
 
 	if id == 0 {
@@ -144,7 +137,7 @@ func updateReflexTreeFromID(parent *ReflexNode) {
 func updatingPhraseTreeFromID(rt *ReflexNode) {
 	if rt.ID > 0 {
 		//rt.ParentNode = ReflexTreeFromID[rt.ParentID] // wr.ParentNode адрес меняется из=за corretsParent(,
-		node, ok := ReadeReflexTreeFromID(rt.ParentID)
+		node,ok:=ReadeReflexTreeFromID(rt.ParentID)
 		if ok {
 			rt.ParentNode = node
 			//ReflexTreeFromID[rt.ID] = rt
@@ -152,9 +145,7 @@ func updatingPhraseTreeFromID(rt *ReflexNode) {
 		}
 	}
 	// конец ветки
-	if rt.Children == nil {
-		return
-	}
+	if rt.Children == nil { return }
 	for i := 0; i < len(rt.Children); i++ {
 		updatingPhraseTreeFromID(&rt.Children[i])
 	}
@@ -162,17 +153,15 @@ func updatingPhraseTreeFromID(rt *ReflexNode) {
 
 // загрузить записанное дерево
 // ID|parentID|baseID|styleID|actionID|geneticReflexID|conditionedReflex|
-func loadReflexTree() {
+func loadReflexTree(){
 	createNulLevelReflexTree(&ReflexTree)
 	strArr, _ := lib.ReadLines(lib.GetMainPathExeFile() + "/memory_reflex/reflex_tree.txt")
 	cunt := len(strArr)
 	// просто проход по всем строкам файла подряд так что сначала идут дочки, потом - их родители
 	for n := 0; n < cunt; n++ {
-		if len(strArr[n]) == 0 {
-			continue
-		}
+		if len(strArr[n]) == 0 { continue	}
 		if len(strArr[n]) < 2 {
-			panic("Сбой загрузки дерева рефлексов: [" + strconv.Itoa(n) + "] " + strArr[n])
+			panic("Сбой загрузки дерева рефлексов: ["+strconv.Itoa(n) + "] " + strArr[n])
 			return
 		}
 		p := strings.Split(strArr[n], "|")
@@ -184,7 +173,7 @@ func loadReflexTree() {
 		geneticReflexID, _ := strconv.Atoi(p[5])
 		conditionedReflex, _ := strconv.Atoi(p[6])
 		// новый узел с каждой строкой из файла
-		node, ok := ReadeReflexTreeFromID(parentID)
+		node,ok:=ReadeReflexTreeFromID(parentID)
 		if ok {
 			createNewReflexNode(node, id, baseID, styleID,
 				actionID, geneticReflexID, conditionedReflex, false)
@@ -204,9 +193,9 @@ func createNulLevelReflexTree(rt *ReflexNode) {
 // создать первые три ветки базовых состояний
 func createBasicReflexTree() {
 	notAllowScanInReflexesThisTime = true // запрет показа карты при обновлении
-	createNewReflexNode(&ReflexTree, 0, 1, 0, 0, 0, 0, false)
-	createNewReflexNode(&ReflexTree, 0, 2, 0, 0, 0, 0, false)
-	createNewReflexNode(&ReflexTree, 0, 3, 0, 0, 0, 0, false)
+	createNewReflexNode(&ReflexTree,0,1,0,0,0,0,false)
+	createNewReflexNode(&ReflexTree,0,2,0,0,0,0,false)
+	createNewReflexNode(&ReflexTree,0,3,0,0,0,0,false)
 	saveReflexTree()
 	notAllowScanInReflexesThisTime = false // запрет показа карты при обновлении
 	return
@@ -219,7 +208,7 @@ func saveReflexTree() {
 	for n := 0; n < cnt; n++ {
 		out += getReflexNode(&ReflexTree.Children[n])
 	}
-	lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_reflex/reflex_tree.txt", out)
+	lib.WriteFileContent(lib.GetMainPathExeFile() + "/memory_reflex/reflex_tree.txt", out)
 	return
 }
 
@@ -236,9 +225,7 @@ func getReflexNode(wt *ReflexNode) string {
 	out += strconv.Itoa(wt.ConditionedReflex)
 	out += "\r\n"
 
-	if wt.Children == nil {
-		return out
-	} // конец
+	if wt.Children == nil { return out } // конец
 	for n := 0; n < len(wt.Children); n++ {
 		out += getReflexNode(&wt.Children[n])
 	}
@@ -268,24 +255,18 @@ func ConditionsDetection(condArr []int) {
 
 // получить последний узел ветки - результат распознавания
 func getReflexTreeNode(level int, cond []int, node *ReflexNode) {
-	if len(cond) == 0 {
-		return
-	}
+	if len(cond) == 0 { return }
 
 	ost := cond[1:]
 	for n := 0; n < len(node.Children); n++ {
 		cld := node.Children[n]
 		var levID = 0
 		switch level {
-		case 1:
-			levID = cld.StyleID
-		case 2:
-			levID = cld.ActionID
+		case 1: levID = cld.StyleID
+		case 2: levID = cld.ActionID
 		}
 		// cond[0] потому, что на следующем уровне cond уже подрезана
-		if cond[0] != levID {
-			return
-		} // пошло не туда
+		if cond[0] != levID {	return } // пошло не туда
 
 		detectedLastNodID = node.ID
 		level++
@@ -295,14 +276,10 @@ func getReflexTreeNode(level int, cond []int, node *ReflexNode) {
 }
 
 // создание новой ветки с новым рефлексом типа GeneticReflex, начиная с заданного узла
-func createNewReflexToTreeFromNodes(level int, cond []int, node *ReflexNode) int {
-	if node == nil {
-		return 0
-	}
-	if level >= len(cond) {
-		return node.ID
-	}
-	var id = 0
+func createNewReflexToTreeFromNodes(level int,cond []int,node *ReflexNode) int {
+	if node == nil { return 0	}
+	if level >= len(cond) {	return node.ID }
+	var id=0
 	/* switch(level){
 	case 0:
 		id,_=createNewReflexNode(node,0,cond[0],0,0,0,0)
@@ -312,9 +289,9 @@ func createNewReflexToTreeFromNodes(level int, cond []int, node *ReflexNode) int
 		id,_=createNewReflexNode(node,0,cond[0],cond[1],cond[2],0,0)
 	}
 	*/
-	id, _ = createNewReflexNode(node, 0, cond[0], cond[1], cond[2], 0, 0, true)
+	id, _ = createNewReflexNode(node,0, cond[0], cond[1], cond[2],0,0,true)
 	level++
-	node, ok := ReadeReflexTreeFromID(id)
+	node,ok:=ReadeReflexTreeFromID(id)
 	if ok {
 		id = createNewReflexToTreeFromNodes(level, cond, node)
 		return id
@@ -322,12 +299,10 @@ func createNewReflexToTreeFromNodes(level int, cond []int, node *ReflexNode) int
 	return 0
 }
 
-/*
-	Сразу создать и добавить безусловный рефлекс в дерево, если таких узлов еще нет.
-
+/* Сразу создать и добавить безусловный рефлекс в дерево, если таких узлов еще нет.
 Формат записи безусловного рефлекса: ID|baseID|styleID...|actionID...
 Если у рефлекса пропущены условия, то этот рефлекс нужно привязать ко всем узлам пропущенного уровня.
-*/
+ */
 func addGeneticReflexesToTree(detectedActiveLastNodID int, condArr []int) {
 	notAllowScanInReflexesThisTime = true // запрет показа карты при обновлении
 
@@ -340,7 +315,7 @@ func addGeneticReflexesToTree(detectedActiveLastNodID int, condArr []int) {
 		lastNodeID := formingBranch(reflexID, detectedActiveLastNodID, level, condArr)
 		detectedActiveLastNodID = lastNodeID
 
-		node, ok := ReadeReflexTreeFromID(detectedActiveLastNodID)
+		node,ok:=ReadeReflexTreeFromID(detectedActiveLastNodID)
 		if ok {
 			if node.GeneticReflexID > 0 {
 				if condArr[2] == 0 { // древний рефлекс
@@ -357,52 +332,44 @@ func addGeneticReflexesToTree(detectedActiveLastNodID int, condArr []int) {
 }
 
 // найти ID GeneticReflexes (список всех dnk_reflexes.txt) по условиям
-func findGeneticReflexFromCondinion(basic string, img1id int, img2id int) int {
+func findGeneticReflexFromCondinion(basic string,img1id int,img2id int) int {
 	img1 := BaseStyleArr[img1id]
 	var img2 *TriggerStimuls
 
 	if img2id > 0 {
 		//img2 = TriggerStimulsArr[img2id]
-		node, ok := ReadeTriggerStimulsArr(img2id)
+		node,ok:=ReadeTriggerStimulsArr(img2id)
 		if !ok {
 			return 0
-		} else {
-			img2 = node
+		}else{
+			img2=node
 		}
 
 	}
 	lev1str := ""
 	for i := 0; i < len(img1.BSarr); i++ {
-		if len(lev1str) > 0 {
-			lev1str += ","
-		}
+		if len(lev1str) > 0 { lev1str += "," }
 		lev1str += strconv.Itoa(img1.BSarr[i])
 	}
 	lev2str := ""
 	if img2 != nil {
 		for i := 0; i < len(img2.RSarr); i++ {
-			if len(lev2str) > 0 {
-				lev2str += ","
-			}
+			if len(lev2str) > 0 { lev2str += "," }
 			lev2str += strconv.Itoa(img2.RSarr[i])
 		}
 	}
 
-	for id, v := range geneticReflexesStr {
-		if v == nil {
-			continue
-		}
-		if v.lev1 == basic && v.lev2 == lev1str && v.lev3 == lev2str {
-			return id
-		}
+	for id, v:= range geneticReflexesStr {
+		if v==nil{continue}
+		if v.lev1 == basic && v.lev2 == lev1str && v.lev3 == lev2str { return id }
 	}
 	return 0
 }
 
 // нарастить ветку недостающим узлом
-func formingBranch(reflexID int, fromID int, lastLevel int, condArr []int) int {
+func formingBranch(reflexID int,fromID int,lastLevel int,condArr []int) int {
 	//lastNode := ReflexTreeFromID[fromID]
-	lastNode, ok := ReadeReflexTreeFromID(fromID)
+	lastNode,ok:=ReadeReflexTreeFromID(fromID)
 	if ok {
 		lastNodeID := createNewReflexToTreeFromNodes(lastLevel, condArr, lastNode)
 		// родителем должен быть последний найденный узел, а не тот, что будет создан первым
@@ -418,7 +385,7 @@ func formingBranch(reflexID int, fromID int, lastLevel int, condArr []int) int {
 // найти уровень вложения данного узла в ветке
 func getLevelFromNodeID(nodeID int) int {
 	//lastNode := ReflexTreeFromID[nodeID]
-	lastNode, ok := ReadeReflexTreeFromID(nodeID)
+	lastNode,ok:=ReadeReflexTreeFromID(nodeID)
 	if ok {
 		var level = 0
 		for lastNode.ParentNode != nil {
@@ -431,14 +398,10 @@ func getLevelFromNodeID(nodeID int) int {
 }
 
 // найти КОНЕЧНЫЙ узел по условиям
-func FindReflexTreeNodeFromCondition(baseID int, StyleID int, ActionID int) (int, *ReflexNode) {
+func FindReflexTreeNodeFromCondition(baseID int, StyleID int, ActionID int)(int, *ReflexNode) {
 	for k, v := range ReflexTreeFromID {
-		if v == nil {
-			continue
-		}
-		if v.baseID == baseID && v.StyleID == StyleID && v.ActionID == ActionID {
-			return k, v
-		}
+		if v==nil{continue}
+		if v.baseID == baseID && v.StyleID == StyleID && v.ActionID == ActionID { return k, v	}
 	}
 	return 0, nil
 }
@@ -446,9 +409,7 @@ func FindReflexTreeNodeFromCondition(baseID int, StyleID int, ActionID int) (int
 // сохранение при выходе reflexes.SaveReflexesAttributes() и когда нужно
 // !!! но только после того, как все данные будут загружены:
 func SaveReflexesAttributes() {
-	if ReflexPulsCount < 5 {
-		return
-	}
+	if ReflexPulsCount < 5 { return	}
 	// сохранить образы восприятия и пусковых стимулов после прохода всех безусловных рефлексов
 	SaveBaseStyleArr()
 	SaveTriggerStimulsArr()

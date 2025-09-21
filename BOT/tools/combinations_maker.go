@@ -11,80 +11,81 @@ import (
 	"strconv"
 )
 
-func init() {
+func init(){
+
 
 }
-
-// ///////////////////////////////////////////////////
+/////////////////////////////////////////////////////
 // найти все сочетания ряда чисел от 0 до максимального подряд (без перемешивания
 // limit - максимальное число элементов в сочетании
-func GetAllCombinationsOfSeriesNumbers(max int, limit int) [][]int {
+func GetAllCombinationsOfSeriesNumbers(max int,limit int)([][]int){
 	var out [][]int
 	for i := 0; i < max; i++ {
 		var arr []int
-		end := limit + i
-		if i > max-limit {
-			end = max
+		end:=limit+i
+		if i > max-limit{
+			end=max
 		}
 		for j := i; j < end; j++ {
-			arr = append(arr, j)
+			arr=append(arr,j)
 		}
-		out = append(out, arr)
+		out=append(out,arr)
 		// подсочетания
 		var arr0 []int
 		for n := 2; n < len(arr); n++ {
 			for m := 0; m < n; m++ {
-				arr0 = append(arr0, arr[m])
+				arr0=append(arr0,arr[m])
 			}
-			out = append(out, arr0)
+			out=append(out,arr0)
 		}
 	}
 	return out
 }
-
 ////////////////////////////////////////////////////
+
 
 // найти все сочетания ряда чисел от 0 до максимального без перемешивания
 // limit - максимальное число элементов в сочетании
-func GetAllCombinationsNumbers(max int, limit int) [][]int {
+func GetAllCombinationsNumbers(max int,limit int)([][]int){
 	var out [][]int
 	var series []string
 	for i := 0; i < max; i++ {
-		series = append(series, strconv.Itoa(i))
+		series=append(series,strconv.Itoa(i))
 	}
-	comb := Combinations(series, limit)
+	comb:=Combinations(series,limit)
 	for _, v := range comb {
 		var arr []int
 		for n := 0; n < len(v); n++ {
-			nun, _ := strconv.Atoi(v[n])
-			arr = append(arr, nun)
+			nun,_:=strconv.Atoi(v[n])
+			arr=append(arr,nun)
 		}
-		out = append(out, arr)
+		out=append(out,arr)
 	}
 	return out
 }
-
 ////////////////////////////////////////////////////
+
+
 
 func MakeContextCombinations() {
 	var cellArr []string
 	for i := 1; i < 18; i++ {
-		cellArr = append(cellArr, strconv.Itoa(i))
+			cellArr=append(cellArr,strconv.Itoa(i))
 	}
-	arr := Combinations(cellArr, 1)
+	arr:=Combinations(cellArr,1)
 	//arr:=All(cellArr)
 
-	out := ""
+	out:=""
 
 	for _, v := range arr {
 		for i := 0; i < len(v); i++ {
-			out += v[i] + ","
+			out+=v[i]+","
 		}
-		out += "\r\n"
+		out+="\r\n"
 	}
 
 	lib.WriteFileContent(lib.GetMainPathExeFile()+"/combination.txt", out)
-	if len(out) > 0 {
+	if len(out)>0{
 
 	}
 	return
@@ -93,8 +94,7 @@ func MakeContextCombinations() {
 var nid []int
 var outArr []string
 var cols int
-var gCArr = make(map[int][]string)
-
+var gCArr=make(map[int][]string)
 // сейчас вызов из main.init()
 /*
 func MakeContextCombinations() {
@@ -146,7 +146,8 @@ out +=arr1[n1]+"|"+arr2[n2]+"|"+arr3[n3]+"|"+arr4[n4]+"|"+arr5[n5]+"|"+arr6[n6]+
 
 	return
 }
-*/
+ */
+
 
 /////////////////////////////////////////////////////
 
@@ -170,4 +171,4 @@ rows:=len(gCArr)
 
 return
 }
-*/
+ */

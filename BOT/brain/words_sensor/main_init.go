@@ -1,6 +1,8 @@
 package word_sensor
 
+
 ////////////////////////////////////////////////
+
 
 // вызов из words_sensor.go
 func afetrInitPhraseTree() {
@@ -12,6 +14,6 @@ func afetrInitPhraseTree() {
 	initWordPult()
 	initPrasePult()
 
-	// проверка
-	// GetFirstSymbolFromWordID(556)
+// проверка
+	//GetFirstSymbolFromWordID(556)
 }

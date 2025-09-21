@@ -1,6 +1,4 @@
-/*
-	Обмен базовыми данными происходит по схеме:
-
+/* Обмен базовыми данными происходит по схеме:
 1. Заводится общий каталог, в который выводятся данные ботов в виде структурированных файлов,
 которыми они хотят обменяться. Имя файла в формате: имя бота_имя файла. Например:
 bot1_update_phrase_tree.txt.
@@ -35,15 +33,12 @@ import (
 	"time"
 )
 
-/*
-	Шаблон дата-время
-
+/* Шаблон дата-время
 Может возникнуть справедливый вопрос: а что же такого магического есть в Mon Jan 2 15:04:05 MST 2006?
 Давайте посмотрим на шаблон в другом порядке:
 01/02 03:04:05PM 06-0700
 Видно, что здесь нет двух одинаковых полей. А это означает, что для такой конкретной даты каждое поле будет
-точно идентифицированным вне зависимости от форматирования.
-*/
+точно идентифицированным вне зависимости от форматирования. */
 var Layout = "2006-01-02 15:04:05"
 
 // Имя бота
@@ -68,7 +63,7 @@ const updateTriggerStimulsImages = "update_trigger_stimuls_images"
 const updateConditionReflexes = "update_condition_reflexes"
 
 func init() {
-	runFile := lib.GetMainPathExeFile()
+	runFile:=lib.GetMainPathExeFile()
 	address := lib.ReadFileContent(runFile + "/common/linking_address.txt")
 	botName = strings.TrimSpace(address)[7:]
 	botName = strings.Split(botName, ":")[0]
@@ -161,9 +156,7 @@ func SaveFileUpdateDir() {
 	lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_save/update_dir.txt", out)
 }
 
-/*
-	Импорт из файла обмена
-
+/* Импорт из файла обмена
 Загружаем поочередно все типы файлов от ботов, которые прописаны в каталоге
 */
 func ImportFileUpdate(flieArr []int) (bool, string) {
@@ -302,7 +295,7 @@ func ImportFileUpdate(flieArr []int) (bool, string) {
 							lev2 := lib.IntArrToStrArr(strings.Split(rf[2], ","))
 							lev3 := lib.IntArrToStrArr(strings.Split(rf[3], ","))
 							aktArr := strings.Split(rf[4], ",")
-							reflexes.CreateNewGeneticReflex(0, lev1, lev2, lev3, lib.IntArrToStrArr(aktArr), true)
+							reflexes.CreateNewGeneticReflex(0, lev1, lev2, lev3, lib.IntArrToStrArr(aktArr),true)
 						case updateTriggerStimulsImages: // список пусковых стимулов У-рефлексов
 							updateName = updateTriggerStimulsImages
 							if len(ActonsSincID) == 0 { // если массив соответствий ID действий пустой, нет смысла проверять
@@ -344,7 +337,7 @@ func ImportFileUpdate(flieArr []int) (bool, string) {
 								rsr := strings.Split(rt[1], ",")
 								rsar := lib.IntArrToStrArr(rsr)
 								// проверка наличия пускового стимула в базе делается в CreateNewlastTriggerStimulsID(), где создаются только новые
-								TriggerSincID[trId], _ = reflexes.CreateNewlastTriggerStimulsID(0, rsar, word_sensor.CurrentPhrasesIDarr, ton, mod, true)
+								TriggerSincID[trId], _ = reflexes.CreateNewlastTriggerStimulsID(0, rsar, word_sensor.CurrentPhrasesIDarr, ton, mod,true)
 							}
 						case updateConditionReflexes: // список У-рефлексов
 							updateName = updateConditionReflexes
@@ -388,7 +381,7 @@ func ImportFileUpdate(flieArr []int) (bool, string) {
 								continue
 							} // не нашлось соответствий в массиве
 							aktArr := strings.Split(rcf[4], ",")
-							reflexes.CreateNewConditionReflex(0, lev1, lev2, lev3, lib.IntArrToStrArr(aktArr), 0, true)
+							reflexes.CreateNewConditionReflex(0, lev1, lev2, lev3, lib.IntArrToStrArr(aktArr), 0,true)
 						}
 						if FlgBreak == true {
 							break
@@ -443,9 +436,7 @@ func ImportFileUpdate(flieArr []int) (bool, string) {
 	return !IsNoAllImport, outTxt
 }
 
-/*
-	Экспорт в файл обмена
-
+/* Экспорт в файл обмена
 Выгружаем типы файлов, указанные через номера строк flieArr[] в каталоге "memory_save/update_dir.txt" по одному разу
 Блокировка файлов при экспорте не учитывается потому, что экспортировать свои данные можно в любом случае
 */
@@ -479,18 +470,16 @@ func ExportFileUpdate(flieArr []int) (bool, string) {
 			switch FileName {
 			case updatePhraseName: // дерево фраз
 				cnt = len(word_sensor.PhraseTreeFromID)
-				if cnt == 0 {
-					break
-				}
-				node, ok := word_sensor.ReadePhraseTreeFromID(cnt - 1)
+				if cnt == 0 {break}
+				node,ok:=word_sensor.ReadePhraseTreeFromID(cnt-1)
 				if ok {
 					if node.ID <= UpdateLastID {
 						break
 					}
 					for n := 0; n < cnt; n++ {
 						// добавляем самую длинную фразу ветки, конечный узел
-						//						lastID = word_sensor.PhraseTreeFromID[n].ID
-						ws, ok := word_sensor.ReadePhraseTreeFromID(n)
+//						lastID = word_sensor.PhraseTreeFromID[n].ID
+						ws,ok:=word_sensor.ReadePhraseTreeFromID(n)
 						if !ok {
 							continue
 						}
@@ -500,7 +489,7 @@ func ExportFileUpdate(flieArr []int) (bool, string) {
 						// выводим узлы дерева от последнего экспорта
 						outBuf = word_sensor.GetPhraseStringsFromPhraseID(LastID)
 
-						if ws.Children == nil {
+							if ws.Children == nil {
 							if outBuf != "" {
 								out += outBuf + "\r\n"
 								flgExp = true
@@ -514,27 +503,17 @@ func ExportFileUpdate(flieArr []int) (bool, string) {
 				PathFileExport := lib.MainPathExeFile + "/memory_reflex/terminal_actons.txt"
 				lines, _ := lib.ReadLines(PathFileExport)
 				cnt = len(lines)
-				if cnt == 0 {
-					break
-				}
-				if cnt <= UpdateLastID {
-					break
-				}
+				if cnt == 0 {break}
+				if cnt <= UpdateLastID {break}
 				flgExp = CopyFileToExport(PathFileExport, FileName)
 			case updateDnkReflexes: // список бу-рефлексов
 				cnt = len(reflexes.GeneticReflexes)
-				if cnt == 0 {
-					break
-				}
+				if cnt == 0 {break}
 				// так как txt список рефлексов отсортирован, просто смотрим последний номер
-				if reflexes.GeneticReflexes[cnt-1].ID <= UpdateLastID {
-					break
-				}
+				if reflexes.GeneticReflexes[cnt-1].ID <= UpdateLastID {break}
 				keys := make([]int, 0, len(reflexes.GeneticReflexes))
 				for k, v := range reflexes.GeneticReflexes {
-					if v.ID <= UpdateLastID {
-						continue
-					}
+					if v.ID <= UpdateLastID {continue}
 					keys = append(keys, k)
 				}
 				sort.Ints(keys)
@@ -550,20 +529,16 @@ func ExportFileUpdate(flieArr []int) (bool, string) {
 					break
 				}
 				cnt = len(word_sensor.PhraseTreeFromID)
-				if cnt == 0 {
-					break
-				}
+				if cnt == 0 {break}
 
-				ws, ok := word_sensor.ReadePhraseTreeFromID(cnt - 1)
+				ws,ok:=word_sensor.ReadePhraseTreeFromID(cnt-1)
 				if ok {
 					if ws.ID <= UpdateLastID {
 						break
 					}
 					out = ""
 					for k, v := range reflexes.TriggerStimulsArr {
-						if v == nil {
-							continue
-						}
+						if v==nil{continue}
 						if k > LastID {
 							LastID = k
 						}
@@ -591,27 +566,17 @@ func ExportFileUpdate(flieArr []int) (bool, string) {
 					break
 				}
 				cnt = len(reflexes.ConditionReflexes)
-				if cnt == 0 {
-					break
-				}
-				node, ok := reflexes.ReadeConditionReflexes(cnt - 1)
+				if cnt == 0 {break}
+				node,ok:=reflexes.ReadeConditionReflexes(cnt-1)
 				if !ok {
 					continue
 				}
-				rID := node.ID
-				if rID <= UpdateLastID {
-					break
-				}
+				rID:=node.ID
+				if rID <= UpdateLastID {break}
 				for k, v := range reflexes.ConditionReflexes {
-					if v == nil {
-						continue
-					}
-					if k > LastID {
-						LastID = k
-					}
-					if k <= UpdateLastID {
-						continue
-					}
+					if v==nil{continue}
+					if k > LastID {LastID = k}
+					if k <= UpdateLastID {continue}
 					out += reflexes.ListConditionReflex(k, v) + "\r\n"
 					flgExp = true
 				}
@@ -622,7 +587,7 @@ func ExportFileUpdate(flieArr []int) (bool, string) {
 				FileUpdateDir[id].LastID = LastID
 				if out != "" {
 					out = strings.TrimSuffix(out, "\r\n")
-					lib.WriteFileContent(pathUpdate+"/"+botName+"_"+FileName+".txt", out)
+					lib.WriteFileContent(pathUpdate + "/" + botName + "_" + FileName + ".txt", out)
 					out = ""
 				}
 			} else {
@@ -701,26 +666,17 @@ func IsCompareArrValue(txt string, typeArr int) bool {
 	return false
 }
 
-/*
-	Массив соответствия ID рефлекторных действий текущего и внешнего ботов
-
-Заполняется при загрузке файла действий и очищается при завершении загрузки файла У-рефлексов
-*/
+/* Массив соответствия ID рефлекторных действий текущего и внешнего ботов
+Заполняется при загрузке файла действий и очищается при завершении загрузки файла У-рефлексов */
 var ActonsSincID = make(map[int]int)
 
-/*
-	Массив соответствия ID пускровых стимулов У-рефлекса текущего и внешнего ботов
-
-Заполняется при загрузке файла триггеров и очищается при завершении загрузки файла У-рефлексов
-*/
+/* Массив соответствия ID пускровых стимулов У-рефлекса текущего и внешнего ботов
+Заполняется при загрузке файла триггеров и очищается при завершении загрузки файла У-рефлексов */
 var TriggerSincID = make(map[int]int)
 
-/*
-	Поиск номера рефлекторного действия в базе текущего бота
-
+/* Поиск номера рефлекторного действия в базе текущего бота
 соответствующий номеру внешнего бота. Для этого был заполнен массив соответствий
-при загрузке файла действий.
-*/
+при загрузке файла действий. */
 func IsActionIdToBot(txt string) string {
 	var out string
 
@@ -747,9 +703,7 @@ func IsActionIdToBot(txt string) string {
 	return out
 }
 
-/*
-	Проверка наличия рефлекторного действия в базе текущего бота по ключу: имя + действие
-
+/* Проверка наличия рефлекторного действия в базе текущего бота по ключу: имя + действие
 Нужно проверять пары БП>Val не как целую строку, а в любом порядке вхождения в строке
 */
 func IsNameActionsToBot(ActName string, ActList string) (int, string) {

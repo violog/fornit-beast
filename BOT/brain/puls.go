@@ -14,56 +14,56 @@ import (
 В общем, это обеспечивает возможность параллельной работы функций Beast, отводя им выполнение с каждым пульсом
 */
 
-var PulsCount = 0     // счетчик пульса
+var PulsCount = 0 		// счетчик пульса
 var noWorkung = false // не активировать очередной цикл если true - тишина
-var startWait = 0     // начало ожидания
-var secWaiting = 1    // время ожидания
-var LifeTime int      // время жизни в числе пульсов
+var startWait = 0  		// начало ожидания
+var secWaiting = 1 		// время ожидания
+var LifeTime int 			// время жизни в числе пульсов
 var EvolushnStage int // стадия развития
 
 func init() {
-	// Puls() Запускается только в одном месте (main.go) чтобы не было двух потоков пульса!!!
+// Puls() Запускается только в одном месте (main.go) чтобы не было двух потоков пульса!!!
 }
 
 // сохранить время жизни в файл
 func saveLifeTime() {
-	if LifeTime > 10 { // иногда life_time.txt обнулялся...
+	if LifeTime>10 {// иногда life_time.txt обнулялся...
 		lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_reflex/life_time.txt", strconv.Itoa(LifeTime))
 	}
 }
 
-/*
-запуск пульса по сигналам из getParams := r.FormValue("get_params")
-*/
-var blockinfP = 0
+/* запуск пульса по сигналам из getParams := r.FormValue("get_params")
 
-func SincroTic() {
-	blockinfP = 1
+ */
+var blockinfP=0
+func SincroTic(){
+	blockinfP=1
 	Puls()
 }
-
 ////////////////////////////////
 
-// ВОДИТЕЛЬ РИТМА ПУЛЬСА
-var IsPultActivnost = false // начало активности с Пульта  brain.IsPultActivnost=true brain.IsPultActivnost=false
+
+//ВОДИТЕЛЬ РИТМА ПУЛЬСА
+var IsPultActivnost = false	// начало активности с Пульта  brain.IsPultActivnost=true brain.IsPultActivnost=false
 func Puls() {
-	if blockinfP > 0 { // не запускать генеретор пульса в этот раз - синхронизация из Пульта
-		pulsActions() // действия для этого такта пульса
-		blockinfP = 0
+	if blockinfP>0{// не запускать генеретор пульса в этот раз - синхронизация из Пульта
+		pulsActions()// действия для этого такта пульса
+		blockinfP=0
 		return
 	}
 	pulsActions()
 
+
 	sleepPuls()
 	/*
-		time.AfterFunc(1 * time.Second, func() {
-			// действия дял этого такта пульса
-			pulsActions()
-			Puls()
-		})*/
+	time.AfterFunc(1 * time.Second, func() {
+		// действия дял этого такта пульса
+		pulsActions()
+		Puls()
+	})*/
 }
 func sleepPuls() {
-	pChannel := make(chan int, 1)
+	pChannel := make(chan int,1)
 	go func() {
 		pChannel <- 1
 		timer := time.NewTimer(1 * time.Second)
@@ -74,22 +74,22 @@ func sleepPuls() {
 		close(pChannel) // закрываем канал
 	}()
 }
-
 ///////////////////////////////////////////
 
-/*
-	действия, совершаемые по каждому пульсу:
 
+
+
+/* действия, совершаемые по каждому пульсу:
 буквально вся работа восприяти - действия идет последовательно,
 так что pulsActions() ждет пока все не выполниться.
-*/
-var isBusyFromWork = false // если pulsActions() не успело выполниться, то пропускает вызов текущего пульса
-func pulsActions() {
+ */
+var isBusyFromWork=false // если pulsActions() не успело выполниться, то пропускает вызов текущего пульса
+func pulsActions(){
 
-	if isBusyFromWork {
+	if isBusyFromWork{
 		return
 	}
-	isBusyFromWork = true // если pulsActions() не успело выполниться, то пропускает текущий цикл
+	isBusyFromWork=true // если pulsActions() не успело выполниться, то пропускает текущий цикл
 	// сканирование состояния (пульс):
 	//now := time.Now()
 	//curTime := now.Second()//.Millisecond()
@@ -122,15 +122,14 @@ func pulsActions() {
 	//lastPulsTime=curTime
 	PulsCount++
 
-	isBusyFromWork = false // если pulsActions() не успело выполниться, то пропускает текущий цикл
+	isBusyFromWork=false // если pulsActions() не успело выполниться, то пропускает текущий цикл
 
 	// не было активности с пульта и нет перегруза (раз дошло до сюда)
 	if !reflexes.IsPultActionThisPuls && word_sensor.NeedCheckTempList {
-		word_sensor.NeedCheckTempList = false // только 1 раз
+		word_sensor.NeedCheckTempList=false// только 1 раз
 		word_sensor.UpdateWordTreeFromTempArr(3, 5)
 	}
 }
-
 ///////////////////////////////////////////////////
 
 var NotAllowAnyActions = false // - запрет любой активности  brain.NotAllowAnyActions
@@ -146,23 +145,20 @@ func inaction() {
 	*/
 }
 
-/*
-	если нужно остановить все на время waitSec для выполнения какой-то функции, то
-
+/* если нужно остановить все на время waitSec для выполнения какой-то функции, то
 Пример для функции созранения всей памяти:
-
-	func WaitSaveAllPryMemory(){
-		OwnFuncForRun=SaveAllPryMemory
-		StopAll() // выполнить  saveAllPryMemory() в тишине, когда ничто не работает
-	}
+func WaitSaveAllPryMemory(){
+	OwnFuncForRun=SaveAllPryMemory
+	StopAll() // выполнить  saveAllPryMemory() в тишине, когда ничто не работает
+}
 */
 func StopAll() {
-	noWorkung = true // останавливает puls()
+	noWorkung = true	// останавливает puls()
 	startWait = PulsCount
 }
 
 func StopRunAll(stop bool) {
-	if stop { // останавливает puls()
+	if stop {// останавливает puls()
 		noWorkung = true
 	} else {
 		noWorkung = false

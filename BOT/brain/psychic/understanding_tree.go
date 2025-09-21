@@ -30,9 +30,7 @@ func UnderstandingTreeInit() {
 	}
 }
 
-/*
-	ДЕРЕВО понимания ситуации.
-
+/* ДЕРЕВО понимания ситуации.
 Имеет фиксированных 3 уровня (кроме базового нулевого)
 формат записи: ID|ParentNode|Mood|EmotionID|SituationID
 Узлы всех уровней могут произвольно меняться на другие для переактивации Дерева.
@@ -62,9 +60,9 @@ type UnderstandingNode struct { // узел дерева ситуации
 
 var UnderstandingTree UnderstandingNode
 
-// var UnderstandingNodeFromID=make(map[int]*UnderstandingNode)
+//var UnderstandingNodeFromID=make(map[int]*UnderstandingNode)
 var UnderstandingNodeFromID []*UnderstandingNode // сам массив
-// var AFromID = make([]*aNode, len(strArr))//задать сразу имеющиеся в файле число при загрузке
+//var AFromID = make([]*aNode, len(strArr))//задать сразу имеющиеся в файле число при загрузке
 // запись члена
 func WriteUnderstandingNodeFromID(index int, value *UnderstandingNode) {
 	addUnderstandingNodeFromID(index)
@@ -94,9 +92,9 @@ func ReadeUnderstandingNodeFromID(index int) (*UnderstandingNode, bool) {
 // если в результате ментальных процессов было действие, то нужно заблокировать обработку активации дерева моторных автоматизмов
 var MentalReasonBlocing = false
 
-/*
-попытка активации дерева ментальных автоматизмов
-*/
+/* попытка активации дерева ментальных автоматизмов
+
+ */
 var detectedActiveLastUnderstandingNodID = 0
 
 // нераспознанный остаток - НОВИЗНА
@@ -108,19 +106,17 @@ var currentUnderstandingActivedNodes []*UnderstandingNode // вначале ко
 // последовательность узлов активной ветки подряд
 var activeUnderstandingNodeArr []int
 
-// текущие образы  гомеостатической этиологии, колторые могут быть произвольно перекрыты ментальными образами
+//текущие образы  гомеостатической этиологии, колторые могут быть произвольно перекрыты ментальными образами
 var newMoodID = 0
 var newEmotionID = 0
 var newSituationID = 0
 
-// сохраненные образы гомеостатической этиологии, колторые могут быть произвольно перекрыты ментальными образами
+//сохраненные образы гомеостатической этиологии, колторые могут быть произвольно перекрыты ментальными образами
 var preMoodID = 0
 var preEmotionID = 0
 var preSituationID = 0
 
-/*
-	Активация дерева понимания ситуации происходит из:
-
+/* Активация дерева понимания ситуации происходит из:
 func afterTreeActivation() - при каждой активации automatism_tree.go
 и если было действия без ответа в течении 20 пульсов, то understandingSituation вызывается из
 func noAutovatizmResult()

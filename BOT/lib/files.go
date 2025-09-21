@@ -37,7 +37,7 @@ func GetMainPathExeFile() string {
 }
 
 // размер файла
-func GetFileSize(path string) (int, bool) {
+func GetFileSize(path string)(int, bool){
 	file, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -50,7 +50,7 @@ func GetFileSize(path string) (int, bool) {
 		return 0, false
 	}
 	fileSize := fileInfo.Size()
-	return int(fileSize), true
+	return int(fileSize),true
 }
 
 // read line by line into memory
@@ -133,7 +133,6 @@ func WriteFileContent(file string, content string) {
 	//	fmt.Println("Запись: ", err);
 	defer f.Close()
 }
-
 // записать даже если content пустой
 func WriteFileContentExactly(file string, content string) {
 	f, _ := os.Create(file)
@@ -167,8 +166,8 @@ func CopyFile(sourceFile string, destinationFile string) {
 }
 
 // удалить все файлы из папки
-func ClinerAllFromDir(dir string) {
-	//	dir := "/files/"
+func ClinerAllFromDir(dir string){
+//	dir := "/files/"
 
 	d, err := os.Open(dir)
 	if err != nil {
