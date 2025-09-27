@@ -1,22 +1,22 @@
 services:
-  go-server:
+  go:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: "no"
     volumes:
       - ./PHP:/app/PHP
-    container_name: go
+    stop_grace_period: 3s
     ports:
       - "8181:8181"
-    restart: unless-stopped
 
-  php-server:
+  php:
     image: php:5.6-cli
     working_dir: /var/www/html
+    restart: "no"
     stop_grace_period: 1s
     volumes:
       - ./PHP:/var/www/html
-    command: php -S 0.0.0.0:8000 -t /var/www/html
     ports:
       - "8000:8000"
-    restart: unless-stopped
+    command: php -S 0.0.0.0:8000 -t /var/www/html
