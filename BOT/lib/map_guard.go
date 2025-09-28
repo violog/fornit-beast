@@ -28,7 +28,6 @@ MutexMapArr.RUnlock()
 которые и приводят к конкурентности, лучше использовать следующий способ.
 Его доддержка остается в этом пакете всегда активной.
 
-
 Самодельный способ, применимый в случае отсуствия конкурирующих горутин (одновременность только за счет POST и GET обработки)
 // при записи - ждем когда отпустит и снова блокируем
 lib.MapCheckBlock(mapGwardYyyArr)
@@ -41,14 +40,14 @@ _,ok:=yyyArr[1]
 
 // при чтении или перед перебором - ждем когда отпустит и снова блокируем
 lib.MapCheckBlock(mapGwardYyyArr)
-for k, _ := range yyyArr {
-	if k > 0 {	}
-}
+
+	for k, _ := range yyyArr {
+		if k > 0 {	}
+	}
+
 lib.MapFree(mapGwardYyyArr)
 ______________________________________________________
-
-
- */
+*/
 package lib
 
 import (
@@ -118,9 +117,6 @@ func readYyyArr(key int) (int,bool) {
 }
 */
 
-
-
-
 /*
 //////////////////////////////////////////////////////////
 // ПРОВЕРКА РАБОТЫ ВАРИАНТА С выжидательной блокировкой:
@@ -168,7 +164,6 @@ func www(){
 }
 */
 
-
 /////////////////// ПОДДЕРЖКА  MapFlag["map1Arr"]=
 /* массив флагов блокировки для всех карт
 Если MapFlag[nn]==true, то не может быть записи или считывания.
@@ -188,48 +183,52 @@ if ! ok{
 return nil
 }
 ///////////////////////////////////////////////////
- */
+*/
 
 var MapFlag []int
 
-var mapGuardCounter=0
-func RegNewMapGuard()int{
-	if mapGuardCounter==0{
-		MapFlag=append(MapFlag,0)
+var mapGuardCounter = 0
+
+func RegNewMapGuard() int {
+	if mapGuardCounter == 0 {
+		MapFlag = append(MapFlag, 0)
 	}
 	mapGuardCounter++
-	MapFlag=append(MapFlag,0)
-	MapFlag[mapGuardCounter]=0
+	MapFlag = append(MapFlag, 0)
+	MapFlag[mapGuardCounter] = 0
 	return mapGuardCounter
 }
 
-func init(){
+func init() {
 	rand.Seed(time.Now().UnixNano())
 
-// MapExperiment() // Для тестирования нужно раскомментировать "ПРОВЕРКА РАБОТЫ ВАРИАНТА С выжидательной блокировкой"
+	// MapExperiment() // Для тестирования нужно раскомментировать "ПРОВЕРКА РАБОТЫ ВАРИАНТА С выжидательной блокировкой"
 }
+
 ///////////////////////////////////
 
-func MapCheck(index int){
+func MapCheck(index int) {
 	/* В очень сложных, вложенных конструкциях возникают дублирования блокировок и код подвешивается.
 	С помощью TodoPanic("В коде есть место, вызывающее постоянную блокировку!")
 	можно находить такие места и разруливать. Но это не всегда возможно,
 	поэтому вполне приемлемо будет просто сбрасывать такой цикл: MapFlag[index]=0;break
 
 	if n>1000{ должно быть больше, чем время на запись в карту между MapCheckWrite() и MapFree()!!!
-	 */
-	n:=0
-	for MapFlag[index]>0{
-		if n>1000{
-// TodoPanic("В коде есть место, вызывающее постоянную блокировку!")
-MapFlag[index]=0;break // освобождение после каких-то лаж в коде...
+	*/
+	n := 0
+	for MapFlag[index] > 0 {
+		if n > 1000 {
+			// TodoPanic("В коде есть место, вызывающее постоянную блокировку!")
+			MapFlag[index] = 0
+			break // освобождение после каких-то лаж в коде...
 		}
 		n++
 		time.Sleep(10 * time.Microsecond)
 	}
 }
+
 // блокировка при записи с удалением одновременности
-func MapCheckWrite(index int){
+func MapCheckWrite(index int) {
 	/* нарушить одновременность вызова MapCheck с данным индексом
 		Вероятность одновременного вызова, превышающего скорость отработки флага, ничтожна,
 		но механизмы провоцируют строгую одновременность. Поэтому такую одновременность нарушим,
@@ -238,29 +237,31 @@ func MapCheckWrite(index int){
 	После этого какой-то из вызовов MapCheckBlock(index) окажется первым и закроет последующий MapCheck(index).
 	*/
 	MapCheck(index)
-	if true {// false - чтобы отключить лекарство от одновременности вызова MapCheckWrite
+	if true { // false - чтобы отключить лекарство от одновременности вызова MapCheckWrite
 		randNum := rand.Intn(10000)
-//time.Sleep(time.Duration(randNum) * time.Nanosecond) очень нестабильна, зависит от текущей нагрузки
-// задержка - просто выполнением числа операций
-		for randNum>0{
+		//time.Sleep(time.Duration(randNum) * time.Nanosecond) очень нестабильна, зависит от текущей нагрузки
+		// задержка - просто выполнением числа операций
+		for randNum > 0 {
 			randNum--
 		}
 		MapCheck(index)
 	}
 	MapFlag[index]++
 }
+
 // блокировка при переборе типа чтении for k, _ := range yyyArr или больших фрагментов кода
-func MapCheckBlock(index int){
+func MapCheckBlock(index int) {
 	MapCheck(index)
 	MapFlag[index]++
 }
 
-func MapFree(index int){
+func MapFree(index int) {
 	MapFlag[index]--
-	if MapFlag[index]<0{
-		MapFlag[index]=0
+	if MapFlag[index] < 0 {
+		MapFlag[index] = 0
 	}
 }
+
 ///////////////////////////////////////////////////////////////
 /*  ИСПОЛЬЗОВАНИЕ:
 // при записи - ждем когда отпустит и снова блокируем
@@ -280,8 +281,6 @@ for k, _ := range yyyArr {
 lib.MapFree(mapGwardYyyArr)
 */
 //////////////////////////////////////
-
-
 
 /* Как можно выловить лажу мьютекса:
 в строке MutexTempArr.Lock() правок кнопкой по Lock выйти на ее реализацию в пакете mutext.go
@@ -406,4 +405,4 @@ Go имеет встроенный инструмент для обнаруже�
 Используйте go run -race или go test -race followed by your .go file or package.
 В обоих случаях GoLand запустит ваш код с "Race detector", и если будут обнаружены состояния гонки, они будут отображены в консоли вывода.
 
- */
+*/

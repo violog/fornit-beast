@@ -1,4 +1,4 @@
-/*   
+/*
 Для ориентировочного рефлекса типа 2
 функции для определения Цели в данной ситуации - на уровне наследственных функций
 исходя из текущей информационной среды CurrentInformationEnvironment:
@@ -20,50 +20,50 @@ import (
 
 Из-за столь скудных возможностей и разросся функционал мыслительных автоматизмов
 с их произвольностью (- перекрытием имеющихся автоматизмов новыми).
- */
-var oldNodeAutomatizm=0 // прошлы раз запускался такой штатный автоматизм
-func getPurposeGenetic2AndRunAutomatizm(atmtzmID int)(*Automatizm){
+*/
+var oldNodeAutomatizm = 0 // прошлы раз запускался такой штатный автоматизм
+func getPurposeGenetic2AndRunAutomatizm(atmtzmID int) *Automatizm {
 
 	//atmzm:= AutomatizmFromId[atmtzmID]
-	atmzm,ok:=ReadeAutomatizmFromId(atmtzmID)
+	atmzm, ok := ReadeAutomatizmFromId(atmtzmID)
 	if !ok {
 		return nil
 	}
 
 	// Определение Цели в данной ситуации - на уровне наследственных функций
-	purpose:=getPurposeGenetic()
+	purpose := getPurposeGenetic()
 	// мозжечковые рефлексы - самый первый уровень осознания - подгонка действий под заданную Цель.
 
 	// есть ли очень значимые новые признаки?
-	newsRes:=getImportantSigns()
+	newsRes := getImportantSigns()
 	if newsRes { // повышенная опасность от оператора
 		// срочность и важность ситуации: если очень срочно и важно - просто оставить имеющийся автоматизм
 		runAutomatizmFromPurpose(atmzm, purpose)
 		return atmzm
 	}
 
-	if purpose.veryActual{// нужно ли вообще шевелиться?
-	// высокий purpose.veryActual, 	нужно выполнить штатный автоматизм, а не придуманный
+	if purpose.veryActual { // нужно ли вообще шевелиться?
+		// высокий purpose.veryActual, 	нужно выполнить штатный автоматизм, а не придуманный
 
-	// если в прошлый раз уже был такой автоматизм, то ничего не делать, иначе начинает повторять одно и то же
-if oldNodeAutomatizm != atmzm.ID {
-	runAutomatizmFromPurpose(atmzm, purpose)
-	oldNodeAutomatizm = atmzm.ID
-	return atmzm
-}
+		// если в прошлый раз уже был такой автоматизм, то ничего не делать, иначе начинает повторять одно и то же
+		if oldNodeAutomatizm != atmzm.ID {
+			runAutomatizmFromPurpose(atmzm, purpose)
+			oldNodeAutomatizm = atmzm.ID
+			return atmzm
+		}
 
-	// список всех автоматизмов для ID узла Дерева
-	//aArr:=GetMotorsAutomatizmListFromTreeId(detectedActiveLastNodID)
+		// список всех автоматизмов для ID узла Дерева
+		//aArr:=GetMotorsAutomatizmListFromTreeId(detectedActiveLastNodID)
 
-	/*aID := getAutomatizmFromNodeID(detectedActiveLastNodID)
-	AutomatizmFromIdMapCheck()
-	atmzm=AutomatizmFromId[aID]
-	purpose.actionID=ActionsImageArr[atmzm.ActionsImageID]
-	runAutomatizmFromPurpose(atmzm, purpose)*/
-	return nil
+		/*aID := getAutomatizmFromNodeID(detectedActiveLastNodID)
+		AutomatizmFromIdMapCheck()
+		atmzm=AutomatizmFromId[aID]
+		purpose.actionID=ActionsImageArr[atmzm.ActionsImageID]
+		runAutomatizmFromPurpose(atmzm, purpose)*/
+		return nil
 
-//if purpose.veryActual
-}else {              // нет опасности и нет опасной новизны
+		//if purpose.veryActual
+	} else { // нет опасности и нет опасной новизны
 
 		/*/ плохой автоматизм,
 		if atmzm.Usefulness == -1 {	// сделать пользу ==0 и запустить с повышенным уровнем
@@ -86,7 +86,7 @@ if oldNodeAutomatizm != atmzm.ID {
 				}
 			}
 		}*/
-		if atmzm.Usefulness < 0 {// совсем плохой автоматизм
+		if atmzm.Usefulness < 0 { // совсем плохой автоматизм
 			if gomeostas.BaseContextActive[2] || gomeostas.BaseContextActive[3] { // активен Поиск или Игра
 				atmzm := findAnySympleRandActions()
 				return atmzm
@@ -100,4 +100,5 @@ if oldNodeAutomatizm != atmzm.ID {
 
 	return nil
 }
+
 /////////////////////////////////////////////////////////////////

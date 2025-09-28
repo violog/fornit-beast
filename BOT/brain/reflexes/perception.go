@@ -147,7 +147,7 @@ func ActiveFromAction() {
 		for i := 0; i < len(rSarr); i++ {
 			ef := gomeostas.GomeostazActionCommonEffectArr[rSarr[i]] // значение эффекта Боли и Радости
 			val, _ := strconv.Atoi(ef)
-			effect += val
+			effect += val // должно работать, т.к. нельзя одновременно отправлять действия-антагонисты со знаками + и -
 		}
 		if lib.Abs(effect) > 5 {
 			gomeostas.ContextActiveFromStimul(effect)

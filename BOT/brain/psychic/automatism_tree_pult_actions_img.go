@@ -19,49 +19,50 @@ import (
 	"strconv"
 	"strings"
 )
+
 //////////////////////////////////////////////
-
-
 
 /////////////////////////////////////////////
 
-func loadActivityInit(){
+func loadActivityInit() {
 
 	loadActivityFromIdArr()
 
 }
+
 ////////////////////////////////////////////
 
 /*
 для оптимизации поиска по дереву перед узлом Activity идет узел первого символа : var symbolsArr из word_tree.go
-
- */
+*/
 type Activity struct {
-	ID int
-	ActID[] int // массив ID действий с Пульта 
+	ID    int
+	ActID []int // массив ID действий с Пульта
 }
-var ActivityFromIdArr=make(map[int]*Activity)
+
+var ActivityFromIdArr = make(map[int]*Activity)
+
 //////////////////////////////////////////
 
-
 // создать образ сочетаний пусковых стимулов
-//В случае отсуствия пусковых стимулов создается ID такого отсутсвия, пример такой записи: 2|||0|0| - ID=2
-var lastActivityID=0
-func createNewlastActivityID(id int,ActID []int,CheckUnicum bool)(int,*Activity){
+// В случае отсуствия пусковых стимулов создается ID такого отсутсвия, пример такой записи: 2|||0|0| - ID=2
+var lastActivityID = 0
+
+func createNewlastActivityID(id int, ActID []int, CheckUnicum bool) (int, *Activity) {
 	if CheckUnicum {
-		oldID,oldVal:=checkUnicumActivity(ActID)
-		if oldVal!=nil{
-			return oldID,oldVal
+		oldID, oldVal := checkUnicumActivity(ActID)
+		if oldVal != nil {
+			return oldID, oldVal
 		}
 	}
 
-	if id==0{
+	if id == 0 {
 		lastActivityID++
-		id=lastActivityID
-	}else{
+		id = lastActivityID
+	} else {
 		//		newW.ID=id
-		if lastActivityID<id{
-			lastActivityID=id
+		if lastActivityID < id {
+			lastActivityID = id
 		}
 	}
 
@@ -69,84 +70,91 @@ func createNewlastActivityID(id int,ActID []int,CheckUnicum bool)(int,*Activity)
 	node.ID = id
 	node.ActID = ActID
 
-	ActivityFromIdArr[id]=&node
-	return id,&node
+	ActivityFromIdArr[id] = &node
+	return id, &node
 }
-func checkUnicumActivity(ActID []int)(int,*Activity){
+func checkUnicumActivity(ActID []int) (int, *Activity) {
 	for id, v := range ActivityFromIdArr {
-		if v==nil || !lib.EqualArrs(ActID,v.ActID) {
+		if v == nil || !lib.EqualArrs(ActID, v.ActID) {
 			continue
 		}
-		return id,v
+		return id, v
 	}
 
-	return 0,nil
+	return 0, nil
 }
-/////////////////////////////////////////
+
+// ///////////////////////////////////////
 // создать новый образ сочетаний действий, если такого еще нет
-func CreateNewActivityImage(ActID []int)(int,*Activity){
-	if ActID==nil{
-		return 0,nil
+func CreateNewActivityImage(ActID []int) (int, *Activity) {
+	if ActID == nil {
+		return 0, nil
 	}
 
-	id,verb:=createNewlastActivityID(0,ActID,true)
+	id, verb := createNewlastActivityID(0, ActID, true)
 
-	if doWritingFile {SaveActivityFromIdArr() }
+	if doWritingFile {
+		SaveActivityFromIdArr()
+	}
 
-	return id,verb
+	return id, verb
 }
 
 /////////////////////////////////////////
 
-//////////////////// сохранить образы сочетаний пусковых стимулов
-//В случае отсуствия пусковых стимулов создается ID такого отсутсвия, пример такой записи: 2|||0|0|
-func SaveActivityFromIdArr(){
-	var out=""
+// ////////////////// сохранить образы сочетаний пусковых стимулов
+// В случае отсуствия пусковых стимулов создается ID такого отсутсвия, пример такой записи: 2|||0|0|
+func SaveActivityFromIdArr() {
+	var out = ""
 	for k, v := range ActivityFromIdArr {
-	if v==nil{continue}
-		out+=strconv.Itoa(k)+"|"
-		for i := 0; i < len(v.ActID); i++ {
-			out+=strconv.Itoa(v.ActID[i])+","
+		if v == nil {
+			continue
 		}
-		out+="|"
-		out+="\r\n"
+		out += strconv.Itoa(k) + "|"
+		for i := 0; i < len(v.ActID); i++ {
+			out += strconv.Itoa(v.ActID[i]) + ","
+		}
+		out += "|"
+		out += "\r\n"
 	}
-	lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_psy/activity_images.txt",out)
+	lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_psy/activity_images.txt", out)
 
 }
-////////////////////  загрузить образы сочетаний пусковых стимулов
-func loadActivityFromIdArr(){
-	ActivityFromIdArr=make(map[int]*Activity)
+
+// //////////////////  загрузить образы сочетаний пусковых стимулов
+func loadActivityFromIdArr() {
+	ActivityFromIdArr = make(map[int]*Activity)
 	// сразу создать первым образ бездействий с Пульта - самое частое состояние образов действия
 	createInactionImg()
-	strArr,_:=lib.ReadLines(lib.GetMainPathExeFile()+"/memory_psy/activity_images.txt")
-	cunt:=len(strArr)
+	strArr, _ := lib.ReadLines(lib.GetMainPathExeFile() + "/memory_psy/activity_images.txt")
+	cunt := len(strArr)
 	for n := 0; n < cunt; n++ {
-		if len(strArr[n])==0{
+		if len(strArr[n]) == 0 {
 			continue
 		}
-		p:=strings.Split(strArr[n], "|")
-		id,_:=strconv.Atoi(p[0])
-		s:=strings.Split(p[1], ",")
-		var ActID[] int
+		p := strings.Split(strArr[n], "|")
+		id, _ := strconv.Atoi(p[0])
+		s := strings.Split(p[1], ",")
+		var ActID []int
 		for i := 0; i < len(s); i++ {
-			if len(s[i])==0{
+			if len(s[i]) == 0 {
 				continue
 			}
-			si,_:=strconv.Atoi(s[i])
-			ActID=append(ActID,si)
+			si, _ := strconv.Atoi(s[i])
+			ActID = append(ActID, si)
 		}
-var saveDoWritingFile= doWritingFile; doWritingFile =false
-		createNewlastActivityID(id,ActID,false)
-doWritingFile =saveDoWritingFile
+		var saveDoWritingFile = doWritingFile
+		doWritingFile = false
+		createNewlastActivityID(id, ActID, false)
+		doWritingFile = saveDoWritingFile
 	}
 	return
 
 }
-//// создать первым образ бездействий с Пульта - самое частое состояние образов действия
-func createInactionImg(){
-	createNewlastActivityID(1,[]int{0},true)
+
+// // создать первым образ бездействий с Пульта - самое частое состояние образов действия
+func createInactionImg() {
+	createNewlastActivityID(1, []int{0}, true)
 }
+
 ///////////////////////////////////////////
-
-

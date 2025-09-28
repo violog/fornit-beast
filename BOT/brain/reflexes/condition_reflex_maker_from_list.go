@@ -15,18 +15,20 @@ word_tree.txt
 phrase_tree.txt
 
 т.к. вставляются новые слова и фразы в вербальные деревья, формируются образы пусковых фраз
- */
+*/
 
 /*  Сформировать условные рефлексы на основе списка фраз-синонимов */
 func FormingConditionsRefleaxFromList(list string) string {
 	// тестовый запуск в tree_activation.go readyForRecognitionRflexes()
- // list="4774|1|1,2,8||18,50,76,79|ненавижу\r\n4775|1|1,2,8|1|17,50,76,79,80|нет\r\n4777|1|1,2,8|1,4|14,17,50,76,79|ну\r\n4780|1|1,2,8|1,7|9,17,50,76,79,80|понятно\r\n4783|1|1,2,8|1,10|38,50,73,76,79,80|смеюсь"
+	// list="4774|1|1,2,8||18,50,76,79|ненавижу\r\n4775|1|1,2,8|1|17,50,76,79,80|нет\r\n4777|1|1,2,8|1,4|14,17,50,76,79|ну\r\n4780|1|1,2,8|1,7|9,17,50,76,79,80|понятно\r\n4783|1|1,2,8|1,10|38,50,73,76,79,80|смеюсь"
 
-	if len(list) < 5 { return "Пустой файл" }
+	if len(list) < 5 {
+		return "Пустой файл"
+	}
 
 	strArr := strings.Split(list, "\r\n")
 	for n := 0; n < len(strArr); n++ {
-		p:=strings.Split(strArr[n], "|")
+		p := strings.Split(strArr[n], "|")
 		lev1, _ := strconv.Atoi(p[1])
 		// второй уровень
 		pn := strings.Split(p[2], ",")
@@ -42,8 +44,9 @@ func FormingConditionsRefleaxFromList(list string) string {
 		prase := p[5]
 		wordSensor.VerbalDetection(prase, 0, 0, 0)
 		PhraseID := wordSensor.CurrentPhrasesIDarr
-		tID, vt := CreateNewlastTriggerStimulsID(0, nil, PhraseID, 0, 0,true)
-		if vt != nil{}
+		tID, vt := CreateNewlastTriggerStimulsID(0, nil, PhraseID, 0, 0, true)
+		if vt != nil {
+		}
 		SaveTriggerStimulsArr()
 		lev3 := tID
 		pn = strings.Split(p[4], ",")
@@ -54,9 +57,9 @@ func FormingConditionsRefleaxFromList(list string) string {
 				ActionIDarr = append(ActionIDarr, b)
 			}
 		}
-		CreateNewConditionReflex(0, lev1, lev2, lev3, ActionIDarr, 0,true)
+		CreateNewConditionReflex(0, lev1, lev2, lev3, ActionIDarr, 0, true)
 	}
-  // lib.WriteNewString(lib.GetMainPathExeFile()+"/memory_reflex/condition_reflexes.txt", out)
+	// lib.WriteNewString(lib.GetMainPathExeFile()+"/memory_reflex/condition_reflexes.txt", out)
 	SaveConditionReflex()
 	return "OK"
 }

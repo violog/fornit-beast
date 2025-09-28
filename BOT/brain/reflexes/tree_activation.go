@@ -1,6 +1,6 @@
 /* активация дерева рефлексов изменением:
-текущих условий, 
-действиями с Пульта 
+текущих условий,
+действиями с Пульта
 и фразой с Пульта
 функциями из perception.go
 ActiveFromConditionChange()
@@ -40,57 +40,61 @@ notAllowScanInReflexesThisTime=false
 */
 
 func readyForRecognitionRflexes() { // init() для дерева распознавания рефлексов
-/*
-		ActiveCurBaseID =1
-		ActiveCurBaseStyleID=22 //14
-		ActiveCurTriggerStimulsID =3
-			activeReflexTree()
-	}
- */
+	/*
+			ActiveCurBaseID =1
+			ActiveCurBaseStyleID=22 //14
+			ActiveCurTriggerStimulsID =3
+				activeReflexTree()
+		}
+	*/
 	initConditionReflex()
-//	FormingConditionsRefleaxFromList("")
+	//	FormingConditionsRefleaxFromList("")
 }
 
-//для частичного распознавания нужен массив текущих активных Базовых контекстов
+// для частичного распознавания нужен массив текущих активных Базовых контекстов
 var curBaseCondArr []int
+
 // массив текущих пусковых стимулов
 var curPultActionsArr []int
 
-var detectedActiveLastNodID=0
-/* распознавание идет строго по совпадающим веткам, без ветвлений.
+var detectedActiveLastNodID = 0
+
+/*
+	распознавание идет строго по совпадающим веткам, без ветвлений.
+
 Но на каждом уровне смотрятся ветвления дочек - для нахождения не точного соотвествия.
 Например, если рефлексы имеют только один Базовый контекст, а текущее состояние Beast - сочетание нескольких,
 то в результате должны сработать все рефлексы, для каждой цифры в сочетании образа текущих условий.
 Но если в рефлексе заданы несколько условий и такой образ точно совпадент с текущим образом условий,
 то именно этот рефлекс и сработает.
 */
-var detectedActiveLevel=0 // уровень условий, до которого дошло распознавание в дереве
+var detectedActiveLevel = 0 // уровень условий, до которого дошло распознавание в дереве
 
 // Собираются рефлексы, подходящие для текущих оразов условий:
 
-var oldReflexesIdArr []int 				// собираются Древние безусловные - у которых в условиях не прописаны пусковые стимулы.
-var geneticReflexesIdArr []int 		// собираются Новые безусловные - с прописанными пусковыми стимулами.
-var conditionReflexesIdArr []int 	// собираются Условные рефлексы - на основе предыдущих безусловных или условных - связанных с новыми стимулами.
+var oldReflexesIdArr []int         // собираются Древние безусловные - у которых в условиях не прописаны пусковые стимулы.
+var geneticReflexesIdArr []int     // собираются Новые безусловные - с прописанными пусковыми стимулами.
+var conditionReflexesIdArr []int   // собираются Условные рефлексы - на основе предыдущих безусловных или условных - связанных с новыми стимулами.
 var flgConditionReflexesIdArr bool // true - есть у-рефлексы. Только для getPurposeGeneticAndRunAutomatizm(), чтобы не ссылаться на срез conditionReflexesIdArr[]
 
-//  сообщить на Пульт, что при данных условиях нет б.рефлекса.
+// сообщить на Пульт, что при данных условиях нет б.рефлекса.
 var NoUnconditionRefles = ""
 
 // активация дерева рефлексов
 func activeReflexTree() {
 	detectedActiveLastNodID = 0
 	detectedActiveLevel = 0
-	flgConditionReflexesIdArr=false
+	flgConditionReflexesIdArr = false
 	clinerReflexArrID()
 
-	quardingSleepCenter()//сторожевой центр сна
+	quardingSleepCenter() //сторожевой центр сна
 	if sleep.IsSleeping {
-		return// не рефлексировать во сне
+		return // не рефлексировать во сне
 	}
 
 	// для частичного распознавания нужен массив текущих активных Базовых контекстов
 	curBaseCondArr = gomeostas.GetCurContextActiveIDarr()
-	if curBaseCondArr == nil{ // еще не определились актичные Базовые контексты
+	if curBaseCondArr == nil { // еще не определились актичные Базовые контексты
 		return
 	}
 	// массив текущих пусковых стимулов
@@ -112,7 +116,7 @@ func activeReflexTree() {
 			detectedActiveLastNodID = node.ID
 			ost := condArr[1:]
 			detectedActiveLevel = 1
-			findReflexesNodes(detectedActiveLevel, ost, &node,1)
+			findReflexesNodes(detectedActiveLevel, ost, &node, 1)
 			//findReflexesNodes(1,condArr, &node,1)
 			break // только один из Базовых состояний
 		}
@@ -120,7 +124,7 @@ func activeReflexTree() {
 
 	// результат поиска:
 	if detectedActiveLastNodID > 0 { // найден узел
-	// если есть условный рефлекс, то погасить б.рефлексы
+		// если есть условный рефлекс, то погасить б.рефлексы
 		if len(conditionReflexesIdArr) > 0 {
 			// удалить более низкоуровневые рефлексы
 			geneticReflexesIdArr = nil
@@ -136,14 +140,14 @@ func activeReflexTree() {
 				addGeneticReflexesToTree(detectedActiveLastNodID, condArr)
 
 				// сообщить на Пульт, что при данных условиях нет б.рефлекса.
-					if EvolushnStage == 0 { // только для стадии безусловных рефлексов
-						if isIgnor {
-							NoUnconditionRefles = "IGNORED" + GetCurrentConditionsStr() // СТРОКА УСЛОВИЙ ДЛЯ РЕФЛЕКСА
-						} else {
-							NoUnconditionRefles = "NOREFLEX" + GetCurrentConditionsStr() // СТРОКА УСЛОВИЙ ДЛЯ РЕФЛЕКСА
-						}
-						return
+				if EvolushnStage == 0 { // только для стадии безусловных рефлексов
+					if isIgnor {
+						NoUnconditionRefles = "IGNORED" + GetCurrentConditionsStr() // СТРОКА УСЛОВИЙ ДЛЯ РЕФЛЕКСА
+					} else {
+						NoUnconditionRefles = "NOREFLEX" + GetCurrentConditionsStr() // СТРОКА УСЛОВИЙ ДЛЯ РЕФЛЕКСА
 					}
+					return
+				}
 			}
 			// в консоль:
 			consol := "Попытка запуска РЕФЛЕКС: "
@@ -153,7 +157,7 @@ func activeReflexTree() {
 			for c := 0; c < len(geneticReflexesIdArr); c++ {
 				consol += "ID=" + strconv.Itoa(geneticReflexesIdArr[c]) + "; "
 			}
-			if len(oldReflexesIdArr)> 0 || len(geneticReflexesIdArr) > 0 {
+			if len(oldReflexesIdArr) > 0 || len(geneticReflexesIdArr) > 0 {
 				lib.WritePultConsol(consol)
 			} else { // не прописано никаких реакций
 				lib.WritePultConsol("Не определен рефлекс")
@@ -162,22 +166,21 @@ func activeReflexTree() {
 				}
 			}
 
+			/*			// ДЛЯ ПСИХИКИ:
+						veryActual, targetArrID, acrArr := GetActualReflexAction()
+						// сортировка действий рефлексов по убыванию значимости
+						acrArr = sortingForActions(targetArrID, acrArr)
+						if len(acrArr) > 6 { // может быть и 64 если
+							// просто ограничить 3 предположительными акциями
+							acrArr = acrArr[:3]
+							// на стадии рефлексов был сигнал NOREFLEX и диалог на пульте
+						}
+						// передать в психику информацию
+						psychic.GetReflexInformation(veryActual, targetArrID, acrArr)
 
-/*			// ДЛЯ ПСИХИКИ:
-			veryActual, targetArrID, acrArr := GetActualReflexAction()
-			// сортировка действий рефлексов по убыванию значимости
-			acrArr = sortingForActions(targetArrID, acrArr)
-			if len(acrArr) > 6 { // может быть и 64 если
-				// просто ограничить 3 предположительными акциями
-				acrArr = acrArr[:3]
-				// на стадии рефлексов был сигнал NOREFLEX и диалог на пульте
-			}
-			// передать в психику информацию
-			psychic.GetReflexInformation(veryActual, targetArrID, acrArr)
-
-			if EvolushnStage < 2 { // сразу запустить имеющиеся рефлексы
-				toRunRefleses()
-			} // иначе сначала будут проверены автоматизмы в perception.go*/
+						if EvolushnStage < 2 { // сразу запустить имеющиеся рефлексы
+							toRunRefleses()
+						} // иначе сначала будут проверены автоматизмы в perception.go*/
 		}
 	} else { // вообще еще нет такого случая :) т.к. всегда есть нулевая
 		// сообщить на Пульт, что при данных условиях нет б.рефлекса.
@@ -205,33 +208,38 @@ func activeReflexTree() {
 	} // иначе сначала будут проверены автоматизмы в perception.go
 }
 
-/* очистка актитвировавшихся рефлексов
+/*
+	очистка актитвировавшихся рефлексов
+
 это надо делать после каждой активации дерева, а не только по факту срабатывания рефлекса
 иначе в стадии формирования автоматизмов действия рефлекса будут передаваться в образ действий чисто вербального автоматизма
-от предыдущей активации рефлекса, если она была*/
-func clinerReflexArrID(){
+от предыдущей активации рефлекса, если она была
+*/
+func clinerReflexArrID() {
 	oldReflexesIdArr = nil
 	geneticReflexesIdArr = nil
 	conditionReflexesIdArr = nil
 }
 
 // Сортировка действий рефлексов по убыванию актуальной значимости их целей
-func sortingForActions(targetArrID[]int, acrArr[]int) []int {
+func sortingForActions(targetArrID []int, acrArr []int) []int {
 	var impC = make(map[int]int)
-	var arr[]int
-	var act[]int
+	var arr []int
+	var act []int
 
-	if targetArrID == nil {	return acrArr	}
-	for i:=0; i < len(acrArr); i++ {
+	if targetArrID == nil {
+		return acrArr
+	}
+	for i := 0; i < len(acrArr); i++ {
 		act = termineteAction.TerminalActionsTargetsFromID[acrArr[i]]
 		if act == nil {
-			impC[i + 1000] = acrArr[i] // 1000 рефлекторных действий вряд ли будет
+			impC[i+1000] = acrArr[i] // 1000 рефлекторных действий вряд ли будет
 		} else {
 			for _, val := range act {
 				if lib.ExistsValInArrSort(targetArrID, val) {
 					impC[i] = acrArr[i]
 				} else {
-					impC[i + 1000] = acrArr[i] // 1000 рефлекторных действий вряд ли будет
+					impC[i+1000] = acrArr[i] // 1000 рефлекторных действий вряд ли будет
 				}
 			}
 		}
@@ -240,11 +248,11 @@ func sortingForActions(targetArrID[]int, acrArr[]int) []int {
 	for k := range impC {
 		vals = append(vals, k)
 	}
-	sort.Slice(vals , func(i, j int) bool {
+	sort.Slice(vals, func(i, j int) bool {
 		return vals[i] < vals[j]
 	})
 
-	for i:=0; i < len(vals); i++ {
+	for i := 0; i < len(vals); i++ {
 		arr = append(arr, impC[vals[i]])
 	}
 	return arr
@@ -257,15 +265,19 @@ func sortingForActions(targetArrID[]int, acrArr[]int) []int {
 то именно этот рефлекс и сработает.
 
 isExactly: 0 - сработал неточный рефлекс, не смотреть блок точного совпадения
- */
+*/
 // БЕЗ РЕКУРСИИ т.к. всего 2 уровня проверяется
-func findReflexesNodes(level int, cond []int, node *ReflexNode, isExactly int){
+func findReflexesNodes(level int, cond []int, node *ReflexNode, isExactly int) {
 	detectedActiveLevel = level
-	if len(cond) == 0 { return }
+	if len(cond) == 0 {
+		return
+	}
 
 	// если последний уровень Дерева
 	if level == 2 { // смотреть условные рефлексы
-		if conditionRexlexFound(cond) { return }
+		if conditionRexlexFound(cond) {
+			return
+		}
 	}
 
 	for n := 0; n < len(node.Children); n++ {
@@ -273,7 +285,7 @@ func findReflexesNodes(level int, cond []int, node *ReflexNode, isExactly int){
 		if cld.StyleID == cond[0] {
 			// только если нет пусковых стимулов, позволено смотреть древние рефлексы
 			if ActiveCurTriggerStimulsID == 0 {
-				node,ok:=ReadeReflexTreeFromID(cld.ID)
+				node, ok := ReadeReflexTreeFromID(cld.ID)
 				if !ok {
 					continue
 				}
@@ -286,13 +298,15 @@ func findReflexesNodes(level int, cond []int, node *ReflexNode, isExactly int){
 				}
 			}
 			// есть ли условный рефлекс?
-			if conditionRexlexFound(cond[1:]) { return }
+			if conditionRexlexFound(cond[1:]) {
+				return
+			}
 			if cld.ActionID == cond[1] {
-				node,ok:=ReadeReflexTreeFromID(cld.ID)
+				node, ok := ReadeReflexTreeFromID(cld.ID)
 				if !ok {
 					continue
 				}
-				if node.GeneticReflexID > 0{
+				if node.GeneticReflexID > 0 {
 					geneticReflexesIdArr = append(geneticReflexesIdArr, node.GeneticReflexID)
 					detectedActiveLastNodID = cld.ID
 					detectedActiveLevel = level + 1
@@ -304,8 +318,8 @@ func findReflexesNodes(level int, cond []int, node *ReflexNode, isExactly int){
 	return
 }
 
-func compareCondImade(level int,rArr []int) bool {
-	switch level{
+func compareCondImade(level int, rArr []int) bool {
+	switch level {
 	case 1:
 		for i := 0; i < len(curBaseCondArr); i++ {
 			// есть такое значение в массиве
@@ -328,8 +342,10 @@ func compareCondImade(level int,rArr []int) bool {
 	return false
 }
 
-/* создание иерархии АКТИВНЫХ образов контекстов условий и пусковых стимулов в виде ID образов в [3]int
- создать последовательность уровней условий в виде массива  ID последовательности ID уровней
+/*
+	создание иерархии АКТИВНЫХ образов контекстов условий и пусковых стимулов в виде ID образов в [3]int
+
+создать последовательность уровней условий в виде массива  ID последовательности ID уровней
 */
 func getActiveConditionsArr(lev1 int, lev2 int, lev3 int) []int {
 	arr := make([]int, 3)
@@ -341,11 +357,13 @@ func getActiveConditionsArr(lev1 int, lev2 int, lev3 int) []int {
 	return arr
 }
 
-/* СТРОКА УСЛОВИЙ ДЛЯ безусловного РЕФЛЕКСА типа 1|2,5,8|11
+/*
+	СТРОКА УСЛОВИЙ ДЛЯ безусловного РЕФЛЕКСА типа 1|2,5,8|11
+
 Базовое состояние
 Активные контексты
 Пусковые стимулы
- */
+*/
 func GetCurrentConditionsStr() string {
 	// ID базового состояния (1 уровень)
 	var out = strconv.Itoa(gomeostas.CommonBadNormalWell) + "|"
@@ -353,7 +371,9 @@ func GetCurrentConditionsStr() string {
 	// ID (2) актуальных контекстов через запятую
 	bs := gomeostas.GetCurContextActiveIDarr()
 	for i := 0; i < len(bs); i++ {
-		if i > 0 { out += "," }
+		if i > 0 {
+			out += ","
+		}
 		out += strconv.Itoa(bs[i])
 	}
 	out += "|"
@@ -361,7 +381,9 @@ func GetCurrentConditionsStr() string {
 	// ID (3) пусковых стимулов через запятую
 	as := action_sensor.CheckCurActionsContext()
 	for i := 0; i < len(as); i++ {
-		if i > 0 { out += "," }
+		if i > 0 {
+			out += ","
+		}
 		out += strconv.Itoa(as[i])
 	}
 
@@ -372,8 +394,8 @@ func GetCurrentConditionsStr() string {
 func checkIgnorOnly(oldReflexesIdArr []int, geneticReflexesIdArr []int) bool {
 	var isIgnor = false
 
-	if len(GeneticReflexes) > 0 && oldReflexesIdArr!=nil {
-		gr,ok:=GeneticReflexes[oldReflexesIdArr[0]]
+	if len(GeneticReflexes) > 0 && len(oldReflexesIdArr) > 0 {
+		gr, ok := GeneticReflexes[oldReflexesIdArr[0]]
 		if ok && len(oldReflexesIdArr) == 1 {
 			if gr.ActionIDarr[0] == 9 {
 				isIgnor = true
@@ -396,13 +418,13 @@ acrArr:=GetActualReflexAction()
 psychic.GetReflexInformation(acrArr)
 */
 // вернуть 1)veryActual 2)targetArrID 3)actArtr
-func GetActualReflexAction()(bool, []int, []int) {
+func GetActualReflexAction() (bool, []int, []int) {
 	var actArtr []int
 
 	/* выявить ID параметров гомеостаза как цели для улучшения в данных условиях
 	здесь, чтобы сразу получить veryActual и targetArrID для возврата
 	targetArrID - отсортирован по убыванию значимости
-	 */
+	*/
 	veryActual, targetArrID := gomeostas.FindTargetGomeostazID()
 
 	// есть ли подходящий по условиям безусловный или условный рефлекс и сделать автоматизм по его действиям
@@ -416,7 +438,7 @@ func GetActualReflexAction()(bool, []int, []int) {
 	if condArr != nil && len(condArr) > 0 {
 		for i := 0; i < len(condArr); i++ {
 			//act := ConditionReflexes[condArr[i]]
-			act,ok:=ReadeConditionReflexes(condArr[i])
+			act, ok := ReadeConditionReflexes(condArr[i])
 			if !ok {
 				continue
 			}
@@ -459,36 +481,40 @@ func GetActualReflexAction()(bool, []int, []int) {
 	return veryActual, targetArrID, actArtr
 }
 
-/* GetActualReflex() возвращает текущие массивы найденных при активации видов рефлексов
+/*
+	GetActualReflex() возвращает текущие массивы найденных при активации видов рефлексов
+
 1-conditionReflexesIdArr []int - Условные рефлексы
 2-geneticReflexesIdArr []int - Новые безусловные
 3-oldReflexesIdArr []int - Древние безусловные
- condArr,geneticArr,OldArr:=reflexes.GetActualReflex()
+
+	condArr,geneticArr,OldArr:=reflexes.GetActualReflex()
 */
-func GetActualReflex()([]int, []int, []int) {
+func GetActualReflex() ([]int, []int, []int) {
 	return conditionReflexesIdArr, geneticReflexesIdArr, oldReflexesIdArr
 }
+
 ///////////////////////////////////////////////////////////
 
-
-/////////////////////////////////////////////////
-//сторожевой центр сна
+// ///////////////////////////////////////////////
+// сторожевой центр сна
 func quardingSleepCenter() {
 	if !sleep.IsSleeping {
-return
+		return
 	}
-/*
-	if gomeostas.CommonBadNormalWell == 1{
-		sleep.QuardingSleepCenter()// проснуться
-	}
- */
+	/*
+		if gomeostas.CommonBadNormalWell == 1{
+			sleep.QuardingSleepCenter()// проснуться
+		}
+	*/
 
 	// массив текущих пусковых стимулов
 	curPultActionsArr = action_sensor.CheckCurActions()
 	if lib.ExistsValInArr(curPultActionsArr, 3) || // наказать
 		lib.ExistsValInArr(curPultActionsArr, 10) || // сделать больно
 		lib.ExistsValInArr(curPultActionsArr, 15) { // испугаться
-		sleep.QuardingSleepCenter()// проснуться
+		sleep.QuardingSleepCenter() // проснуться
 	}
 }
+
 ///////////////////////////////////////////////////////

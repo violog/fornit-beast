@@ -29,7 +29,9 @@ var EnergyDescrib = []string{
 	"Максимально (сила=10)",
 }
 
-/* Генетические цели действий Beast ID гомео-параметров, которые призвано улучшить данное действие - по его ID
+/*
+	Генетические цели действий Beast ID гомео-параметров, которые призвано улучшить данное действие - по его ID
+
 Значение 10 означает - для всех параметров - улучшение.
 
 Это – наследственно заданная цель действия, не осознаваемая при его совершении.
@@ -54,7 +56,9 @@ func TermineteActionCountPuls(evolushnStage int, lifeTime int, puls int, isSlipp
 	pulsSimpleReflexex()
 }
 
-/* затратные последствия ответного действия
+/*
+	затратные последствия ответного действия
+
 т.е. то, как изменятся параметры гомеостаза при совершении данного действия
 */
 type TerminalActionsExpenses struct {
@@ -187,11 +191,14 @@ func pulsSimpleReflexex() {
 	}
 }
 
-/* выбрать подходящий простейший рефлекс и вернуть его действие
+/*
+	выбрать подходящий простейший рефлекс и вернуть его действие
+
 TerminalActions.ChooseSimpleReflexexAction
 Eсли нет условного и безусловного рефлекса, то совершается самый простейший безусловный рефлекс
-		по сочетаниям редактора http://go/pages/terminal_actions.php
-		Данный редактор связывает действие с тем, какие гомео-параметры улучшает данное действие.
+
+	по сочетаниям редактора http://go/pages/terminal_actions.php
+	Данный редактор связывает действие с тем, какие гомео-параметры улучшает данное действие.
 */
 func ChooseSimpleReflexexAction() (bool, int, []int) {
 	// выявить ID парамктров гомеостаза как цели для улучшения в данных условиях
@@ -233,13 +240,16 @@ func ChooseSimpleReflexexAction() (bool, int, []int) {
 	usedSimpleReflexexsID = append(usedSimpleReflexexsID, singleActID)
 	return veryActual, singleActID, targetID
 }
+
 //////////////////////////////////////////////////
 
 /* выдать массив возможных действий по ID парамктров гомеостаза как цели для улучшения в данных условиях */
 func GetSimpleActionForCurContitions() ([]int, []int) {
 	// выявить ID парамктров гомеостаза как цели для улучшения в данных условиях
 	_, targetArrID := gomeostas.FindTargetGomeostazID()
-	if targetArrID == nil {return nil, nil} // если целей нет, незачем дальше проверять - будет nil
+	if targetArrID == nil {
+		return nil, nil
+	} // если целей нет, незачем дальше проверять - будет nil
 
 	// выявить ID параметров гомеостаза как цели для улучшения в данных условиях
 	var fActsID []int

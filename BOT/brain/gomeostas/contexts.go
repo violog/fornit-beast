@@ -64,7 +64,7 @@ var CurStyleImage StyleImage
 // заполнить CurStyleImage новыми значениями (порядок весов стилей уже есть в BaseContextActive)
 func setNewContexts() {
 	n := 0
-	for id, _ := range BaseContextActive {
+	for id := range BaseContextActive {
 		if BaseContextActive[id] {
 			CurStyleImage.Styles[n] = id
 			n++
@@ -175,7 +175,7 @@ func initContextDetector() {
 		val, _ := strconv.Atoi(p[1])
 		BaseContextWeight[id] = val
 	}
-	for id, _ := range BaseContextWeight {
+	for id := range BaseContextWeight {
 		BaseContextActive[id] = false
 	}
 
@@ -354,7 +354,7 @@ func baseContextUpdate() { // корректруется по каждому п�
 	if len(keys) > 3 {
 		keys = keys[:3]
 	}
-	for id, _ := range BaseContextActive {
+	for id := range BaseContextActive {
 		BaseContextActive[id] = false
 		for i := 0; i < len(keys); i++ {
 			if id == keys[i] {
@@ -476,7 +476,7 @@ func GetCurContextActive() string {
 				out += strconv.Itoa(id) + ";0|"
 			}
 		}*/
-	for id, _ := range BaseContextActive {
+	for id := range BaseContextActive {
 		exists := false
 		for i := 0; i < 3; i++ {
 			if CurStyleImage.Styles[i] == id { // есть такой активный контекст

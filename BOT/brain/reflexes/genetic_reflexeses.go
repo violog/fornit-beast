@@ -22,29 +22,30 @@ func init() {
 
 type GeneticReflex struct {
 	ID          int
-	lev1        int //BaseID
+	lev1        int   //BaseID
 	lev2        []int // BaseStyleID[]
 	lev3        []int // конпки акций с пульта
 	ActionIDarr []int // действия рефлекса
 	// Result int - у безусловных рефлексов нет конкуренции, кроме того, что они подавляются более высокоуровневыми рефлексами и автоматизмами
 }
+
 var GeneticReflexes = make(map[int]*GeneticReflex)
 
 // для быстрого поиска по совпадениям строк
 type geneticReflexStr struct {
-ID int
-lev1 string
-lev2 string
-lev3 string
-lev4 string
-actions string
+	ID      int
+	lev1    string
+	lev2    string
+	lev3    string
+	lev4    string
+	actions string
 }
 
 var geneticReflexesStr = make(map[int]*geneticReflexStr)
 var lastGeneticReflexID = 0
 
-//создание нового безусловного рефлекса, если такого еще нет.
-func CreateNewGeneticReflex(id int, lev1 int, lev2 []int, lev3 []int, ActionIDarr []int,CheckUnicum bool) (int, *GeneticReflex) {
+// создание нового безусловного рефлекса, если такого еще нет.
+func CreateNewGeneticReflex(id int, lev1 int, lev2 []int, lev3 []int, ActionIDarr []int, CheckUnicum bool) (int, *GeneticReflex) {
 	// посмотреть, если рефлекс с такими же условиями уже есть
 	if CheckUnicum {
 		idOld, rOld := compareUnicum(lev1, lev2, lev3)
@@ -76,7 +77,9 @@ func CreateNewGeneticReflex(id int, lev1 int, lev2 []int, lev3 []int, ActionIDar
 // посмотреть, если рефлекс с такими же условиями уже есть
 func compareUnicum(lev1 int, lev2 []int, lev3 []int) (int, *GeneticReflex) {
 	for k, v := range GeneticReflexes {
-		if v==nil{continue}
+		if v == nil {
+			continue
+		}
 		if v.lev1 == lev1 && lib.EqualArrs(v.lev2, lev2) && lib.EqualArrs(v.lev3, lev3) {
 			return k, v
 		}
@@ -87,7 +90,7 @@ func compareUnicum(lev1 int, lev2 []int, lev3 []int) (int, *GeneticReflex) {
 // P.S. безусловные рефлексы создаются в редакторе и поэтому здесь нет функции их сохранения.
 // а только загрузка имеющихся в формате ID|lev1|lev2_1,lev2_2,...|lev3_1,lev3_2,...|actin_1,actin_2,...:
 
-//загрузка безусловных рефлексов из файла хранения
+// загрузка безусловных рефлексов из файла хранения
 func loadGeneticReflexes() {
 	path := lib.GetMainPathExeFile()
 	lines, _ := lib.ReadLines(path + "/memory_reflex/dnk_reflexes.txt")
@@ -126,14 +129,14 @@ func loadGeneticReflexes() {
 				ActionIDarr = append(ActionIDarr, b)
 			}
 		}
-		CreateNewGeneticReflex(id, lev1, lev2, lev3, ActionIDarr,false)
+		CreateNewGeneticReflex(id, lev1, lev2, lev3, ActionIDarr, false)
 		var newS geneticReflexStr
-		newS.ID=id
-		newS.lev1=p[1]
-		newS.lev2=p[2]
-		newS.lev3=p[3]
-		newS.actions=p[4]
-		geneticReflexesStr[id]=&newS
+		newS.ID = id
+		newS.lev1 = p[1]
+		newS.lev2 = p[2]
+		newS.lev3 = p[3]
+		newS.actions = p[4]
+		geneticReflexesStr[id] = &newS
 	}
 	return
 }
@@ -143,11 +146,15 @@ func SaveGeneticReflexes() {
 	var out string
 
 	// сохранение только в режиме Larva
-	if EvolushnStage > 0 {return}
+	if EvolushnStage > 0 {
+		return
+	}
 
 	keys := make([]int, 0, len(GeneticReflexes))
-	for k,v := range GeneticReflexes {
-		if v==nil{continue}
+	for k, v := range GeneticReflexes {
+		if v == nil {
+			continue
+		}
 		keys = append(keys, k)
 	}
 	sort.Ints(keys)
@@ -158,7 +165,7 @@ func SaveGeneticReflexes() {
 }
 
 // Получить строку ДНК-рефлекса по ID
-func ListDnkReflex(ID int)string{
+func ListDnkReflex(ID int) string {
 	return strconv.Itoa(GeneticReflexes[ID].ID) + "|" +
 		strconv.Itoa(GeneticReflexes[ID].lev1) + "|" +
 		strings.Join(lib.StrArrToIntArr(GeneticReflexes[ID].lev2), ",") + "|" +

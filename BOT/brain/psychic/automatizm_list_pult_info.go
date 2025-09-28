@@ -299,7 +299,7 @@ func GetAutomatizmPraseList(basicID int, contexts string) string {
 	//автоматизмы, привязанные к ID фразе PhraseID и тогда их branchID начинается с 2000000
 	outArr = nil
 	out2 := ""
-	for praaseID, _ := range AutomatizmIdFromPhraseId {
+	for praaseID := range AutomatizmIdFromPhraseId {
 		prase := GetPraseStringsFromVerbalID(praaseID)
 		if len(prase) > 1 {
 			if !lib.ExistsValInStringArr(outArr, prase) {

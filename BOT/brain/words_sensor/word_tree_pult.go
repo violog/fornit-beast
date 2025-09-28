@@ -1,6 +1,6 @@
 /* выдать дерево слов на Пульт по GET-запросу http://go:8181?get_word_tree=1
 Запросы даются при запуске и при изменении размера файла дерева /memory_reflex/word_tree.txt
- */
+*/
 
 package word_sensor
 
@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-func initWordPult(){
+func initWordPult() {
 	//str:=GetPhraseTreeForPult()
 	//if len(str)>0{}
 }
@@ -19,7 +19,9 @@ var wordTreeModel = ""
 
 // проход дерева фраз
 func GetWordTreeForPult() string {
-	if notAllowScanInThisTime { return "!!!" }
+	if notAllowScanInThisTime {
+		return "!!!"
+	}
 	wordTreeModel = ""
 	scanWordNodes(-1, &VernikeWordTree)
 	return wordTreeModel
@@ -33,7 +35,7 @@ func scanWordNodes(level int, wt *WordTree) {
 	}
 	level++
 	for n := 0; n < len(wt.Children); n++ {
-		scanWordNodes(level,&wt.Children[n])
+		scanWordNodes(level, &wt.Children[n])
 	}
 }
 
@@ -53,7 +55,7 @@ func GetWordsListForPult() string {
 	}
 
 	wArr := make([]string, 0, len(WordIdFormWord))
-	for w, _ := range WordIdFormWord {
+	for w := range WordIdFormWord {
 		wArr = append(wArr, w)
 	}
 	sort.Strings(wArr)
@@ -66,7 +68,9 @@ func GetWordsListForPult() string {
 	out += "<td class='table_header' width=100>ID</td></tr><tr>"
 	var col = 0
 	for n := 0; n < len(wArr); n++ {
-		if len(wArr[n]) == 0 { continue	}
+		if len(wArr[n]) == 0 {
+			continue
+		}
 		if col >= 3 {
 			out += "</tr><tr>"
 			col = 0
@@ -78,5 +82,5 @@ func GetWordsListForPult() string {
 	}
 	count := strconv.Itoa(len(wArr))
 	out += "</tr></table><b>Всего: " + count + " слов</b>"
-return out
+	return out
 }

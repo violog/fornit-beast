@@ -7,37 +7,31 @@
 
 package sleep
 
-
-
 // обработка накопившегося массива распознанных фраз
-func prepareWordArr(){
+func prepareWordArr() {
 	/*	wCount:=len(word_sensor.MemoryDetectedArr)
 		if wCount==0{
 
 		}*/
 
-if EvolushnStage>3 {
-	// обработка эпизодической памяти
+	if EvolushnStage > 3 {
+		// обработка эпизодической памяти
 
-	//бъекты PurposeGeneticObject накапливаются в оперативке и удаляются во сне
+		//бъекты PurposeGeneticObject накапливаются в оперативке и удаляются во сне
 
-	// объекты внимания, имеющую высокую значимость importanceObjectID
+		// объекты внимания, имеющую высокую значимость importanceObjectID
 
+		// обработка кратковременной памяти во сне или бездействии
+		//	psychic.ShortTermMemoryProcessing()  есть обработка циклов
+	}
 
-	// обработка кратковременной памяти во сне или бездействии
-//	psychic.ShortTermMemoryProcessing()  есть обработка циклов
 }
 
-}
 /////////////////////////////////
 
 // все, что нужно во время сна
-func prepareAnyArr(){
-
+func prepareAnyArr() {
 
 }
+
 ////////////////////////////////////
-
-
-
-

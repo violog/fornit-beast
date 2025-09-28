@@ -83,7 +83,7 @@ func sortingForImpotents() map[int]int{
 */
 func sortingForImpotents() map[int]int {
 	var impC = make(map[int]int)
-	for id, _ := range BadNormalWell {
+	for id := range BadNormalWell {
 		impC[GomeostazParamsWeight[id]] = id
 	}
 

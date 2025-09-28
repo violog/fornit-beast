@@ -16,7 +16,9 @@ var reflesTreeModel = ""
 
 func GetReflexesTreeForPult() string {
 	// против паники типа "одновременная запись и считывание карты"
-	if notAllowScanInReflexesThisTime { return "!!!" }
+	if notAllowScanInReflexesThisTime {
+		return "!!!"
+	}
 	reflesTreeModel = ""
 	scanReflexesNodes(-1, &ReflexTree)
 
@@ -52,13 +54,13 @@ func scanReflexesNodes(level int, node *ReflexNode) {
 			if reflex.ID == 45 {
 				reflex.ID = 45
 			}
-			reflesTreeModel += " <span style='color:blue'>Рефлекс(" + strconv.Itoa(reflex.ID) + "): "+getReflexActionsStrFromID(reflex) + "</span>"
+			reflesTreeModel += " <span style='color:blue'>Рефлекс(" + strconv.Itoa(reflex.ID) + "): " + getReflexActionsStrFromID(reflex) + "</span>"
 		}
 		reflesTreeModel += "<br>\n"
 	}
 	level++
 	for n := 0; n < len(node.Children); n++ {
-		scanReflexesNodes(level,&node.Children[n])
+		scanReflexesNodes(level, &node.Children[n])
 	}
 }
 
@@ -72,16 +74,20 @@ func setShift(level int) string {
 }
 
 // из ID образа получить составляющие в виде строк
-func getStrFromCond(level int,imgID int) string {
+func getStrFromCond(level int, imgID int) string {
 	var out = ""
 
 	switch level {
-	case 1: if imgID > 0 && imgID < 4 { out=gomeostas.GetBaseCondFromID(imgID)
-	} else {
-		out += "<span style='color:red'>несуществующее Базовое состояние ID=" + strconv.Itoa(imgID) + "</span>"
-	}
-	case 2:	out = getStrnameFromBaseImageID(imgID)
-	case 3: out = getStrnameFromStyleImageID(imgID)
+	case 1:
+		if imgID > 0 && imgID < 4 {
+			out = gomeostas.GetBaseCondFromID(imgID)
+		} else {
+			out += "<span style='color:red'>несуществующее Базовое состояние ID=" + strconv.Itoa(imgID) + "</span>"
+		}
+	case 2:
+		out = getStrnameFromBaseImageID(imgID)
+	case 3:
+		out = getStrnameFromStyleImageID(imgID)
 	}
 
 	return out
@@ -93,7 +99,9 @@ func getStrnameFromBaseImageID(id int) string {
 
 	img := BaseStyleArr[id]
 	for i := 0; i < len(img.BSarr); i++ {
-		if i > 0 { out += ", " }
+		if i > 0 {
+			out += ", "
+		}
 		name := gomeostas.GetBaseContextCondFromID(img.BSarr[i]) + ""
 		if len(name) == 0 {
 			out += "<span style='color:red'>несуществующий Базовый контекст ID=" + strconv.Itoa(img.BSarr[i]) + "</span>"
@@ -109,13 +117,19 @@ func getStrnameFromBaseImageID(id int) string {
 func getStrnameFromStyleImageID(id int) string {
 	var out = ""
 
-	if id == 0 { return "" }
+	if id == 0 {
+		return ""
+	}
 	img := TriggerStimulsArr[id]
-	if img == nil { return "" }
+	if img == nil {
+		return ""
+	}
 	// Действия с Пульта?
 	if len(img.RSarr) > 0 {
 		for i := 0; i < len(img.RSarr); i++ {
-			if i > 0 { out += ", " }
+			if i > 0 {
+				out += ", "
+			}
 			name := actionSensor.GetActionNameFromID(img.RSarr[i])
 			if len(name) == 0 {
 				out += "<span style='color:red'>несуществующий стимул ID=" + strconv.Itoa(img.RSarr[i]) + "</span>"
@@ -128,7 +142,9 @@ func getStrnameFromStyleImageID(id int) string {
 	if len(img.PhraseID) > 0 {
 		out += "Фразы c ID: "
 		for i := 0; i < len(img.PhraseID); i++ {
-			if i > 0 { out += ", " }
+			if i > 0 {
+				out += ", "
+			}
 			out += strconv.Itoa(img.PhraseID[i])
 		}
 	}
@@ -137,10 +153,14 @@ func getStrnameFromStyleImageID(id int) string {
 }
 
 func getReflexActionsStrFromID(reflex *GeneticReflex) string {
-	if reflex == nil { return "" }
+	if reflex == nil {
+		return ""
+	}
 	var out = ""
 	for i := 0; i < len(reflex.ActionIDarr); i++ {
-		if i > 0 { out += ", " }
+		if i > 0 {
+			out += ", "
+		}
 		out += termineteAction.TerminalActonsNameFromID[reflex.ActionIDarr[i]]
 	}
 
@@ -163,15 +183,21 @@ func GetConditionReflexInfo(limitBasicID int) string {
 	if limitBasicID > 0 {
 		out += "<br>Показывать: "
 		out += "<span style='cursor:pointer;"
-		if limitBasicID == 1 { out += "background-color:#FFFF9D;font-weight:bold;" }
+		if limitBasicID == 1 {
+			out += "background-color:#FFFF9D;font-weight:bold;"
+		}
 		out += "' onClick='show_level(1)'>Плохо</span> "
 
 		out += "<span style='cursor:pointer;"
-		if limitBasicID == 2 { out += "background-color:#FFFF9D;font-weight:bold;" }
+		if limitBasicID == 2 {
+			out += "background-color:#FFFF9D;font-weight:bold;"
+		}
 		out += "' onClick='show_level(2)'>Норма</span> "
 
 		out += "<span style='cursor:pointer;"
-		if limitBasicID == 3 { out += "background-color:#FFFF9D;font-weight:bold;" }
+		if limitBasicID == 3 {
+			out += "background-color:#FFFF9D;font-weight:bold;"
+		}
 		out += "' onClick='show_level(3)'>Хорошо</span> "
 	}
 
@@ -187,47 +213,55 @@ func GetConditionReflexInfo(limitBasicID int) string {
 
 	if len(ConditionReflexes) == 0 {
 		return "<table id='main_table' class='main_table'  cellpadding=0 cellspacing=0 border=1 width='100%' style='font-size:14px;'>" +
-		"<tr><th width=70 class='table_header'>ID<br>рефлекса</th>" +
-		"<th width=70 class='table_header'>ID (1 уровень)<br><nobr>базового состояния</nobr></th>" +
-		"<th width='25%' class='table_header'>ID (2) актуальных контекстов<br>через запятую</th>" +
-		"<th width='25%' class='table_header'>ID (3) пусковых стимулов<br>через запятую</th>" +
-		"<th width='25%' class='table_header'>ID действий<br>через запятую</th>" +
-		"<th width='25%' class='table_header'>Родитель</th>" +
-		"<th width='25%' class='table_header'>Возраст</th>" +
-		"<th width='30' class='table_header' title='Удалить рефлекс'>Х</th></tr>" +
-		"<tr class='highlighting' ><td colspan=7 >Еще нет условных рефлексов.</td></tr>"+
-		"</table>"
+			"<tr><th width=70 class='table_header'>ID<br>рефлекса</th>" +
+			"<th width=70 class='table_header'>ID (1 уровень)<br><nobr>базового состояния</nobr></th>" +
+			"<th width='25%' class='table_header'>ID (2) актуальных контекстов<br>через запятую</th>" +
+			"<th width='25%' class='table_header'>ID (3) пусковых стимулов<br>через запятую</th>" +
+			"<th width='25%' class='table_header'>ID действий<br>через запятую</th>" +
+			"<th width='25%' class='table_header'>Родитель</th>" +
+			"<th width='25%' class='table_header'>Возраст</th>" +
+			"<th width='30' class='table_header' title='Удалить рефлекс'>Х</th></tr>" +
+			"<tr class='highlighting' ><td colspan=7 >Еще нет условных рефлексов.</td></tr>" +
+			"</table>"
 	}
 
 	keys := make([]int, 0, ureflexCount)
-	for k,v := range ConditionReflexes {
-		if v==nil{continue}
+	for k, v := range ConditionReflexes {
+		if v == nil {
+			continue
+		}
 		keys = append(keys, k)
 	}
 	sort.Ints(keys)
 	for _, k := range keys {
 		//v := ConditionReflexes[k]
-		v,ok:=ReadeConditionReflexes(k)
+		v, ok := ReadeConditionReflexes(k)
 		if !ok {
 			continue
 		}
-		if limitBasicID>0 && v.lev1!=limitBasicID {
+		if limitBasicID > 0 && v.lev1 != limitBasicID {
 			continue
 		}
 		id := strconv.Itoa(k)
 		lev1 := gomeostas.GetBaseCondFromID(v.lev1)
 		var lev2 = ""
 		for i := 0; i < len(v.lev2); i++ {
-			if i > 0 { lev2 += ", " }
+			if i > 0 {
+				lev2 += ", "
+			}
 			lev2 += gomeostas.GetBaseContextCondFromID(v.lev2[i])
 		}
 		//act := TriggerStimulsArr[v.lev3]
-		act,ok:=ReadeTriggerStimulsArr(v.lev3)
-		if !ok {continue }
+		act, ok := ReadeTriggerStimulsArr(v.lev3)
+		if !ok {
+			continue
+		}
 		var lev3 = ""
 		if len(act.RSarr) > 0 {
 			for i := 0; i < len(act.RSarr); i++ {
-				if i > 0 { lev3 += ", " }
+				if i > 0 {
+					lev3 += ", "
+				}
 				lev3 += actionSensor.GetActionNameFromID(act.RSarr[i])
 			}
 		}
@@ -236,15 +270,19 @@ func GetConditionReflexInfo(limitBasicID int) string {
 				lev3 += "<br>"
 			}
 			for i := 0; i < len(act.PhraseID); i++ {
-				if i > 0 { lev3 += "; " }
+				if i > 0 {
+					lev3 += "; "
+				}
 				w := wordsSensor.GetPhraseStringsFromPhraseID(act.PhraseID[i])
 				//w=strings.Trim(w,"")
 				lev3 += "\"" + w + "\""
 			}
 		}
-		var tact=""
+		var tact = ""
 		for i := 0; i < len(v.ActionIDarr); i++ {
-			if i > 0 { tact += ", " }
+			if i > 0 {
+				tact += ", "
+			}
 			tact += termineteAction.TerminalActonsNameFromID[v.ActionIDarr[i]]
 		}
 		var rank = ""
@@ -256,19 +294,18 @@ func GetConditionReflexInfo(limitBasicID int) string {
 
 		t := v.birthTime
 		y := int(t / (3600 * 24 * 365))
-		d := int((t - y * 3600 * 24 * 365) / (3600 * 24))
+		d := int((t - y*3600*24*365) / (3600 * 24))
 		//s := t - (y * 3600 * 24 * 365) - (d * 3600 * 24)
 		old := strconv.Itoa(y) + "лет " + strconv.Itoa(d) + "дней "
 
-
 		out += "<tr >"
-		out += "<td class='table_cell' >"+id+"</td>"
-		out += "<td class='table_cell' >"+lev1+"</td>"
-		out += "<td class='table_cell' >"+lev2+"</td>"
-		out += "<td class='table_cell' >"+lev3+"</td>"
-		out += "<td class='table_cell' >"+tact+"</td>"
-		out += "<td class='table_cell' >"+rank+"</td>"
-		out += "<td class='table_cell' >"+old+"</td>"
+		out += "<td class='table_cell' >" + id + "</td>"
+		out += "<td class='table_cell' >" + lev1 + "</td>"
+		out += "<td class='table_cell' >" + lev2 + "</td>"
+		out += "<td class='table_cell' >" + lev3 + "</td>"
+		out += "<td class='table_cell' >" + tact + "</td>"
+		out += "<td class='table_cell' >" + rank + "</td>"
+		out += "<td class='table_cell' >" + old + "</td>"
 
 		out += "<td class='table_cell' align='center' title='Удалить рефлекс' style='cursor:pointer;' ><input type='checkbox' class='deleteCHBX' id='dchbx_" + id + "'></td>"
 		out += "</tr>"

@@ -247,7 +247,7 @@ func GetToneMoodID(int1 int, int2 int) int {
 	if int2 >= 19 {
 		int2 -= 19
 	}
-	s += strconv.Itoa((int2))
+	s += strconv.Itoa(int2)
 	ToneMoodID, _ := strconv.Atoi(s)
 	return ToneMoodID
 }

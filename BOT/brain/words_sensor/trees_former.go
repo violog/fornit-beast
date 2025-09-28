@@ -23,11 +23,11 @@ limitFraze - число повторений отдельных фраз (с н�
 func UpdateWordTreeFromTempArr(limitWord int, limitFraze int) {
 	// return
 
-	loadTempArr()// вский раз получать обновленный массив накоплений слов
+	loadTempArr() // вский раз получать обновленный массив накоплений слов
 
 	// Удалять использованные строки накопительного массива
 	var newTempFileStr = "" // это будет записано после процесса в /memory_reflex/words_temp_arr.txt
-	var str[]string // для выбранных повторяющихся слов - чтобы потом отсортирвать
+	var str []string        // для выбранных повторяющихся слов - чтобы потом отсортирвать
 	// чтобы фразы могли использовать слова (минимизация размера дерева)
 	// слово или фраза?
 	var existsWords = false
@@ -45,7 +45,7 @@ func UpdateWordTreeFromTempArr(limitWord int, limitFraze int) {
 				if v[1] > 1000 { // старое забывать, - очистка мусора и давно не воспринимаемого
 					continue
 				}
-//оставляем строку со словом, но добавляем ее старость: strconv.Itoa(v[1]+1)
+				//оставляем строку со словом, но добавляем ее старость: strconv.Itoa(v[1]+1)
 				newTempFileStr += strconv.Itoa(v[0]) + "|#|" + k + "|#|" + strconv.Itoa(v[1]+1) + "\r\n"
 			}
 		}
@@ -54,13 +54,13 @@ func UpdateWordTreeFromTempArr(limitWord int, limitFraze int) {
 
 	/* str - список слов, повторившихся в memory_reflex/words_temp_arr.txt более limitWord раз
 	Распознать их в сенсоре, дополнив базу слов.
-	 */
+	*/
 	//oldNCh:=NoCheckWordCount
 	//NoCheckWordCount=true
 	sort.Strings(str) // по алфавиту, чтобы максимально облегчить последовательное разделение слов
 	for i := 0; i < len(str); i++ {
 		cur := str[i]
-		SetNewWordTreeNode(cur,false)
+		SetNewWordTreeNode(cur, false)
 		SetNewPhraseTreeNode(cur)
 		existsWords = true
 	}
@@ -84,7 +84,7 @@ func UpdateWordTreeFromTempArr(limitWord int, limitFraze int) {
 					continue
 				}
 				//оставляем строку с фразой, но добавляем ее старость: strconv.Itoa(v[1]+1)
-				newTempFileStr += strconv.Itoa(v[0]) + "|#|" + k + "|#|" + strconv.Itoa(v[1]+1) +  "\r\n"
+				newTempFileStr += strconv.Itoa(v[0]) + "|#|" + k + "|#|" + strconv.Itoa(v[1]+1) + "\r\n"
 			}
 		}
 	}
@@ -104,5 +104,5 @@ func UpdateWordTreeFromTempArr(limitWord int, limitFraze int) {
 	}
 
 	// Удаление использованных строк накопительного массива: запись только незатронутых
-	lib.WriteFileContentExactly(lib.GetMainPathExeFile() + "/memory_reflex/words_temp_arr.txt", newTempFileStr)
+	lib.WriteFileContentExactly(lib.GetMainPathExeFile()+"/memory_reflex/words_temp_arr.txt", newTempFileStr)
 }

@@ -1,6 +1,6 @@
 /* выдать дерево фраз на Пульт по GET-запросу http://go:8181?get_phrase_tree=1
 Запросы даются при запуске и при изменении размера файла дерева /memory_reflex/word_tree.txt
- */
+*/
 
 package word_sensor
 
@@ -16,7 +16,9 @@ var praseTreeModel = ""
 
 // проход дерева фраз
 func GetPhraseTreeForPult() string {
-	if notAllowScanInThisTime { return "!!!" }
+	if notAllowScanInThisTime {
+		return "!!!"
+	}
 	praseTreeModel = ""
 	scanPraseNodes(-1, &VernikePhraseTree)
 
@@ -24,15 +26,15 @@ func GetPhraseTreeForPult() string {
 }
 
 // сканировать узел дерева фраз
-func scanPraseNodes(level int,wt *PhraseTree) {
+func scanPraseNodes(level int, wt *PhraseTree) {
 	if wt.ID > 0 {
 		praseTreeModel += setShift(level)
 		// получить слово из ID конечного узла дерева слов
-		praseTreeModel += GetWordFromWordID(wt.WordID) + "(" + strconv.Itoa(wt.ID) + " WordID="+strconv.Itoa(wt.WordID)+")<br>\r\n"
+		praseTreeModel += GetWordFromWordID(wt.WordID) + "(" + strconv.Itoa(wt.ID) + " WordID=" + strconv.Itoa(wt.WordID) + ")<br>\r\n"
 	}
 	level++
 	for n := 0; n < len(wt.Children); n++ {
-		scanPraseNodes(level,&wt.Children[n])
+		scanPraseNodes(level, &wt.Children[n])
 	}
 }
 

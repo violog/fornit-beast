@@ -122,7 +122,7 @@ var compareNorma = make([]int, 10)
 var compareLimites = make([]int, 10)
 
 func initBadDetector() {
-	for id, _ := range GomeostazParams {
+	for id := range GomeostazParams {
 		BadNormalWell[id] = 2 // норма
 		BadNormalWellValue[id] = 0
 		dinamicValueStart[id] = 0

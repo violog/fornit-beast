@@ -94,7 +94,7 @@ var MapGwardTryActionArr = lib.RegNewMapGuard()
 func removeTryActionArr(dominantaID int) {
 	lib.MapCheckBlock(MapGwardTryActionArr)
 	ad := tryActionArr[dominantaID]
-	for k, _ := range ad {
+	for k := range ad {
 		delete(tryActionArr, k)
 	}
 	lib.MapFree(MapGwardTryActionArr)
@@ -105,7 +105,7 @@ func removeTryActionArr(dominantaID int) {
 // удаление временных массивов пробных действий (отрицательные значяения индеков) - во сне
 func RemoveTemporeryTryActionArr() {
 	lib.MapCheckBlock(MapGwardTryActionArr)
-	for k, _ := range tryActionArr {
+	for k := range tryActionArr {
 		if k > 0 {
 			continue
 		}
