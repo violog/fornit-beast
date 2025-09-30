@@ -66,22 +66,22 @@ func getExtremImportanceObject() {
 	if curActiveActions != nil { // curActiveActions обнуляется
 		// объект объективного восприятия curActiveActions типа *ActionsImage - структура действий оператора при активации дерева автоматизмов
 		eobj := getExtremObjFromID(curActiveActions.ID)
-		if eobj != nil {
-			if lib.Abs(eobj.extremVal) > 2 { // достаточно значимый объект
-				extremImportanceObject = eobj
-				CurrentInformationEnvironment.ExtremImportanceObjectID = eobj.objID
-				if lib.Abs(eobj.extremVal) > 3 {
-					runNewTheme(16, 2) // есть объект высокой значимости
+		if eobj == nil {
+			return
+		}
+		if lib.Abs(eobj.extremVal) > 2 { // достаточно значимый объект
+			extremImportanceObject = eobj
+			CurrentInformationEnvironment.ExtremImportanceObjectID = eobj.objID
+			if lib.Abs(eobj.extremVal) > 3 {
+				runNewTheme(16, 2) // есть объект высокой значимости
 
-					if eobj.extremVal < -3 { // проблемный объект с отрицательным эффектом
-						// текущий значимый объект внимания с отрицательным эффектом extremImportance.extremVal
-						problemExtremImportanceObject = eobj
-					}
+				if eobj.extremVal < -3 { // проблемный объект с отрицательным эффектом
+					// текущий значимый объект внимания с отрицательным эффектом extremImportance.extremVal
+					problemExtremImportanceObject = eobj
 				}
 			}
 		}
 	}
-	return
 }
 
 //////////////////////////////////////////////////////

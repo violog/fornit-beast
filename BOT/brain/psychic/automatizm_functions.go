@@ -573,7 +573,7 @@ func isIgnoreAutomatizmID(atmtzmID int) bool {
 	return isIgnoreAutomatizm(atmtzm)
 }
 
-// пределение, что это - игнорирующий автоматизм
+// определение, что это - игнорирующий автоматизм
 func isIgnoreAutomatizm(atmtzm *Automatizm) bool {
 	if atmtzm == nil {
 		return false

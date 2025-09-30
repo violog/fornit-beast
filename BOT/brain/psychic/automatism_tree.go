@@ -440,21 +440,18 @@ func conditionAutomatizmFound(level int, cond []int, node *AutomatizmNode) {
 		case 5:
 			val = cld.PhraseID
 		}
-		if cond[0] == val {
-			detectedActiveLastNodID = cld.ID
-			ActiveBranchNodeArr = append(ActiveBranchNodeArr, cld.ID)
-		} else {
+		if cond[0] != val {
 			currentStepCount = level - 1
 			continue
 		}
 
+		detectedActiveLastNodID = cld.ID
+		ActiveBranchNodeArr = append(ActiveBranchNodeArr, cld.ID)
 		level++
 		currentStepCount = level
 		conditionAutomatizmFound(level, ost, &node.Children[n])
 		return // раз совпало, то другие ветки не смотреть
 	}
-
-	return
 }
 
 ////////////////////////////////////////////////////////
@@ -511,7 +508,7 @@ func afterTreeActivation() bool {
 			// по результатам обработки, но до очистки 	LastRunAutomatizmPulsCount и LastAutomatizmWeiting
 			if EvolushnStage > 3 {
 				//	wasRunUnderstandingSituation=true
-				/* Здесь не активировать Дерево пониманияситуации. Активировать только 1 раз (зачем 2 раза??)- внизу,
+				/* Здесь не активировать Дерево понимания ситуации. Активировать только 1 раз (зачем 2 раза??)- внизу,
 				   только после определения currentAutomatizmAfterTreeActivatedID
 				   ведь будет вызов consciousnessElementary() - обработка ситуации с currentAutomatizmAfterTreeActivatedID !!!
 				*/

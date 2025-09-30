@@ -153,8 +153,9 @@ func automatizmCorrection(atmtzm *Automatizm, lastCommonDiffValue int, wellIDarr
 ////////////////////////////
 
 // ухудшение автоматизма негативом
+// TODO @violog эту функцию надо пересмотреть позже, т.к. логика совсем уж магическая
 func passivationAutomatizm(atmtzm *Automatizm, negativeValue int) {
-
+	// Хитрый алгоритм понижения пользы и уверенности в ранее полезном автоматизме
 	if atmtzm.Usefulness >= 0 {
 		//зависимость шага надежности от стадии развития
 		atmtzm.Count -= EvolushnStageAtmzCount(false)
@@ -162,21 +163,23 @@ func passivationAutomatizm(atmtzm *Automatizm, negativeValue int) {
 		// Только очень сильный негатив или очень слабый автоматизм могут блокировать сразу. Или во второй стадии
 		if negativeValue < -5 || (atmtzm.Usefulness == 0 && atmtzm.Count == 0) || (EvolushnStage == 2 && atmtzm.Count < 0) {
 			atmtzm.Count = 1 // счетчик уверенности уже негативного автоматизма
-			atmtzm.Usefulness = -1
-		} else { // не очень сильный эффект
-			// консервативное ухудшение рейтинга автоматизма, чтобы не сразу блокировался
-			if atmtzm.Usefulness > 0 { // не понижать меньше, чем до 0
-				atmtzm.Usefulness -= 1 //lastCommonDiffValue
-				atmtzm.Count--
-			}
-			if atmtzm.Count < 0 {
-				atmtzm.Count = 0
-			}
+			atmtzm.Usefulness = negativeValue
+			return
 		}
-	} else { // уже негативный автоматизм
-		atmtzm.Usefulness--
-		atmtzm.Count++ // счетчик уверенности уже негативного автоматизма
+
+		// консервативное ухудшение рейтинга автоматизма, чтобы не сразу блокировался, когда эффект несильный
+		if atmtzm.Usefulness > 0 { // не понижать меньше, чем до 0
+			atmtzm.Usefulness -= 1
+			atmtzm.Count--
+		}
+		if atmtzm.Count < 0 {
+			atmtzm.Count = 0
+		}
+		return
 	}
+	// уже негативный автоматизм
+	atmtzm.Usefulness--
+	atmtzm.Count++ // счетчик уверенности уже негативного автоматизма
 }
 
 //////////////////////////////////////////////////////////////////////////

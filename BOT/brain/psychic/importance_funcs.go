@@ -20,10 +20,7 @@ import "BOT/lib"
 func getExtremObjFromID(actID int) *extremImportance {
 
 	obj, _ := getObjectsImportanceValue(actID, detectedActiveLastProblemNodID)
-	if obj != nil {
-		return obj
-	}
-	return nil
+	return obj
 }
 
 /////////////////////////////////////////////////

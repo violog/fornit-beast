@@ -435,7 +435,7 @@ func GetActualReflexAction() (bool, []int, []int) {
 	    condArr,geneticArr,OldArr:=GetActualReflex()
 	*/
 	condArr, geneticArr, OldArr := GetActualReflex()
-	if condArr != nil && len(condArr) > 0 {
+	if len(condArr) > 0 {
 		for i := 0; i < len(condArr); i++ {
 			//act := ConditionReflexes[condArr[i]]
 			act, ok := ReadeConditionReflexes(condArr[i])
@@ -448,7 +448,7 @@ func GetActualReflexAction() (bool, []int, []int) {
 		}
 		return veryActual, targetArrID, actArtr
 	}
-	if geneticArr != nil && len(geneticArr) > 0 {
+	if len(geneticArr) > 0 {
 		for i := 0; i < len(geneticArr); i++ {
 			act := GeneticReflexes[geneticArr[i]]
 			for j := 0; j < len(act.ActionIDarr); j++ {
@@ -457,7 +457,7 @@ func GetActualReflexAction() (bool, []int, []int) {
 		}
 		return veryActual, targetArrID, actArtr
 	}
-	if OldArr != nil && len(OldArr) > 0 {
+	if len(OldArr) > 0 {
 		for i := 0; i < len(OldArr); i++ {
 			act := GeneticReflexes[OldArr[i]]
 			for j := 0; j < len(act.ActionIDarr); j++ {
