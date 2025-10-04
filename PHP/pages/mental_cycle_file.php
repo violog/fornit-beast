@@ -1,5 +1,5 @@
 <?
-/* ñ÷èòàòü ôàéë ëîãà öèêëà
+/* ÑÑ‡Ð¸Ñ‚Ð°Ñ‚ÑŒ Ñ„Ð°Ð¹Ð» Ð»Ð¾Ð³Ð° Ñ†Ð¸ÐºÐ»Ð°
 /pages/mental_cycle_file.php?file=
 */
 
@@ -14,7 +14,7 @@ $file=$_SERVER['DOCUMENT_ROOT']."/cycle_logs/".$_GET['file'];
 
 if(!file_exists($file))
 {
-echo "Íåò ôàéëà ëîãà äëÿ öèêëà ".$_GET['file'];
+echo "ÐÐµÑ‚ Ñ„Ð°Ð¹Ð»Ð° Ð»Ð¾Ð³Ð° Ð´Ð»Ñ Ñ†Ð¸ÐºÐ»Ð° ".$_GET['file'];
 }
 else
 {

@@ -1,5 +1,5 @@
 <?
-/* ïîëó÷èòü èíôó èç words_temp_arr.txt
+/* Ð¿Ð¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ Ð¸Ð½Ñ„Ñƒ Ð¸Ð· words_temp_arr.txt
 /pages/words_temp_server.php?old_size=0
 */
 

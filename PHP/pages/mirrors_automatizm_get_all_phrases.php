@@ -1,5 +1,5 @@
 <?
-/*  âñå èñïîëüçóåìûå ôðàçû â øàáëîíàõ óñëîâíûõ ðåôëåêñîâ
+/*  Ð²ÑÐµ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÐ¼Ñ‹Ðµ Ñ„Ñ€Ð°Ð·Ñ‹ Ð² ÑˆÐ°Ð±Ð»Ð¾Ð½Ð°Ñ… ÑƒÑÐ»Ð¾Ð²Ð½Ñ‹Ñ… Ñ€ÐµÑ„Ð»ÐµÐºÑÐ¾Ð²
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/pages/mirrors_automatizm_get_all_phrases.php");
 
@@ -31,7 +31,7 @@ $n++;
 closedir($dh);
 }
 */
-// ïðîñòî ñ÷èòàòü ôàéë
+// Ð¿Ñ€Ð¾ÑÑ‚Ð¾ ÑÑ‡Ð¸Ñ‚Ð°Ñ‚ÑŒ Ñ„Ð°Ð¹Ð»
 $tstr=read_t_file($_SERVER["DOCUMENT_ROOT"]."/lib/mirror_basic_phrases_common.txt");
 $str=explode("\r\n",$tstr);
 foreach($str as $s)

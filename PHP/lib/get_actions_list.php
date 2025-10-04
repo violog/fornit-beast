@@ -1,5 +1,5 @@
 <?
-/*  Âûäàòü êîíòðîë äëÿ âûáîðà äåéñòâèé èç ñïèñêà ÄËß ÐÅÔËÅÊÑÎÂ
+/*  Ð’Ñ‹Ð´Ð°Ñ‚ÑŒ ÐºÐ¾Ð½Ñ‚Ñ€Ð¾Ð» Ð´Ð»Ñ Ð²Ñ‹Ð±Ð¾Ñ€Ð° Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ð¹ Ð¸Ð· ÑÐ¿Ð¸ÑÐºÐ° Ð”Ð›Ð¯ Ð Ð•Ð¤Ð›Ð•ÐšÐ¡ÐžÐ’
 /lib/get_actions_list.php?selected=1,3
 */
 header("Expires: Tue, 1 Jul 2003 05:00:00 GMT");
@@ -13,7 +13,7 @@ $selected=$_GET['selected'];
 include_once($_SERVER['DOCUMENT_ROOT']."/common/common.php");
 
 
-// 4-é óðîâåíü - ID Äåéñòâèé ðåôëåêñà: 
+// 4-Ð¹ ÑƒÑ€Ð¾Ð²ÐµÐ½ÑŒ - ID Ð”ÐµÐ¹ÑÑ‚Ð²Ð¸Ð¹ Ñ€ÐµÑ„Ð»ÐµÐºÑÐ°: 
 $vArr=array();
 $idArr=explode(",",$selected);    //  var_dump($idArr);exit();
 foreach($idArr as $s)

@@ -1,7 +1,7 @@
 <?
 // http://go/diff.php
 
-// мое.
+// РјРѕРµ.
 $a=array(array(7),
 array(2),
 array(11),
@@ -44,7 +44,7 @@ for($n=0;$n<count($a);$n++)
 sort($a[$n], SORT_NUMERIC);reset($a[$n]);
 }
 
-// Паларм
+// РџР°Р»Р°СЂРј
 $b=array(array(2,3),
 array(1,2),
 array(6,11),
@@ -105,7 +105,7 @@ $str.=$s.", ";
 	}
 
 }
-echo "В новой нет:<br>$absentInB <hr>";
+echo "Р’ РЅРѕРІРѕР№ РЅРµС‚:<br>$absentInB <hr>";
 
 $absentInA="";
 foreach($b as $p)
@@ -122,6 +122,6 @@ $str.=$s.", ";
 	}
 
 }
-exit("В старой нет:<br>$absentInA");
+exit("Р’ СЃС‚Р°СЂРѕР№ РЅРµС‚:<br>$absentInA");
 
 ?>

@@ -10,7 +10,7 @@ header("Pragma: no-cache");
 ?>
 <html>
 <head>
-<title>Пример использования</title>
+<title>РџСЂРёРјРµСЂ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ</title>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
 </head>
 <body bgcolor="#FFFFFF" style="margin: 0px 0px 0px 0px;">

@@ -1,6 +1,6 @@
 /*
-ИСПОЛЬЗОВАНИЕ:
-<script Language="JavaScript" src="/sys/url_encode.js"></script> - для колирования
+РРЎРџРћР›Р¬Р—РћР’РђРќРР•:
+<script Language="JavaScript" src="/sys/url_encode.js"></script> - РґР»СЏ РєРѕР»РёСЂРѕРІР°РЅРёСЏ
 <script Language="JavaScript" src="/ajax/ajax_form_post.js"></script>
 var AJAX = new ajax_form_post_support('form_id','/chat_priv/ajax_submit.php',sent_request_mess);
 AJAX.send_form_reqest();
@@ -9,7 +9,7 @@ function sent_request_mess(resOut)
 alert(resOut);
 }
 
-на сервере нужно будет раскодировать $_POST[] для каждого имени поля:
+РЅР° СЃРµСЂРІРµСЂРµ РЅСѓР¶РЅРѕ Р±СѓРґРµС‚ СЂР°СЃРєРѕРґРёСЂРѕРІР°С‚СЊ $_POST[] РґР»СЏ РєР°Р¶РґРѕРіРѕ РёРјРµРЅРё РїРѕР»СЏ:
 foreach($_POST as $k => $v)
 {
 $_POST[$k]=url_my_decode($v); 
@@ -19,7 +19,7 @@ extract($_POST, EXTR_SKIP);
 function url_my_decode($var_name)
 {
 $var_name=urldecode($_POST[$var_name]);  
-$var_name=str_replace("|#1#|","+",$var_name);// передача плюса
+$var_name=str_replace("|#1#|","+",$var_name);// РїРµСЂРµРґР°С‡Р° РїР»СЋСЃР°
 return $var_name;
 }
 
@@ -28,10 +28,10 @@ function ajax_form_post_support(form_id,script_url,own_function)
 {
 var form0 = document.getElementById(form_id);//new FormData();
 
-// Создаем простую копию формы чтобы не портить исходную форму перекодировкой
+// РЎРѕР·РґР°РµРј РїСЂРѕСЃС‚СѓСЋ РєРѕРїРёСЋ С„РѕСЂРјС‹ С‡С‚РѕР±С‹ РЅРµ РїРѕСЂС‚РёС‚СЊ РёСЃС…РѕРґРЅСѓСЋ С„РѕСЂРјСѓ РїРµСЂРµРєРѕРґРёСЂРѕРІРєРѕР№
 var simpleCopy = form0.cloneNode(true); //alert(simpleCopy);
 
-// кодируем все поля формы типа urlencode
+// РєРѕРґРёСЂСѓРµРј РІСЃРµ РїРѕР»СЏ С„РѕСЂРјС‹ С‚РёРїР° urlencode
 var elements = simpleCopy.elements;
 for (var i = 0, element; element = elements[i++];) {
 //element.value=url_encode(element.value);
@@ -79,20 +79,20 @@ return false;
 
 req.onreadystatechange = function(e) 
 {
-//timer_id = window.setTimeout("req.abort();", 5000);// убирается с объектом класса
+//timer_id = window.setTimeout("req.abort();", 5000);// СѓР±РёСЂР°РµС‚СЃСЏ СЃ РѕР±СЉРµРєС‚РѕРј РєР»Р°СЃСЃР°
     
     if(req.readyState == 4) 
 	{
 //clearTimeout(timer_id);
         var status = req.status; 
-        // req.statusText; - описание ощибки         
+        // req.statusText; - РѕРїРёСЃР°РЅРёРµ РѕС‰РёР±РєРё         
         // only if "OK"
 if (req.status == 200) 
 {
 //alert(req.responseText);
 if(typeof(own_function)!='function')
 	{
-//alert("Не найдена функция для приема сообщений (второй параметр ajax_support())");
+//alert("РќРµ РЅР°Р№РґРµРЅР° С„СѓРЅРєС†РёСЏ РґР»СЏ РїСЂРёРµРјР° СЃРѕРѕР±С‰РµРЅРёР№ (РІС‚РѕСЂРѕР№ РїР°СЂР°РјРµС‚СЂ ajax_support())");
 return;
 	}
 own_function(req.responseText);
@@ -100,7 +100,7 @@ own_function(req.responseText);
 }
 else
 {			
-//own_function("<error_ajax>");      //alert("Не удалось получить данные:\n" + req.statusText);
+//own_function("<error_ajax>");      //alert("РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ:\n" + req.statusText);
 }
 } 
 }
@@ -113,7 +113,7 @@ var boundaryLast = '--' + boundary + '--\r\n'
 
 var body = ['\r\n'];
 for (var key in data) {
-  // добавление поля
+  // РґРѕР±Р°РІР»РµРЅРёРµ РїРѕР»СЏ
   body.push('Content-Disposition: form-data; name="' + key + '"\r\n\r\n' + data[key] + '\r\n');
 }
 

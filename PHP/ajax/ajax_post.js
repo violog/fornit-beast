@@ -7,7 +7,7 @@ function sent_request_mess(resOut)
 {
 alert(resOut);
 }
-// если параметров несколько, то они разделяются &
+// РµСЃР»Рё РїР°СЂР°РјРµС‚СЂРѕРІ РЅРµСЃРєРѕР»СЊРєРѕ, С‚Рѕ РѕРЅРё СЂР°Р·РґРµР»СЏСЋС‚СЃСЏ &
 // param="isEditing="+document.forms["form"].isEditing.value+"&receiver_name="+receiver_name+"&comment="+text;;
 */
 function ajax_post_support(script_url,param,own_function,urlencoded)
@@ -47,20 +47,20 @@ return false;
 
 req.onreadystatechange = function(e) 
 {
-//timer_id = window.setTimeout("req.abort();", 5000);// убирается с объектом класса
+//timer_id = window.setTimeout("req.abort();", 5000);// СѓР±РёСЂР°РµС‚СЃСЏ СЃ РѕР±СЉРµРєС‚РѕРј РєР»Р°СЃСЃР°
     
     if(req.readyState == 4) 
 	{
 //clearTimeout(timer_id);
         status = req.status; 
-        // req.statusText; - описание ощибки         
+        // req.statusText; - РѕРїРёСЃР°РЅРёРµ РѕС‰РёР±РєРё         
         // only if "OK"
 if (req.status == 200) 
 {
 //alert(req.responseText);
 if(typeof(own_function)!='function')
 	{
-//alert("Не найдена функция для приема сообщений (второй параметр ajax_support())");
+//alert("РќРµ РЅР°Р№РґРµРЅР° С„СѓРЅРєС†РёСЏ РґР»СЏ РїСЂРёРµРјР° СЃРѕРѕР±С‰РµРЅРёР№ (РІС‚РѕСЂРѕР№ РїР°СЂР°РјРµС‚СЂ ajax_support())");
 return;
 	}
 own_function(req.responseText);
@@ -68,14 +68,14 @@ own_function(req.responseText);
 }
 else
 {			
-//own_function("<error_ajax>");      //alert("Не удалось получить данные:\n" + req.statusText);
+//own_function("<error_ajax>");      //alert("РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ:\n" + req.statusText);
 }
 } 
 }
 //alert(url);		
 req.open("POST", url, true);
 
-if(urlencoded)//- портит когда передаешь объект file
+if(urlencoded)//- РїРѕСЂС‚РёС‚ РєРѕРіРґР° РїРµСЂРµРґР°РµС€СЊ РѕР±СЉРµРєС‚ file
 req.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
 
 //req.setRequestHeader("Content-length", param.length);

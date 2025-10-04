@@ -1,5 +1,5 @@
 <?
-/* ïîëó÷èòü èíôó èç /memory_psy/self_perception_count.txt
+/* Ð¿Ð¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ Ð¸Ð½Ñ„Ñƒ Ð¸Ð· /memory_psy/self_perception_count.txt
 /pages/self_perception_checher.php
 */
 

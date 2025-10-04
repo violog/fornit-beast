@@ -1,15 +1,15 @@
-// использование: <script Language="JavaScript" src="/ajax/url_encode.js"></script>
+// РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ: <script Language="JavaScript" src="/ajax/url_encode.js"></script>
 // str = url_encode(str);
-// псле url_encode на сервере: $worker=urldecode($_GET['worker']);  
-//$comment=str_replace("|#1#|","+",$comment);// передача плюса
+// РїСЃР»Рµ url_encode РЅР° СЃРµСЂРІРµСЂРµ: $worker=urldecode($_GET['worker']);  
+//$comment=str_replace("|#1#|","+",$comment);// РїРµСЂРµРґР°С‡Р° РїР»СЋСЃР°
 
 
 var global_trans_arr = [];
 for (var i = 0x410; i <= 0x44F; i++)
-  global_trans_arr[i] = i - 0x350; // А-Яа-я
-global_trans_arr[0x401] = 0xA8;    // Ё
-global_trans_arr[0x451] = 0xB8;    // ё
-//global_trans_arr[0x452] = 0xB9; // №
+  global_trans_arr[i] = i - 0x350; // Рђ-РЇР°-СЏ
+global_trans_arr[0x401] = 0xA8;    // РЃ
+global_trans_arr[0x451] = 0xB8;    // С‘
+//global_trans_arr[0x452] = 0xB9; // в„–
 
 function url_encode(str)
 { 
@@ -33,10 +33,10 @@ return summ;
 //////////////////////////////////
 function setescape(str)
 {
-str=str.replace(/№/g, '\%B9');
+str=str.replace(/в„–/g, '\%B9');
 
   var ret = [];
-  // Составляем массив кодов символов, попутно переводим кириллицу
+  // РЎРѕСЃС‚Р°РІР»СЏРµРј РјР°СЃСЃРёРІ РєРѕРґРѕРІ СЃРёРјРІРѕР»РѕРІ, РїРѕРїСѓС‚РЅРѕ РїРµСЂРµРІРѕРґРёРј РєРёСЂРёР»Р»РёС†Сѓ
   for (var i = 0; i < str.length; i++)
   {
     var n = str.charCodeAt(i);  

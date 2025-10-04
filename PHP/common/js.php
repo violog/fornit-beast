@@ -1,8 +1,8 @@
 <?
-/* ïîëåçíûå ôóíêöèè js
+/* Ð¿Ð¾Ð»ÐµÐ·Ð½Ñ‹Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ js
 include_once($_SERVER['DOCUMENT_ROOT']."/common/js.php");
 
-Çàòåìíèòü/îñâåòëèòü hex-öâåò:
+Ð—Ð°Ñ‚ÐµÐ¼Ð½Ð¸Ñ‚ÑŒ/Ð¾ÑÐ²ÐµÑ‚Ð»Ð¸Ñ‚ÑŒ hex-Ñ†Ð²ÐµÑ‚:
 // Lighten
 var NewColor = LightenDarkenColor("#F06D06", 20); 
 // Darken

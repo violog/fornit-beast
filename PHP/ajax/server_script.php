@@ -2,7 +2,7 @@
 include_once($_SERVER['DOCUMENT_ROOT']."/get_global_vars.php");
 
 /*
-Обработчик запросов ajax для sample.php
+РћР±СЂР°Р±РѕС‚С‡РёРє Р·Р°РїСЂРѕСЃРѕРІ ajax РґР»СЏ sample.php
 
 
 */
@@ -16,10 +16,10 @@ header("Content-type: text/plain; charset=windows-1251");
 
 
 if(empty($reqvest))
-echo "Пустой запрос, м.б. ограничен размер для передачи POST";
+echo "РџСѓСЃС‚РѕР№ Р·Р°РїСЂРѕСЃ, Рј.Р±. РѕРіСЂР°РЅРёС‡РµРЅ СЂР°Р·РјРµСЂ РґР»СЏ РїРµСЂРµРґР°С‡Рё POST";
 else
 {
-$messOut="Нормально обработан запрос размером ".strlen($reqvest)." байт";
+$messOut="РќРѕСЂРјР°Р»СЊРЅРѕ РѕР±СЂР°Р±РѕС‚Р°РЅ Р·Р°РїСЂРѕСЃ СЂР°Р·РјРµСЂРѕРј ".strlen($reqvest)." Р±Р°Р№С‚";
 echo $messOut;
 }
 

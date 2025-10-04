@@ -1,5 +1,5 @@
 <?
-/*  Примеры использования функций папки common
+/*  РџСЂРёРјРµСЂС‹ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ С„СѓРЅРєС†РёР№ РїР°РїРєРё common
 http://go/common/0_samples.php
 */
 header("Expires: Tue, 1 Jul 2003 05:00:00 GMT");
@@ -13,7 +13,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/check_prompt.php");
 ?><!DOCTYPE html>
 <HTML>
 <HEAD>
-<TITLE>Примеры</TITLE>
+<TITLE>РџСЂРёРјРµСЂС‹</TITLE>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta http-equiv="pragma" content="no-cache">
@@ -21,58 +21,58 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/check_prompt.php");
 <BODY>
 <?include_once($_SERVER['DOCUMENT_ROOT']."/common/common.php");?>
 
-<h2>Примеры алерта</h2>
+<h2>РџСЂРёРјРµСЂС‹ Р°Р»РµСЂС‚Р°</h2>
 
 <script>
 function get_alrtt_1()
 {
-show_dlg_alert("Самозакрывающийся алерт",1500);
+show_dlg_alert("РЎР°РјРѕР·Р°РєСЂС‹РІР°СЋС‰РёР№СЃСЏ Р°Р»РµСЂС‚",1500);
 }
 function get_alrtt_2()
 {
-show_dlg_alert("Закройте алерт когда прочтете.",0);
+show_dlg_alert("Р—Р°РєСЂРѕР№С‚Рµ Р°Р»РµСЂС‚ РєРѕРіРґР° РїСЂРѕС‡С‚РµС‚Рµ.",0);
 }
 function get_alrtt_3()
 { 
-show_dlg_alert("Только крестик в алерте.",2);
+show_dlg_alert("РўРѕР»СЊРєРѕ РєСЂРµСЃС‚РёРє РІ Р°Р»РµСЂС‚Рµ.",2);
 }
 function get_alrtt_4()
 { 
-show_dlg_alert("И крестик и ОК в алерте.",3);
+show_dlg_alert("Р РєСЂРµСЃС‚РёРє Рё РћРљ РІ Р°Р»РµСЂС‚Рµ.",3);
 }
 </script>
-<input type='button' value='Самозакрывающийся алерт' onClick='get_alrtt_1()'>
-<input type='button' value='Обычный алерт с ОК без крестика' onClick='get_alrtt_2()'> 
-<input type='button' value='Только крестик в алерте' onClick='get_alrtt_3()'> 
-<input type='button' value='И крестик и ОК в алерте' onClick='get_alrtt_4()'> 
+<input type='button' value='РЎР°РјРѕР·Р°РєСЂС‹РІР°СЋС‰РёР№СЃСЏ Р°Р»РµСЂС‚' onClick='get_alrtt_1()'>
+<input type='button' value='РћР±С‹С‡РЅС‹Р№ Р°Р»РµСЂС‚ СЃ РћРљ Р±РµР· РєСЂРµСЃС‚РёРєР°' onClick='get_alrtt_2()'> 
+<input type='button' value='РўРѕР»СЊРєРѕ РєСЂРµСЃС‚РёРє РІ Р°Р»РµСЂС‚Рµ' onClick='get_alrtt_3()'> 
+<input type='button' value='Р РєСЂРµСЃС‚РёРє Рё РћРљ РІ Р°Р»РµСЂС‚Рµ' onClick='get_alrtt_4()'> 
 
-<h2>Примеры конфирма</h2>
+<h2>РџСЂРёРјРµСЂС‹ РєРѕРЅС„РёСЂРјР°</h2>
 
 <script>
 function get_confirm_1()
 {
-show_dlg_confirm("Уверены?",1,-1,todo_continue);
+show_dlg_confirm("РЈРІРµСЂРµРЅС‹?",1,-1,todo_continue);
 }
 function todo_continue()
 {
-alert("Тогда удаляем!");
+alert("РўРѕРіРґР° СѓРґР°Р»СЏРµРј!");
 }
 
 
 function get_confirm_2()
 {
-show_dlg_confirm("Сделать это?","Конечно","Ни в коем случае!",todo_continue2);
+show_dlg_confirm("РЎРґРµР»Р°С‚СЊ СЌС‚Рѕ?","РљРѕРЅРµС‡РЅРѕ","РќРё РІ РєРѕРµРј СЃР»СѓС‡Р°Рµ!",todo_continue2);
 }
 function todo_continue2()
 {
-alert("Делаем Это...");
+alert("Р”РµР»Р°РµРј Р­С‚Рѕ...");
 }
 </script>
-<input type='button' value='Одна кнопка' onClick='get_confirm_1()'>
-<input type='button' value='Две кнопки' onClick='get_confirm_2()'> 
+<input type='button' value='РћРґРЅР° РєРЅРѕРїРєР°' onClick='get_confirm_1()'>
+<input type='button' value='Р”РІРµ РєРЅРѕРїРєРё' onClick='get_confirm_2()'> 
 
 
-<h2>Крутящаяся гифка ожидания</h2>
+<h2>РљСЂСѓС‚СЏС‰Р°СЏСЃСЏ РіРёС„РєР° РѕР¶РёРґР°РЅРёСЏ</h2>
 <script>
 function get_waite_1()
 {
@@ -87,24 +87,24 @@ function get_waite_3()
 wait_end();
 }
 </script>
-<input type='button' value='Начать прцесс с индикацией через 500ms' onClick='get_waite_1()'>
-<input type='button' value='Начать прцесс  с индикацией сразу' onClick='get_waite_2()'>
-<input type='button' value='Кончить прцесс' onClick='get_waite_3()'>
+<input type='button' value='РќР°С‡Р°С‚СЊ РїСЂС†РµСЃСЃ СЃ РёРЅРґРёРєР°С†РёРµР№ С‡РµСЂРµР· 500ms' onClick='get_waite_1()'>
+<input type='button' value='РќР°С‡Р°С‚СЊ РїСЂС†РµСЃСЃ  СЃ РёРЅРґРёРєР°С†РёРµР№ СЃСЂР°Р·Сѓ' onClick='get_waite_2()'>
+<input type='button' value='РљРѕРЅС‡РёС‚СЊ РїСЂС†РµСЃСЃ' onClick='get_waite_3()'>
 
 
-<h2>Спойлер со вложенными спойлерами</h2>
+<h2>РЎРїРѕР№Р»РµСЂ СЃРѕ РІР»РѕР¶РµРЅРЅС‹РјРё СЃРїРѕР№Р»РµСЂР°РјРё</h2>
 
-<span class="spoiler_header" onclick="open_close('block_id',1)" style="cursor:pointer;font-size:16pt"><?=set_sopiler_icon('block_id')?><b>Главный спойлер</b></span>
+<span class="spoiler_header" onclick="open_close('block_id',1)" style="cursor:pointer;font-size:16pt"><?=set_sopiler_icon('block_id')?><b>Р“Р»Р°РІРЅС‹Р№ СЃРїРѕР№Р»РµСЂ</b></span>
 <div id="block_id" class="spoiler_block spoiler" style="height:0px;">
 11111111111111<br>
 222222222222222<br>
 
-<span class="spoiler_header" onclick="open_close('block2_id',1)" style="cursor:pointer;font-size:14pt"><?=set_sopiler_icon('block2_id')?><b>Внутренний спойлер 1</b></span>
+<span class="spoiler_header" onclick="open_close('block2_id',1)" style="cursor:pointer;font-size:14pt"><?=set_sopiler_icon('block2_id')?><b>Р’РЅСѓС‚СЂРµРЅРЅРёР№ СЃРїРѕР№Р»РµСЂ 1</b></span>
 <div id="block2_id" class="spoiler_block spoiler" style="height:0px;">
 aaaaaaaaaaa<br>
 ssssssssss<br>
 
-<span class="spoiler_header" onclick="open_close('block3_id')" style="cursor:pointer;"><b>Внутренний спойлер 2</b></span>
+<span class="spoiler_header" onclick="open_close('block3_id')" style="cursor:pointer;"><b>Р’РЅСѓС‚СЂРµРЅРЅРёР№ СЃРїРѕР№Р»РµСЂ 2</b></span>
 <div id="block3_id" class="spoiler_block spoiler" style="height:0px;">
 EEEEEEEEE<br>
 FFFFFFFFFFFF<br>
@@ -122,17 +122,17 @@ xxxxxxxxxxxx<br>
 
 
 <br>
-открывать-закрывать внутренние дивы: <span onclick="open_close('block2_id')" style="cursor:pointer;font-size:12pt"><b>open_close2</b></span> <span onclick="open_close('block3_id')" style="cursor:pointer;font-size:12pt"><b>open_close3</b></span><br>
+РѕС‚РєСЂС‹РІР°С‚СЊ-Р·Р°РєСЂС‹РІР°С‚СЊ РІРЅСѓС‚СЂРµРЅРЅРёРµ РґРёРІС‹: <span onclick="open_close('block2_id')" style="cursor:pointer;font-size:12pt"><b>open_close2</b></span> <span onclick="open_close('block3_id')" style="cursor:pointer;font-size:12pt"><b>open_close3</b></span><br>
 
 
 
 
-<h2>Поддержка свойств полей ввода</h2>
+<h2>РџРѕРґРґРµСЂР¶РєР° СЃРІРѕР№СЃС‚РІ РїРѕР»РµР№ РІРІРѕРґР°</h2>
 <?include_once($_SERVER['DOCUMENT_ROOT']."/common/input.php");
 
-echo "<input class='input_folder' type='text' style='color:#808F9E;border:solid 1px #808F9E;width:260px;'  ".set_input_mask("Введите число, не более 10 символов","")." ".only_numbers_input(10).">";
+echo "<input class='input_folder' type='text' style='color:#808F9E;border:solid 1px #808F9E;width:260px;'  ".set_input_mask("Р’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ, РЅРµ Р±РѕР»РµРµ 10 СЃРёРјРІРѕР»РѕРІ","")." ".only_numbers_input(10).">";
 
-echo " <input class='input_folder' type='text' style='color:#808F9E;border:solid 1px #808F9E;width:260px;'  ".set_input_mask("Введите строку латинских символов","")." ".only_latin_input().">";
+echo " <input class='input_folder' type='text' style='color:#808F9E;border:solid 1px #808F9E;width:260px;'  ".set_input_mask("Р’РІРµРґРёС‚Рµ СЃС‚СЂРѕРєСѓ Р»Р°С‚РёРЅСЃРєРёС… СЃРёРјРІРѕР»РѕРІ","")." ".only_latin_input().">";
 
 ?>
 

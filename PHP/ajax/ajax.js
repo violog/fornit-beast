@@ -8,8 +8,8 @@ alert(resOut);
 }
 
 function ajax_support(script_url,own_function):
-script_url - скрипт обработчика запроса, например: '/sys/link_counter.php?ref='+ref+'&txt='+descr
-own_function - своя функция для приема ответа на запрос (не строка, а объект)
+script_url - СЃРєСЂРёРїС‚ РѕР±СЂР°Р±РѕС‚С‡РёРєР° Р·Р°РїСЂРѕСЃР°, РЅР°РїСЂРёРјРµСЂ: '/sys/link_counter.php?ref='+ref+'&txt='+descr
+own_function - СЃРІРѕСЏ С„СѓРЅРєС†РёСЏ РґР»СЏ РїСЂРёРµРјР° РѕС‚РІРµС‚Р° РЅР° Р·Р°РїСЂРѕСЃ (РЅРµ СЃС‚СЂРѕРєР°, Р° РѕР±СЉРµРєС‚)
 */
 function ajax_support(script_url,own_function)
 {
@@ -48,20 +48,20 @@ return false;
 
 req.onreadystatechange = function(e) 
 {
-//timer_id = window.setTimeout("req.abort();", 5000);// убирается с объектом класса
+//timer_id = window.setTimeout("req.abort();", 5000);// СѓР±РёСЂР°РµС‚СЃСЏ СЃ РѕР±СЉРµРєС‚РѕРј РєР»Р°СЃСЃР°
     
     if(req.readyState == 4) 
 	{
 //clearTimeout(timer_id);
         status = req.status; 
-        // req.statusText; - описание ощибки         
+        // req.statusText; - РѕРїРёСЃР°РЅРёРµ РѕС‰РёР±РєРё         
         // only if "OK"
 if (req.status == 200) 
 {
 //alert(req.responseText);
 if(typeof(own_function)!='function')
 	{
-//alert("Не найдена функция для приема сообщений (второй параметр ajax_support())");
+//alert("РќРµ РЅР°Р№РґРµРЅР° С„СѓРЅРєС†РёСЏ РґР»СЏ РїСЂРёРµРјР° СЃРѕРѕР±С‰РµРЅРёР№ (РІС‚РѕСЂРѕР№ РїР°СЂР°РјРµС‚СЂ ajax_support())");
 return;
 	}
 own_function(req.responseText);
@@ -69,7 +69,7 @@ own_function(req.responseText);
 }
 else
 {			
-// own_function("<error_ajax>");           //alert("Не удалось получить данные:\n" + req.statusText);
+// own_function("<error_ajax>");           //alert("РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ:\n" + req.statusText);
 }
 } 
 }
