@@ -18,20 +18,20 @@ mb_internal_encoding("UTF-8");
 
 function prepare_str($text)
 {
-// выделить слова
-$text=mb_strtolower($text);  // exit("! $text");
+	// выделить слова
+	$text = mb_strtolower($text);  // exit("! $text");
 
-// символы, которые нужно выделять
-$text=preg_replace('/([\(\)\+\=\-\?\!\[\]\{\}\<\>\.\,\/: ])/u','|\\1|',$text);
+	// символы, которые нужно выделять
+	$text = preg_replace('/([\(\)\+\=\-\?\!\[\]\{\}\<\>\.\,\/: ])/u', '|\\1|', $text);
 
-$text=preg_replace('/\r\n/','|#|',$text);
-$text=preg_replace('/\n/','|#|',$text);
+	$text = preg_replace('/\r\n/', '|#|', $text);
+	$text = preg_replace('/\n/', '|#|', $text);
 
-$text=str_replace("||","|",$text);
+	$text = str_replace("||", "|", $text);
 
-//exit("!!!! $text");
+	//exit("!!!! $text");
 
-return $text;
+	return $text;
 }
 ///////////////////////////////
 ?>

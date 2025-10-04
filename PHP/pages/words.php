@@ -3,60 +3,60 @@
 http://go/pages/words.php  
 
 */
-$page_id=2;
-$title="Слова и фразы";
-include_once($_SERVER['DOCUMENT_ROOT']."/common/header.php");
+$page_id = 2;
+$title = "Слова и фразы";
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 
 
-if(isset($_POST['gogogo']))
-{
-echo "<script>wait_show();</script>";
-$text=$_POST['txt_list']; 
-/* НЕ вижу смысла разделять слова на корень и окончание.
-include_once($_SERVER["DOCUMENT_ROOT"]."/lib/indexer_stemmer_UTF8.php");
-$stemmer = new Lingua_Stem_Ru();
-include_once($_SERVER["DOCUMENT_ROOT"]."/lib/separate_str.php");
-$out=prepare_str($text,$stemmer);
-*/
-include_once($_SERVER["DOCUMENT_ROOT"]."/lib/separate_words_str.php"); 
-$out=prepare_str($text);
+if (isset($_POST['gogogo'])) {
+	echo "<script>wait_show();</script>";
+	$text = $_POST['txt_list'];
+	/* НЕ вижу смысла разделять слова на корень и окончание.
+	include_once($_SERVER["DOCUMENT_ROOT"]."/lib/indexer_stemmer_UTF8.php");
+	$stemmer = new Lingua_Stem_Ru();
+	include_once($_SERVER["DOCUMENT_ROOT"]."/lib/separate_str.php");
+	$out=prepare_str($text,$stemmer);
+	*/
+	include_once($_SERVER["DOCUMENT_ROOT"] . "/lib/separate_words_str.php");
+	$out = prepare_str($text);
 
-// залить в Beast:
+	// залить в Beast:
 
-// иногда остаются переносы строки, что вызывает ошибку js поэтому:
-$out=str_replace("\n","",$out);
+	// иногда остаются переносы строки, что вызывает ошибку js поэтому:
+	$out = str_replace("\n", "", $out);
 
-//exit("\r\n $out");
+	//exit("\r\n $out");
 
-//$out=urlencode($out); - в golang не нашел реально подходящую замену urldecode
-$out=str_replace("%","{#1}",$out);// достаточно экранировать %
+	//$out=urlencode($out); - в golang не нашел реально подходящую замену urldecode
+	$out = str_replace("%", "{#1}", $out);// достаточно экранировать %
 //$out=str_replace('"',"{#2}",$out);
-$out=str_replace('"','',$out);// кавычки просто очищаем (пусть будет афазия :)
+	$out = str_replace('"', '', $out);// кавычки просто очищаем (пусть будет афазия :)
 
-include_once($_SERVER['DOCUMENT_ROOT']."/common/linking.php");
-echo "<form name=\"refresh\" method=\"post\" action=\"/pages/words.php\"></form>";
-?>
-<script Language="JavaScript" src="/ajax/ajax_post.js"></script>
-<script> 
-	//alert("!!!!!");
-bot_contact("text_block=<?=$out?>",text_block_answer);
-function text_block_answer(res)
-{ 
-wait_end();
-//	alert(res);
-if(res=="POST")
-{
-show_dlg_alert('Слишком длинный текст для передачи...',3000);
-setTimeout(`document.forms['refresh'].submit();`,2000);
-return;
-}
-show_dlg_alert('Залито в Beast',2000);
-setTimeout(`document.forms['refresh'].submit();`,2000);
-}
-</script>
+	include_once($_SERVER['DOCUMENT_ROOT'] . "/common/linking.php");
+	echo "<form name=\"refresh\" method=\"post\" action=\"/pages/words.php\"></form>";
+	?>
+			<script Language="JavaScript" src="/ajax/ajax_post.js"></script>
+			<script>
+				//alert("!!!!!");
+				bot_contact("text_block=<?= $out ?>", text_block_answer)
+				;
+				function text_block_answer(res)
+				{ 
+				wait_end();
+				//	alert(res);
+				if(res=="POST")
+				{
+				show_dlg_alert('Слишком длинный текст для передачи...',3000);
+				setTimeout(`document.forms['refresh'].submit();`,2000);
+				return;
+				}
+				show_dlg_alert('Залито в Beast',2000);
+				setTimeout(`document.forms['refresh'].submit();`,2000);
+				}
+				</script>
 
-<?
-exit();
+				<?
+				exit();
 }
 ///////////////////////////////////////////////
 

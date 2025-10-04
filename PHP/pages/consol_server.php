@@ -14,17 +14,17 @@ $info = urldecode($_POST['info']); //exit($info);
 
 write_file($_SERVER["DOCUMENT_ROOT"] . "/pult_consol.txt", $info);
 
- echo $info;
+echo $info;
 
 function write_file($file, $content)
 {
-  $hf = fopen($file, "ab+");
-  if ($hf) {
-    fwrite($hf, $content, strlen($content));
-    fclose($hf);
-    chmod($file, 0666);
-    return 1;
-  }
-  return 0;
+	$hf = fopen($file, "ab+");
+	if ($hf) {
+		fwrite($hf, $content, strlen($content));
+		fclose($hf);
+		chmod($file, 0666);
+		return 1;
+	}
+	return 0;
 }
 ?>

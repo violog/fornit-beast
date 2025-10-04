@@ -10,106 +10,99 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 //////////////////////////////////////////////////////////////
 
 
-if(isset($_POST['gogogo'])&&$_POST['gogogo']==1)
-{
-$out="";
-foreach($_POST['ids'] as $id => $str)
-{
-$out.=$str."|".$_POST['phrase'][$id]."\r\n";
-}
+if (isset($_POST['gogogo']) && $_POST['gogogo'] == 1) {
+	$out = "";
+	foreach ($_POST['ids'] as $id => $str) {
+		$out .= $str . "|" . $_POST['phrase'][$id] . "\r\n";
+	}
 
-//exit("$out");
-writing_file($_SERVER["DOCUMENT_ROOT"]."/lib/condition_reflexes_basic_phrases_common.txt",$out);
+	//exit("$out");
+	writing_file($_SERVER["DOCUMENT_ROOT"] . "/lib/condition_reflexes_basic_phrases_common.txt", $out);
 
-echo "<form name=\"refresh\" method=\"post\" action=\"/pages/condition_reflexes_basic_phrases_common.php\"></form>";
-echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
-exit();
+	echo "<form name=\"refresh\" method=\"post\" action=\"/pages/condition_reflexes_basic_phrases_common.php\"></form>";
+	echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
+	exit();
 }
 //////////////////////////////////////////////
 
 // Пусковые стимулы
 $progs = reading_file($_SERVER["DOCUMENT_ROOT"] . "/pages/combinations/list_triggers.txt");
-$progs=substr($progs,strpos($progs,"\r\n")+2); // exit("$progs");
+$progs = substr($progs, strpos($progs, "\r\n") + 2); // exit("$progs");
 $aArr = explode("\r\n", $progs);
-$triggerArr=array();
+$triggerArr = array();
 foreach ($aArr as $str) {
-	if(empty($str))
+	if (empty($str))
 		continue;
-$p = explode("|", $str);  
-$triggerArr[$p[0]]=$p[1];
+	$p = explode("|", $str);
+	$triggerArr[$p[0]] = $p[1];
 }
 // var_dump($triggerArr);exit();
 
 
 ///////////////////////////////////////
 // имеющиеся фразы
-$id_list = str_replace(";",",",$id_list);
-$file=$_SERVER["DOCUMENT_ROOT"]."/lib/condition_reflexes_basic_phrases_common.txt";
+$id_list = str_replace(";", ",", $id_list);
+$file = $_SERVER["DOCUMENT_ROOT"] . "/lib/condition_reflexes_basic_phrases_common.txt";
 //exit("$file");
 $progs = reading_file($file);
 $strArr = explode("\r\n", $progs);
-$phraseArr=array();
-	foreach ($strArr as $str) {
-		if (empty($str))
-			continue;
-		$p = explode("|", $str);
-		if (empty($p[1]))
-			continue;
-		$phraseArr[$p[0]]=$p[1];
-	}
+$phraseArr = array();
+foreach ($strArr as $str) {
+	if (empty($str))
+		continue;
+	$p = explode("|", $str);
+	if (empty($p[1]))
+		continue;
+	$phraseArr[$p[0]] = $p[1];
+}
 //  var_dump($phraseArr);exit();
 
 
 // проверка неповторяемости слов, иначе у.рефлекс будет неопределнным
-$wArr=array();
-$badArr="";
-$repeatedArr=array();
-foreach($phraseArr as $str)
-{
-if(in_array($str,$wArr))
-{
-$badArr.=$str."; ";
-array_push($repeatedArr,$str);
+$wArr = array();
+$badArr = "";
+$repeatedArr = array();
+foreach ($phraseArr as $str) {
+	if (in_array($str, $wArr)) {
+		$badArr .= $str . "; ";
+		array_push($repeatedArr, $str);
+	}
+	array_push($wArr, $str);
 }
-array_push($wArr,$str);
-}
-if(!empty($badArr))
-{
-echo "<b><span style='color:red'>Есть повторяющиеся фразы: ".$badArr."</span></b>";
+if (!empty($badArr)) {
+	echo "<b><span style='color:red'>Есть повторяющиеся фразы: " . $badArr . "</span></b>";
 }
 ///////////////////////////////////////////////////////////////////////
 
 
-$out="<table class='main_table' cellpadding=0 cellspacing=0 border=1 width='700px'>
+$out = "<table class='main_table' cellpadding=0 cellspacing=0 border=1 width='700px'>
 		<tr>
 			<th width=360  class='table_header'>Пусковые стимулы рефлекса</th>
 			<th  class='table_header'>Фраза-синоним</th>
 		</tr>";
 
-$nid=0;
-foreach ($triggerArr as $index => $resArr)
-{
-//	var_dump($resArr);exit();
-$out.="<tr class='r_table highlighting' style='background-color:#eeeeee;' onClick='set_sel(this,`" . $index . "`)'>";
+$nid = 0;
+foreach ($triggerArr as $index => $resArr) {
+	//	var_dump($resArr);exit();
+	$out .= "<tr class='r_table highlighting' style='background-color:#eeeeee;' onClick='set_sel(this,`" . $index . "`)'>";
 
-// пусковые стимулы
-$out.="<td ><input type='hidden' name='ids[]' value='".$index."'><nobr>".$resArr."</nobr></td>";
+	// пусковые стимулы
+	$out .= "<td ><input type='hidden' name='ids[]' value='" . $index . "'><nobr>" . $resArr . "</nobr></td>";
 
-// фраза-синоним
-$phrase=get_prase_exists($index); // exit("$phrase");
-$bg="";
-if(in_array($phrase,$repeatedArr))
-{
-$bg="style='background-color:#FFFFAA;'";
+	// фраза-синоним
+	$phrase = get_prase_exists($index); // exit("$phrase");
+	$bg = "";
+	if (in_array($phrase, $repeatedArr)) {
+		$bg = "style='background-color:#FFFFAA;'";
+	}
+	$out .= "<td  class='table_cell'><input id='insert_" . $nid . "' name='phrase[]' class='table_input' type='text' value='" . $phrase . "' " . $bg . "><img src='/img/down17.png' class='select_control' onClick='show_word_list(" . $nid . ")' title='Выбор слов'></td>";
+
+	$out .= "</tr>";
+	$nid++;
 }
-$out.="<td  class='table_cell'><input id='insert_".$nid."' name='phrase[]' class='table_input' type='text' value='".$phrase."' ".$bg."><img src='/img/down17.png' class='select_control' onClick='show_word_list(".$nid.")' title='Выбор слов'></td>";
+$out .= "</table>";
 
-$out.="</tr>";
-$nid++;
-}
-$out.="</table>";
-
-$out.="<br><input type='submit' value='Сохранить' >";
+$out .= "<br><input type='submit' value='Сохранить' >";
 
 
 /////////////////////////////////////////////////////////
@@ -127,9 +120,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/alert2_dlg.php");
 ?>
 <script Language="JavaScript" src="/ajax/ajax.js"></script>
 <script>
-function set_sel(tr, id) {
+	function set_sel(tr, id) {
 		//	alert(id);
-		var nodes = document.getElementsByClassName('highlighting'); //alert(nodes.length);
+		var nodes = document.getElementsByClassName('highlighting') ; //alert(nodes.length);
 		for (var i = 0; i < nodes.length; i++) {
 			nodes[i].style.border = "solid 1px #000000";
 		}
@@ -206,59 +199,56 @@ document.forms.form_id.submit();
 ///////////////////////////////////////////
 function get_prase_exists($index)
 {
-global $phraseArr; //exit("$id");
+	global $phraseArr; //exit("$id");
 //echo "$bsID | $id_list | $actions<br>";
 
-if(isset($phraseArr[$index]))
-	return $phraseArr[$index];// вернуть фразу
+	if (isset($phraseArr[$index]))
+		return $phraseArr[$index];// вернуть фразу
 
-return "";
+	return "";
 }
 ///////////////////////////////////////////////////
 function get_actions($trArr)
 {
 	global $rActionsArr;
-$acts="";
-$aArr=explode(",",$trArr); 
-foreach($aArr as $a)
-{
-	if(empty($a))
-		continue;
-	if(!empty($acts))
-		$acts.=", ";
-$acts.=$a." ".$rActionsArr[$a]."";
-}
-return $acts;
+	$acts = "";
+	$aArr = explode(",", $trArr);
+	foreach ($aArr as $a) {
+		if (empty($a))
+			continue;
+		if (!empty($acts))
+			$acts .= ", ";
+		$acts .= $a . " " . $rActionsArr[$a] . "";
+	}
+	return $acts;
 }
 ///////////////////////////////////////////////////
 function reading_file($file)
 {
-if(!file_exists($file))
+	if (!file_exists($file))
+		return "";
+	if (filesize($file) == 0)
+		return "";
+	$hf = fopen($file, "rb");
+	if ($hf) {
+		$contents = fread($hf, filesize($file));
+		fclose($hf);
+		return $contents;
+	}//if($hf)
 	return "";
-if(filesize($file)==0)
-	return "";
-$hf=fopen($file,"rb");
-if($hf)
-{
-$contents=fread($hf,filesize($file));
-fclose($hf);
-return $contents;
-}//if($hf)
-return "";
 }
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
-function writing_file($file,$content)
+function writing_file($file, $content)
 {
-$hf=fopen($file,"wb+");
-if($hf)
-{
-fwrite($hf,$content,strlen($content));
-fclose($hf);
-chmod($file, 0666);
-return 1;
-}
-return 0;
+	$hf = fopen($file, "wb+");
+	if ($hf) {
+		fwrite($hf, $content, strlen($content));
+		fclose($hf);
+		chmod($file, 0666);
+		return 1;
+	}
+	return 0;
 }
 //////////////////////////////////
 ?>

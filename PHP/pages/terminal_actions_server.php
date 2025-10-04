@@ -24,9 +24,10 @@ foreach ($_POST['id'] as $id => $str) {
 	$target = preg_replace('/[^0-9>,]/', '', $target);
 
 	$trArr = explode(",", $target);
-	foreach ($trArr as $tr){
-		if (empty($tr)) continue;
-		if(!ExistsValInArr(array(1,2,3,4,5,6,7,8),(int)$tr)){
+	foreach ($trArr as $tr) {
+		if (empty($tr))
+			continue;
+		if (!ExistsValInArr(array(1, 2, 3, 4, 5, 6, 7, 8), (int) $tr)) {
 			exit("Ошибка в строке действий c ID=" . $id . ": Указан не существующий базовый параметр [" . $tr . "]");
 		}
 	}
@@ -35,7 +36,8 @@ foreach ($_POST['id'] as $id => $str) {
 	$as = explode(";", $val);
 	$m = 0;
 	foreach ($as as $act) {
-		if (empty($act)) continue;
+		if (empty($act))
+			continue;
 		if (strpos($act, ">") === false) {
 			exit("Ошибка в строке действий c ID=" . $id . ": неверный синтаксис. Ожидается &gt;");
 		}
@@ -52,14 +54,14 @@ foreach ($_POST['id'] as $id => $str) {
 		if (strlen($ext)) {
 			exit("Ошибка в строке действий c ID=" . $id . ": лишние символы в числе Параметра гомеостаза.");
 		}
-		if((int)$p[1]>50){
+		if ((int) $p[1] > 50) {
 			exit("Ошибка в строке действий c ID=" . $id . ": величина воздействия больше 50.");
 		}
 		// if($m==1)exit("{$p[0]} | {$p[0]}");
 		if (empty($p[0]) || empty($p[1])) {
 			exit("Ошибка в строке действий c ID=" . $id . ": неверный синтаксис.");
 		}
-		if(!ExistsValInArr(array(1,2,3,4,5,6,7,8),$p[0])){
+		if (!ExistsValInArr(array(1, 2, 3, 4, 5, 6, 7, 8), $p[0])) {
 			exit("Ошибка в строке действий c ID=" . $id . ": Указан не существующий базовый параметр [" . $p[0] . "]");
 		}
 
@@ -83,9 +85,10 @@ function write_file($file, $content)
 	return 0;
 }
 
-function ExistsValInArr($arr, $val){
-	foreach($arr as $str){
-		if($str==$val){
+function ExistsValInArr($arr, $val)
+{
+	foreach ($arr as $str) {
+		if ($str == $val) {
 			return true;
 		}
 	}

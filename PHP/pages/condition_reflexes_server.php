@@ -17,13 +17,13 @@ echo $out;
 
 function write_file($file, $content)
 {
-  $hf = fopen($file, "wb+");
-  if ($hf) {
-    fwrite($hf, $content, strlen($content));
-    fclose($hf);
-    chmod($file, 0666);
-    return 1;
-  }
-  return 0;
+	$hf = fopen($file, "wb+");
+	if ($hf) {
+		fwrite($hf, $content, strlen($content));
+		fclose($hf);
+		chmod($file, 0666);
+		return 1;
+	}
+	return 0;
 }
 ?>

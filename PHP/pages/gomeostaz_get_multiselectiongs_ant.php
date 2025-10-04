@@ -13,7 +13,7 @@ $contextID = $_GET['id'];
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/common.php");
 
-$mArr = array(1 => "1 Пищевой", 2 => "2 Поиск", 3 => "3 Игра", 4 => "4 Гон", 5 => "5 Защита", 6 => "6 Лень", 7 => "7 Ступор", 8 => "8 Страх", 9 => "9 Агрессия", 10 => "10 Злость", 11 => "11 Доброта", 12 => "12 Сон",);
+$mArr = array(1 => "1 Пищевой", 2 => "2 Поиск", 3 => "3 Игра", 4 => "4 Гон", 5 => "5 Защита", 6 => "6 Лень", 7 => "7 Ступор", 8 => "8 Страх", 9 => "9 Агрессия", 10 => "10 Злость", 11 => "11 Доброта", 12 => "12 Сон", );
 
 $out = "";
 
@@ -22,23 +22,24 @@ $progs = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/base_context_anta
 $strArr = explode("\r\n", $progs); // var_dump($strArr);exit();
 
 foreach ($strArr as $str) {
-  $par = explode("|", $str);
-  $id = $par[0];
-  if ($contextID == $id) {
-    $parsAtr = explode(",", $par[1]);
-    $aList = array();
-    foreach ($parsAtr as $p) {
-      array_push($aList, $p);
-    }
-    //var_dump($aList);exit();
-    $out .= "Антагонисты для контекста &quot;" . $mArr[$contextID] . "&quot;:<br><select id='select_antagonist' multiple='multiple' size=8 style='width:300px;padding:4px;'>";
-    foreach ($mArr as $id => $name) {
-      $out .= "<option id='" . $id . "' value='" . $id . "'";
-      if (in_array($id, $aList)) $out .= "selected";
-      $out .= ">" . $name . "</option>";
-    }
-    $out .= "</select>";
-    exit($out);
-  }
+	$par = explode("|", $str);
+	$id = $par[0];
+	if ($contextID == $id) {
+		$parsAtr = explode(",", $par[1]);
+		$aList = array();
+		foreach ($parsAtr as $p) {
+			array_push($aList, $p);
+		}
+		//var_dump($aList);exit();
+		$out .= "Антагонисты для контекста &quot;" . $mArr[$contextID] . "&quot;:<br><select id='select_antagonist' multiple='multiple' size=8 style='width:300px;padding:4px;'>";
+		foreach ($mArr as $id => $name) {
+			$out .= "<option id='" . $id . "' value='" . $id . "'";
+			if (in_array($id, $aList))
+				$out .= "selected";
+			$out .= ">" . $name . "</option>";
+		}
+		$out .= "</select>";
+		exit($out);
+	}
 }
 ?>

@@ -10,13 +10,13 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Pragma: no-cache");
 header('Content-Type: text/html; charset=UTF-8');
 
-$file=$_SERVER["DOCUMENT_ROOT"]."/tools/bot_files_save/".$_GET['file'];
+$file = $_SERVER["DOCUMENT_ROOT"] . "/tools/bot_files_save/" . $_GET['file'];
 
-$res=unlink($file);
+$res = unlink($file);
 
-if($res)
-echo "!";
+if ($res)
+	echo "!";
 else
-echo $res;
+	echo $res;
 
 ?>

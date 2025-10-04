@@ -3,41 +3,40 @@
 http://go/pages/stages.php  
 
 */
-$page_id=10;
-$title="Стадии развития Beast";
-include_once($_SERVER['DOCUMENT_ROOT']."/common/header.php");
+$page_id = 10;
+$title = "Стадии развития Beast";
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 
-include_once($_SERVER['DOCUMENT_ROOT']."/common/common.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/common.php");
 
 //////////////////////////////////////// САБМИТЫ
-if(isset($_POST['gogogo'])&&$_POST['gogogo']==1)
-{
-//var_dump($_POST);exit("<hr>!!!!!!! ".$_POST['next']);
-$next=$_POST['next'];
+if (isset($_POST['gogogo']) && $_POST['gogogo'] == 1) {
+	//var_dump($_POST);exit("<hr>!!!!!!! ".$_POST['next']);
+	$next = $_POST['next'];
 
-//exit($next);
-write_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/stages.txt",$next);
+	//exit($next);
+	write_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/stages.txt", $next);
 
-echo "<form name=\"refresh\" method=\"post\" action=\"/pages/stages.php\"></form>";
-echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
-exit();
+	echo "<form name=\"refresh\" method=\"post\" action=\"/pages/stages.php\"></form>";
+	echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
+	exit();
 }
 ///////////////////////////////////////////////
 
 
 
 // считать файл 
-$stages=read_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/stages.txt");
-$stages=trim($stages);
+$stages = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/stages.txt");
+$stages = trim($stages);
 
-$chbx="/img/chekbox0.png";
+$chbx = "/img/chekbox0.png";
 function set_img($num)
 {
-global $stages;
-$img="/img/chekbox0.png";
-if($num==$stages)
-	$img="/img/chekbox1.png";
-return $img;
+	global $stages;
+	$img = "/img/chekbox0.png";
+	if ($num == $stages)
+		$img = "/img/chekbox1.png";
+	return $img;
 }
 ///////////////////////////////////////////////////
 
@@ -70,7 +69,7 @@ cursor:pointer;
 
 <div style="position:relative;">
 <div style="position:absolute;top:-4px;right:0px;"><a href="https://scorcher.ru/beast/main_help.htm#_Toc122883048" target="_blank">О стадии № 0</a></div>
-<b>0</b> <img class="stages_img" src="<?echo set_img(0);?>" onClick="goto_stages(0)"> - Подготовка к рождению: прошивка наследственных особенностей:</div>
+<b>0</b> <img class="stages_img" src="<? echo set_img(0); ?>" onClick="goto_stages(0)"> - Подготовка к рождению: прошивка наследственных особенностей:</div>
 <li><a href="/pages/gomeostaz.php">РедакторФормирование жизненных параметров гомеостаза</a></li>
 <li><a href="/pages/words.php">Заливка Фраз для дерева слов и дерева фраз</a></li>
 <li><a href="/pages/terminal_actions.php">Редактор возможных Действий</a></li>
@@ -81,34 +80,34 @@ cursor:pointer;
 <div style="position:relative;">
 
 <div style="position:absolute;top:-4px;right:0px;"><a href="https://scorcher.ru/beast/main_help.htm#_Toc122883053" target="_blank">О стадии № 1</a></div>
-<b>1</b> <img class="stages_img" src="<?echo set_img(1);?>" onClick="goto_stages(1)"> - Рождение Beast. Формирование набора условных рефлексов. Период взаимодействия с Beast любым образом, с разными сочетаниями действий и очень простых фраз в различных состояниях его Базовых параметров (для этой стадии развития можно устанавливать параметры гомеостаза слайдерами Пульта для тестирования).</div>
+<b>1</b> <img class="stages_img" src="<? echo set_img(1); ?>" onClick="goto_stages(1)"> - Рождение Beast. Формирование набора условных рефлексов. Период взаимодействия с Beast любым образом, с разными сочетаниями действий и очень простых фраз в различных состояниях его Базовых параметров (для этой стадии развития можно устанавливать параметры гомеостаза слайдерами Пульта для тестирования).</div>
 Чем дольше этот период, тем более эффективные навыки получит Beast.
 
 <br><br>
 <div style="position:relative;">
 
 <div style="position:absolute;top:-4px;right:0px;"><a href="https://scorcher.ru/beast/main_help.htm#_Toc122883054" target="_blank">О стадии № 2</a></div>
-<b>2</b> <img class="stages_img" src="<?echo set_img(2);?>" onClick="goto_stages(2)"> - Формирование базовых автоматизмов через отзеркаливание чужих действий и случайные попытки связать их между собой. Взаимодействия с Beast любым образом, с разными сочетаниями действий и очень простых фраз, предваряя фразы действиями и бездействием, в различных состояниях его Базовых параметров (для этой стадии развития можно устанавливать параметры гомеостаза слайдерами Пульта для тестирования). Так же Beast будет экспериментировать с простыми действиями и фразами.<br></div>
+<b>2</b> <img class="stages_img" src="<? echo set_img(2); ?>" onClick="goto_stages(2)"> - Формирование базовых автоматизмов через отзеркаливание чужих действий и случайные попытки связать их между собой. Взаимодействия с Beast любым образом, с разными сочетаниями действий и очень простых фраз, предваряя фразы действиями и бездействием, в различных состояниях его Базовых параметров (для этой стадии развития можно устанавливать параметры гомеостаза слайдерами Пульта для тестирования). Так же Beast будет экспериментировать с простыми действиями и фразами.<br></div>
 Чем дольше этот период, тем более эффективные навыки получит Beast.
 
 <br><br>
 <div style="position:relative;">
 
 <div style="position:absolute;top:-4px;right:0px;"><a href="https://scorcher.ru/beast/main_help.htm#_Toc122883055" target="_blank">О стадии № 3</a></div>
-<b>3</b> <img class="stages_img" src="<?echo set_img(3);?>" onClick="goto_stages(3)"> - Формирование базовых автоматизмов через наблюдения за чужими действиями с выявлением причинно-следственных связей в наблюдаемых диалогах в виде учительских автоматизмов.</div>
+<b>3</b> <img class="stages_img" src="<? echo set_img(3); ?>" onClick="goto_stages(3)"> - Формирование базовых автоматизмов через наблюдения за чужими действиями с выявлением причинно-следственных связей в наблюдаемых диалогах в виде учительских автоматизмов.</div>
 Чем дольше этот период, тем более эффектиные навыки получит Beast. 
 <br><br>
 <div style="position:relative;">
 
 <div style="position:absolute;top:-4px;right:0px;"><a href="https://scorcher.ru/beast/main_help.htm#_Toc785941235" target="_blank">О стадии № 4</a></div>
-<b>4</b> <img class="stages_img" src="<?echo set_img(4);?>" onClick="goto_stages(4)"> - Начало работы дерева понимания или дерева ментальных автоматизмов. Накопление внутренних автоматизмов мышления и произвольности.<br>
+<b>4</b> <img class="stages_img" src="<? echo set_img(4); ?>" onClick="goto_stages(4)"> - Начало работы дерева понимания или дерева ментальных автоматизмов. Накопление внутренних автоматизмов мышления и произвольности.<br>
 Период преступной инициативы. Продолжается интенсивное и продолжительное общение, но Beast начнет подвергать сомнению то, что раньше принималось безусловно и осмысливать результаты таких действий.</div>
 Чем дольше этот период, тем более эффектиные навыки получит Beast.
 <br><br>
 <div style="position:relative;">
 
 <div style="position:absolute;top:-4px;right:0px;"><a href="https://scorcher.ru/beast/main_help.htm#_Toc297531259" target="_blank">О стадии № 5</a></div>
-<b>5</b> <img class="stages_img" src="<?echo set_img(5);?>" onClick="goto_stages(5)"> - Инициативное и творческое развитие Beast в среде общения. </div>
+<b>5</b> <img class="stages_img" src="<? echo set_img(5); ?>" onClick="goto_stages(5)"> - Инициативное и творческое развитие Beast в среде общения. </div>
 <br><br>
 
 
@@ -146,7 +145,7 @@ check_activnost();
 
 
 /////////////////////////////
-var stages='<?=$stages?>';
+var stages='<?= $stages ?>';
 var next_level=0;
 function goto_stages(next)
 {

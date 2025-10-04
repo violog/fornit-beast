@@ -12,27 +12,27 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 //include_once($_SERVER['DOCUMENT_ROOT']."/pult_js.php");
 //////////////////////////////////////////////////////////////
 
-$bsID=0;
-if(isset($_GET['bsID']))
-$bsID=$_GET['bsID'];            //  exit("> $bsID");
+$bsID = 0;
+if (isset($_GET['bsID']))
+	$bsID = $_GET['bsID'];            //  exit("> $bsID");
 
-$id_list="";
-$get_list="";
-if(isset($_GET['id_list']))
-{
-$id_list=$_GET['id_list'];
+$id_list = "";
+$get_list = "";
+if (isset($_GET['id_list'])) {
+	$id_list = $_GET['id_list'];
 
-$get_list=explode(";",$id_list); 
+	$get_list = explode(";", $id_list);
 }
 
 
 ?>
-<div style="position:absolute;top:35px;right:10px;color:red"> - только после формирования шаблонов условных рефлексов</div>
+<div style="position:absolute;top:35px;right:10px;color:red"> - только после формирования шаблонов условных рефлексов
+</div>
 
 
 <script Language="JavaScript" src="/ajax/ajax.js"></script>
 <script>
-var is_table_shoved=0;// 1 таблица показывается
+	var is_table_shoved = 0;// 1 таблица показывается
 function get_table(kind)
 {
 wait_show();
@@ -85,9 +85,18 @@ echo "<div style='position:absolute;top:270px;right:10px;font-size:18px;cursor:p
 // onChange='choode_base_cond(this)' - нет определенной зависимости...
 echo "<b>Базовое состояние:</b><br>
 <select id='base_id' onChange='refresh_context_combo(this)'> 
-<option value='1' "; if($bsID==1)echo "selected"; echo ">Плохо</option>
-<option value='2' "; if($bsID==2)echo "selected"; echo ">Норма</option>
-<option value='3' "; if($bsID==3)echo "selected"; echo ">Хорошо</option>
+<option value='1' ";
+if ($bsID == 1)
+	echo "selected";
+echo ">Плохо</option>
+<option value='2' ";
+if ($bsID == 2)
+	echo "selected";
+echo ">Норма</option>
+<option value='3' ";
+if ($bsID == 3)
+	echo "selected";
+echo ">Хорошо</option>
 </select><span title='Общее Базовое состояние формируется из отдельных состояний Базовых параметров гомеостаза и при этом никак не коррелирует с диапазонами состояний параметров гомеостаза.'> - Общее Базовое состояние</span><br>
 ";
 
@@ -102,8 +111,8 @@ echo "<b>Базовое состояние:</b><br>
 include_once($_SERVER['DOCUMENT_ROOT'] . "/lib/base_context_list.php");
 
 /* Все возможные сочетания активных контекстов выбираются из таблицы "Активности Базовых стилей" (минуса игнорируются и идет проверка на антагонистов).
-*/
-$contextsArr=array();// ID выбранных контекстов без антагонистов
+ */
+$contextsArr = array();// ID выбранных контекстов без антагонистов
 echo "<b>Выбрать сочетания контекстов:</b><br> 
 <div id='context_variations_id'></div>";
 
@@ -120,8 +129,8 @@ function get_context_variations(bc)
 { 
 	wait_begin();
 	// base_condition="+bc+"& 
-//	alert("/pages/reflexes_maker_b_contexts.php?get_list=<?=$id_list?>");
-var AJAX = new ajax_support("/pages/reflexes_maker_b_contexts.php?current_base_condition="+current_base_condition+"&get_list=<?=$id_list?>", send_context_variations);
+//	alert("/pages/reflexes_maker_b_contexts.php?get_list=<?= $id_list ?>");
+var AJAX = new ajax_support("/pages/reflexes_maker_b_contexts.php?current_base_condition="+current_base_condition+"&get_list=<?= $id_list ?>", send_context_variations);
 		AJAX.send_reqest();
 
 function send_context_variations(res) 
@@ -181,7 +190,7 @@ echo "</b>&nbsp;&nbsp;&nbsp;&nbsp;Сочетания контекстов: <b><s
 echo "</div>";
 
 
-$ton_moode_dlg="<br><div style='text-align:left;'>
+$ton_moode_dlg = "<br><div style='text-align:left;'>
 <b>Тон:</b> &nbsp; 
 <input id='radio_0' type='radio' name='rdi' value='0' checked>0 нормальный &nbsp;
 <input id='radio_1' type='radio' name='rdi' value='1'>1 вялый &nbsp;
@@ -359,20 +368,20 @@ var allr=document.getElementsByName('rdi'); //alert(allr.length);
 var ton=0;
 for(var i=0; i<allr.length; i++)
 {
-    if (allr[i].checked) 
+	if (allr[i].checked) 
 	{
 		ton=allr[i].value;
-      break; 
+	  break; 
 	}
 }
 var allr=document.getElementsByName('rdi2');
 var moode=0;
 for(var i=0; i<allr.length; i++)
 {
-    if (allr[i].checked) 
+	if (allr[i].checked) 
 	{
 		moode=allr[i].value;
-      break; 
+	  break; 
 	}
 }
 var inp=document.getElementById('insert_'+cur_ton_moode_id).value=ton+","+moode;
@@ -382,7 +391,7 @@ var cur_ton_moode_id=0;
 function show_ton_mood(id)
 {  
 cur_ton_moode_id=id;
-var cont=`<?=$ton_moode_dlg?>`;
+var cont=`<?= $ton_moode_dlg ?>`;
 is_onw_dlg_exit_proc=1; //предопределенная переменнная
 show_dlg_alert("<br><span style='font-weight:normal;'>Выберите Тон и настроение:<br>" + cont + "<br>", 0);
 // проставить выделение старого выбора

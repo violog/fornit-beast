@@ -58,7 +58,7 @@ if (filesize($_SERVER['DOCUMENT_ROOT'] . "/memory_reflex/condition_reflexes.txt"
 			$n = 0;
 			$lastID = 1;
 			$lastAdminNum = 22; // последний ID котрый должен редактировать только специсалист
-
+			
 			foreach ($strArr as $str) {
 				if (empty($str) || $str[0] == '#')
 					continue;

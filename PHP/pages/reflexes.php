@@ -2,9 +2,9 @@
 /* Редактор безусловных рефлексов
 http://go/pages/reflexes.php  
 */
-$start=0;
-if(isset($_GET['start']))
-$start=$_GET['start'];
+$start = 0;
+if (isset($_GET['start']))
+	$start = $_GET['start'];
 /*
 $diapazon=500;
 if(isset($_GET['diapazon']))
@@ -17,13 +17,13 @@ if(isset($_GET['sorting']))
 $sorting=$_GET['sorting'];
 */
 
-$selected=0;
-if(isset($_GET['selected']))
-$selected=$_GET['selected'];
+$selected = 0;
+if (isset($_GET['selected']))
+	$selected = $_GET['selected'];
 
-$contexts="";
-if(isset($_GET['contexts']))
-$contexts=$_GET['contexts'];
+$contexts = "";
+if (isset($_GET['contexts']))
+	$contexts = $_GET['contexts'];
 
 $page_id = 4;
 $title = "Редактор безусловных рефлексов";
@@ -74,36 +74,36 @@ exit();
 */
 ////////////////////////////////////////// УДАЛЕНИЕ
 if (isset($_GET['delete_id'])) {
-//$uri=substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],"delete_id=")-1);  exit("! ".$uri);
+	//$uri=substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],"delete_id=")-1);  exit("! ".$uri);
 
-	$deln = (int)$_GET['delete_id']; //exit("! $deln");
+	$deln = (int) $_GET['delete_id']; //exit("! $deln");
 	$str = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/dnk_reflexes.txt");
 	$list = explode("\r\n", $str);  //exit("! $str | ".$_GET['delete_id']);
 	$wArr = array();
-	$out = "";   
+	$out = "";
 	foreach ($list as $s) {
 		if (empty($s)) {
 			continue;
 		}
 		//$id=(int)substr($s,0,strpos($s,'|'));
-		$p=explode("|",$s);
-		$id=(int)$p[0];
+		$p = explode("|", $s);
+		$id = (int) $p[0];
 		//	exit("! $s <hr> $id");
-		if ($id == $deln) {     
+		if ($id == $deln) {
 			continue;
 		}
-// удалить рефлексы с более 2-х пусковых символами
-if(substr_count($p[3], ',')>1)
-continue;
+		// удалить рефлексы с более 2-х пусковых символами
+		if (substr_count($p[3], ',') > 1)
+			continue;
 
 		$out .= $s . "\r\n";
 	}
-	$uri=substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],"delete_id=")-1);  //exit("! ".$uri);
+	$uri = substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], "delete_id=") - 1);  //exit("! ".$uri);
 
 	write_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/dnk_reflexes.txt", $out);
 
-///pages/reflexes.php
-	echo "<form name=\"refresh\" method=\"post\" action=\"".$uri."\"></form>";
+	///pages/reflexes.php
+	echo "<form name=\"refresh\" method=\"post\" action=\"" . $uri . "\"></form>";
 	echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
 	exit();
 }
@@ -116,7 +116,7 @@ echo "<div class='main_page_div' style=''>";
 
 
 
-<span class="spoiler_header" onclick="open_close('lib_block_id',1)" style="cursor:pointer;font-size:16px"><?=set_sopiler_icon('lib_block_id')?><b>Справочные данные</b></span>
+<span class="spoiler_header" onclick="open_close('lib_block_id',1)" style="cursor:pointer;font-size:16px"><?= set_sopiler_icon('lib_block_id') ?><b>Справочные данные</b></span>
 <div id="lib_block_id" class="spoiler_block spoiler" style="position:relative;z-index:10;top:0px;left:0px;padding-left:15px;background-color:#ffffff;width:1100px;height:0px;">
 	Для ввода условий срабатывания рефлекса нужно использовать ID этих условий:
 	<h2 class="header_h2">Первый уровень - ID базовых состояний:</h2>
@@ -126,9 +126,8 @@ echo "<div class='main_page_div' style=''>";
 	<h2 class="header_h2">Второй уровень - ID актуальных Базовых Контекстов через запятую:</h2>
 <?
 include_once($_SERVER['DOCUMENT_ROOT'] . "/lib/base_context_list.php");
-foreach($baseContextArr as $id => $val)
-{
-echo "<span style='padding-right:20px;' title='".$val[1]."'>".$id." ".$val[0]."</span>";
+foreach ($baseContextArr as $id => $val) {
+	echo "<span style='padding-right:20px;' title='" . $val[1] . "'>" . $id . " " . $val[0] . "</span>";
 }
 ?>
 
@@ -136,15 +135,14 @@ echo "<span style='padding-right:20px;' title='".$val[1]."'>".$id." ".$val[0]."<
 	Антагонисты окрашены в разные цвета. <span style='color:red'>Нельзя, чтобы в условии были антагонистические ID.</span><br>
 <?
 include_once($_SERVER['DOCUMENT_ROOT'] . "/lib/actions_from_pult.php");
-foreach ($actionsFromPultArr as $k => $v)
-{
-$bg="#000000";
-if($k==1 ||$k==3 ||$k==10 ||$k==12 ||$k==15)
-	$bg="#ff3300";
-if($k==2 ||$k==4 ||$k==11 ||$k==13 ||$k==14)
-	$bg="#009D00";
-$v[1]=str_replace(" ","&nbsp;",$v[1]);
-echo "<span style='padding-left:20px;color:".$bg."' title='".$v[1]."'>".$k."&nbsp;".$v[0]."</span> ";
+foreach ($actionsFromPultArr as $k => $v) {
+	$bg = "#000000";
+	if ($k == 1 || $k == 3 || $k == 10 || $k == 12 || $k == 15)
+		$bg = "#ff3300";
+	if ($k == 2 || $k == 4 || $k == 11 || $k == 13 || $k == 14)
+		$bg = "#009D00";
+	$v[1] = str_replace(" ", "&nbsp;", $v[1]);
+	echo "<span style='padding-left:20px;color:" . $bg . "' title='" . $v[1] . "'>" . $k . "&nbsp;" . $v[0] . "</span> ";
 }
 ?>
 
@@ -204,20 +202,20 @@ border:solid 1px #81853D; border-radius: 7px;"></div>
 <?
 // сохранялись ли рефлексы?
 $rstatus = read_file($_SERVER["DOCUMENT_ROOT"] . "/pages/dnk_reflexes_seved.txt");
-$statusBG="";
-if($rstatus==1)
-$statusBG="color:red;";
+$statusBG = "";
+if ($rstatus == 1)
+	$statusBG = "color:red;";
 
-write_file($_SERVER["DOCUMENT_ROOT"]."/pages/dnk_reflexes_seved.txt","0");
+write_file($_SERVER["DOCUMENT_ROOT"] . "/pages/dnk_reflexes_seved.txt", "0");
 
-		// считать файл 
+// считать файл 
 $progs = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/dnk_reflexes.txt");
 $strArr = explode("\r\n", $progs);  //var_dump($strArr);exit();
-$reflexCount=count($strArr); //exit("$reflexCount");
+$reflexCount = count($strArr); //exit("$reflexCount");
 
 ?>
 
-<div id="reflex_mem_cliner_id" style='position:absolute;top:0px;left:470px;cursor:pointer;font-size:16px;<?=$statusBG?>
+<div id="reflex_mem_cliner_id" style='position:absolute;top:0px;left:470px;cursor:pointer;font-size:16px;<?= $statusBG ?>
 border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;' title='Очистить всю память, зависимую от рефлексов.
 Это нужно делать при любом изменении рефлексов!' onClick='cliner_reflex_memory()'><b>Очистить память</b></div>
 <div style='position:absolute;top:0px;left:630px;cursor:pointer;color:#D70000;
@@ -226,35 +224,31 @@ border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;'
 
 <div style="position:relative;margin-bottom:4px;">
 Показывать: 
-<span class="filtre_item" onClick='set_philter(1)' <?echo set_filter_bg(1)?>>Плохо</span>&nbsp;&nbsp;
-<span class="filtre_item" onClick='set_philter(2)' <?echo set_filter_bg(2)?>>Норма</span>&nbsp;&nbsp;
-<span class="filtre_item" onClick='set_philter(3)' <?echo set_filter_bg(3)?>>Хорошо</span>&nbsp;&nbsp;
-<span class="filtre_item" onClick='set_philter(5)' <?echo set_filter_bg(5)?> title="Только указанное сочтенаие ID Базовых контекстов."><input id="context_id" type="text" value="<?=$contexts?>" style="width:60px;height:10px;" title="Только введенное (через запятые) сочтенаие ID Базовых контекстов.">-ID контекстов</span>
-<span class="filtre_item" onClick='set_philter(4)' <?echo set_filter_bg(4)?> title="ПОказывать только рефлексы без пусковых стимулов.">Без триггеров</span>
+<span class="filtre_item" onClick='set_philter(1)' <? echo set_filter_bg(1) ?>>Плохо</span>&nbsp;&nbsp;
+<span class="filtre_item" onClick='set_philter(2)' <? echo set_filter_bg(2) ?>>Норма</span>&nbsp;&nbsp;
+<span class="filtre_item" onClick='set_philter(3)' <? echo set_filter_bg(3) ?>>Хорошо</span>&nbsp;&nbsp;
+<span class="filtre_item" onClick='set_philter(5)' <? echo set_filter_bg(5) ?> title="Только указанное сочтенаие ID Базовых контекстов."><input id="context_id" type="text" value="<?= $contexts ?>" style="width:60px;height:10px;" title="Только введенное (через запятые) сочтенаие ID Базовых контекстов.">-ID контекстов</span>
+<span class="filtre_item" onClick='set_philter(4)' <? echo set_filter_bg(4) ?> title="ПОказывать только рефлексы без пусковых стимулов.">Без триггеров</span>
 <?
-$max_count=-1;
-if($contexts==0 && $selected==0)
-{
-include_once($_SERVER['DOCUMENT_ROOT']."/common/page_slider.php");
-$max_count=500;
-$padeCount=(int)($reflexCount/$max_count);
-if($reflexCount%$max_count)
-	$padeCount++;
-//$link="/pages/reflexes.php?start=0&diapazon=500";
-$link="/pages/reflexes.php?start=[N]";
-$page_str = new page_slider;
-$page_str->init($padeCount,$start,$link,1,0,"font-famaly:arial;font-size:14px;");
-if($reflexCount>$max_coun)
-{
-echo "<div style='position:absolute;top:0px;right:0px;'>Страницы: ";
-$page_str->show();// верхняя строка страниц
-echo "</div>";
-}
+$max_count = -1;
+if ($contexts == 0 && $selected == 0) {
+	include_once($_SERVER['DOCUMENT_ROOT'] . "/common/page_slider.php");
+	$max_count = 500;
+	$padeCount = (int) ($reflexCount / $max_count);
+	if ($reflexCount % $max_count)
+		$padeCount++;
+	//$link="/pages/reflexes.php?start=0&diapazon=500";
+	$link = "/pages/reflexes.php?start=[N]";
+	$page_str = new page_slider;
+	$page_str->init($padeCount, $start, $link, 1, 0, "font-famaly:arial;font-size:14px;");
+	if ($reflexCount > $max_coun) {
+		echo "<div style='position:absolute;top:0px;right:0px;'>Страницы: ";
+		$page_str->show();// верхняя строка страниц
+		echo "</div>";
+	}
 
-}
-else
-{
-echo "<span class='filtre_item' style='position:absolute;top:0px;right:0px;' onClick='set_philter(0)'  title='Отменить все фильтры.'>Без ограничений</span>";
+} else {
+	echo "<span class='filtre_item' style='position:absolute;top:0px;right:0px;' onClick='set_philter(0)'  title='Отменить все фильтры.'>Без ограничений</span>";
 }
 ?>
 
@@ -262,15 +256,32 @@ echo "<span class='filtre_item' style='position:absolute;top:0px;right:0px;' onC
 <?
 function set_filter_bg($nF)
 {
-	global $selected,$contexts;  // exit("! $selected");
-	switch($nF)
-	{
-case 1: if($selected==1)return "style='background-color:#C2FFC5;'"; break;
-case 2: if($selected==2)return "style='background-color:#C2FFC5;'"; break;
-case 3: if($selected==3)return "style='background-color:#C2FFC5;'"; break;
-case 4: if($selected==4)return "style='background-color:#C2FFC5;'"; break;
-case 5: if(!empty($contexts)) return "style='background-color:#C2FFC5;'"; break;
-case 0: if(empty($contexts) && $selected==0)return "style='background-color:#C2FFC5;'"; break;
+	global $selected, $contexts;  // exit("! $selected");
+	switch ($nF) {
+		case 1:
+			if ($selected == 1)
+				return "style='background-color:#C2FFC5;'";
+			break;
+		case 2:
+			if ($selected == 2)
+				return "style='background-color:#C2FFC5;'";
+			break;
+		case 3:
+			if ($selected == 3)
+				return "style='background-color:#C2FFC5;'";
+			break;
+		case 4:
+			if ($selected == 4)
+				return "style='background-color:#C2FFC5;'";
+			break;
+		case 5:
+			if (!empty($contexts))
+				return "style='background-color:#C2FFC5;'";
+			break;
+		case 0:
+			if (empty($contexts) && $selected == 0)
+				return "style='background-color:#C2FFC5;'";
+			break;
 	}
 }
 ?>
@@ -292,60 +303,59 @@ wait_begin();
 		</tr>
 		<?
 
-// реально возможные сочетания контекстов
-$c_list = read_file($_SERVER["DOCUMENT_ROOT"] . "/pages/combinations/combo_contexts_str.txt");
-$c_list=str_replace(";",",",$c_list);
-$allowContextArr=explode("\r\n",$c_list);  
-//var_dump($allowContextArr);exit();
+		// реально возможные сочетания контекстов
+		$c_list = read_file($_SERVER["DOCUMENT_ROOT"] . "/pages/combinations/combo_contexts_str.txt");
+		$c_list = str_replace(";", ",", $c_list);
+		$allowContextArr = explode("\r\n", $c_list);
+		//var_dump($allowContextArr);exit();
+		
 
-
-////////////////////////////////////////////////////////////////////////
-
+		////////////////////////////////////////////////////////////////////////
+		
 		$n = 0;
-		$m=0;
+		$m = 0;
 		$lastID = 1;
-		$notAllowContexts=0;// 1 - есть невозможные сочетания контекстов
-$mCount=1;
-if($max_count>0)
-{
-	$startLine=$start*$max_count;
-	$endLine=($start+1)*$max_count;  //exit("$startLine | $endLine");
-}
-//var_dump($strArr);exit();
-foreach ($strArr as $str) {
+		$notAllowContexts = 0;// 1 - есть невозможные сочетания контекстов
+		$mCount = 1;
+		if ($max_count > 0) {
+			$startLine = $start * $max_count;
+			$endLine = ($start + 1) * $max_count;  //exit("$startLine | $endLine");
+		}
+		//var_dump($strArr);exit();
+		foreach ($strArr as $str) {
 			if (empty($str))
 				continue;
-$par = explode("|", $str);  //var_dump($par); exit("<hr>".$str);
+			$par = explode("|", $str);  //var_dump($par); exit("<hr>".$str);
 //if($par[0]==818){var_dump($par);exit("<hr>".$str);}
-$id = $par[0];
-//exit("$selected | ".$par[1]);
+			$id = $par[0];
+			//exit("$selected | ".$par[1]);
+		
+			$hideLine = 0;
+			if ($max_count > 0) {
+				if ($mCount <= $startLine || $mCount > $endLine)
+					$hideLine = 1;
+			}
 
-$hideLine=0;
-if($max_count>0)
-{
-	if($mCount<=$startLine || $mCount>$endLine)
-		$hideLine=1;
-}
-
-if(($selected==1 && $par[1]!=1 ||
-	$selected==2 && $par[1]!=2 ||
-	$selected==3 && $par[1]!=3 ||
-	$selected==4 && !empty($par[3])) ||
-(!empty($contexts) && $contexts!=$par[2]) ||
-	$hideLine
-	)// не показывать эту строку
-{
-/*
-echo "<input type='hidden' name='id1[" . $id . "]' value='" . $par[0] . "'  >";
-echo "<input type='hidden' name='id2[" . $id . "]' value='" . $par[1] . "'  >";
-echo "<input type='hidden' name='id3[" . $id . "]' value='" . $par[2] . "'  >";
-echo "<input type='hidden' name='id4[" . $id . "]' value='" . $par[3] . "'  >";
-echo "<input type='hidden' name='id5[" . $id . "]' value='" . $par[4] . "'  >";
-*/
-$mCount++;
-$lastID = $id + 1;
-continue;
-}
+			if (
+				($selected == 1 && $par[1] != 1 ||
+					$selected == 2 && $par[1] != 2 ||
+					$selected == 3 && $par[1] != 3 ||
+					$selected == 4 && !empty($par[3])) ||
+				(!empty($contexts) && $contexts != $par[2]) ||
+				$hideLine
+			)// не показывать эту строку
+			{
+				/*
+				echo "<input type='hidden' name='id1[" . $id . "]' value='" . $par[0] . "'  >";
+				echo "<input type='hidden' name='id2[" . $id . "]' value='" . $par[1] . "'  >";
+				echo "<input type='hidden' name='id3[" . $id . "]' value='" . $par[2] . "'  >";
+				echo "<input type='hidden' name='id4[" . $id . "]' value='" . $par[3] . "'  >";
+				echo "<input type='hidden' name='id5[" . $id . "]' value='" . $par[4] . "'  >";
+				*/
+				$mCount++;
+				$lastID = $id + 1;
+				continue;
+			}
 
 			echo "<tr class='highlighting' onClick='set_sel(this," . $id . ")'>
 <td class='table_cell' style='width:40px;background-color:#eeeeee;' ><input type='hidden' name='id1[" . $id . "]' value='" . $par[0] . "'  >" . $par[0] . "</td>";
@@ -363,14 +373,13 @@ continue;
 				$title = "title='Рефлекс будет привящан ко всем узлам дерева данного уровня.'";
 			}
 
-$c_title="title='Сочетание Базовых контекстов.'";
-//if($par[0]==818){var_dump($allowContextArr);exit("<hr><hr>".$par[2]);}
-if(!in_array($par[2],$allowContextArr))
-{
-$bg="style='background-color:#FF858B;'";
-$c_title="title='НЕВОЗМОЖНОЕ сочетание Базовых контекстов.'";
-$notAllowContexts=1;// 1 - есть невозможные сочетания контекстов
-}
+			$c_title = "title='Сочетание Базовых контекстов.'";
+			//if($par[0]==818){var_dump($allowContextArr);exit("<hr><hr>".$par[2]);}
+			if (!in_array($par[2], $allowContextArr)) {
+				$bg = "style='background-color:#FF858B;'";
+				$c_title = "title='НЕВОЗМОЖНОЕ сочетание Базовых контекстов.'";
+				$notAllowContexts = 1;// 1 - есть невозможные сочетания контекстов
+			}
 
 			echo "<td class='table_cell'><input id='lev2_" . $id . "' class='table_input firstlevel' type='text' name='id3[" . $id . "]' " . only_numbers_and_Comma_input() . "  value='" . $par[2] . "' " . $bg . " " . $c_title . "><img src='/img/down17.png' class='select_control' onClick='event.stopPropagation();show_control(this,2," . $id . ")' title='Выберите сочетание'></td>";
 			$bg = "";
@@ -392,22 +401,22 @@ $notAllowContexts=1;// 1 - есть невозможные сочетания к
 </tr>";
 			$n++;
 			$lastID = $id + 1;
-$mCount++;
-$m++;
-}
-//exit("> $m");
+			$mCount++;
+			$m++;
+		}
+		//exit("> $m");
 		?>
 	</table>
 
 	<div style="position:relative;">
-		<input type='hidden' name='lastID' value='<?=$lastID?>'>
+		<input type='hidden' name='lastID' value='<?= $lastID ?>'>
 		<input type='hidden' name='gogogo' value='1'>
 		<input id='removeNotAllowe_id' type='hidden' name='removeNotAllowe' value='0'>
 		<input style="position:absolute;top:0px;right:0px;" type="button" name="saver" value="Сохранить" onClick="check_and_sabmit(0)">
 <?
-if($notAllowContexts)// 1 - есть невозможные сочетания контекстов
+if ($notAllowContexts)// 1 - есть невозможные сочетания контекстов
 {
-echo '<input style="position:absolute;top:0px;left:50%;transform: translate(-50%, 0);" type="button" name="saver" value="Удалить рефлексы c невозможными сочетаниями контекстов" onClick="check_and_sabmit(1)" title="При сохранении очистить таблицу от рефлексов с невозможными сочетаниями Базовых контекстов.">';
+	echo '<input style="position:absolute;top:0px;left:50%;transform: translate(-50%, 0);" type="button" name="saver" value="Удалить рефлексы c невозможными сочетаниями контекстов" onClick="check_and_sabmit(1)" title="При сохранении очистить таблицу от рефлексов с невозможными сочетаниями Базовых контекстов.">';
 }
 ?>
 
@@ -416,11 +425,10 @@ echo '<input style="position:absolute;top:0px;left:50%;transform: translate(-50%
 </form>
 <?
 // exit("WWWWWWWWWWWWWWWW && $selected");
-if($contexts==0 && $selected==0)
-{ 
-echo "<div style='margin-top:30px;text-align:right;'>Страницы: ";
-$page_str->show();// верхняя строка страниц
-echo "</div>";
+if ($contexts == 0 && $selected == 0) {
+	echo "<div style='margin-top:30px;text-align:right;'>Страницы: ";
+	$page_str->show();// верхняя строка страниц
+	echo "</div>";
 }
 
 ?>
@@ -428,8 +436,8 @@ echo "</div>";
 <script Language="JavaScript" src="/ajax/ajax.js"></script>
 <script>
 <?
-if($mCount>1){
-echo "document.getElementById('reflex_count_id').innerHTML='(всего: $mCount)';";
+if ($mCount > 1) {
+	echo "document.getElementById('reflex_count_id').innerHTML='(всего: $mCount)';";
 }
 ?>
 //alert("!!!!");

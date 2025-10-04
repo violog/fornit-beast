@@ -11,37 +11,33 @@ $title = "Формирование зеркальных автоматизмов
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 //include_once($_SERVER['DOCUMENT_ROOT']."/pult_js.php");
 //////////////////////////////////////////////////////////////
-$dir=$_SERVER["DOCUMENT_ROOT"]."/lib/mirror_reflexes_basic_phrases/";
-$filesArr="var filesArr = new Array();";
-$n=0;
-if($dh = opendir($dir)) 
-{ //exit("!!!");
-while(false !== ($file = readdir($dh))) 
-{		
-if($file=="." || $file=="..")
-	continue;
-if(filesize($dir.$file)>0)
-	{
-$filesArr.="filesArr[".$n."] = '/lib/mirror_reflexes_basic_phrases/".$file."';";
-$n++;
-	}
+$dir = $_SERVER["DOCUMENT_ROOT"] . "/lib/mirror_reflexes_basic_phrases/";
+$filesArr = "var filesArr = new Array();";
+$n = 0;
+if ($dh = opendir($dir)) { //exit("!!!");
+	while (false !== ($file = readdir($dh))) {
+		if ($file == "." || $file == "..")
+			continue;
+		if (filesize($dir . $file) > 0) {
+			$filesArr .= "filesArr[" . $n . "] = '/lib/mirror_reflexes_basic_phrases/" . $file . "';";
+			$n++;
+		}
 
+	}
+	closedir($dh);
 }
-closedir($dh);
-}
-$filesArr.="var fileCount=$n;";
+$filesArr .= "var fileCount=$n;";
 //  var_dump($contents);exit();
-if($n==0)
-{
-echo "<div style='font-family:courier;font-size:16px;display:block;'><span style='font-size:18px;color:red;'><b>Нет файлов списков.</b></span><br> Сначала нужно в <a href='/pages/mirrors_automatizm.php'>редакторе</a> заготовить фразы - ответы.</div>";
-exit();
+if ($n == 0) {
+	echo "<div style='font-family:courier;font-size:16px;display:block;'><span style='font-size:18px;color:red;'><b>Нет файлов списков.</b></span><br> Сначала нужно в <a href='/pages/mirrors_automatizm.php'>редакторе</a> заготовить фразы - ответы.</div>";
+	exit();
 }
 
 
 echo "<div id='div_id' style='font-family:courier;font-size:18px;'><b>Нужен коннект с Beast.</b></div>";
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/common/linking.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/linking.php");
 ?>
 Сначала нужно:<br>
 1. Включить Beast и запустить процесс: <span style="font-size:21px;border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;cursor:pointer;" onClick='location.reload(true)' title='Если Beast включен, то можно нажимать.'>Поехали</span><br>
@@ -60,7 +56,7 @@ check_Beast_activnost(4);// после 4-го пульса И запускает
 
 function get_info()
 {
-var linking_address='<?include($_SERVER["DOCUMENT_ROOT"]."/common/linking_address.txt");?>';
+var linking_address='<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>';
 //wait_begin(); // wait_end();
 var AJAX = new ajax_support(linking_address+"?stop_activnost=1",sent_blocing);
 AJAX.send_reqest();
@@ -77,7 +73,7 @@ processing();
 var next=0;
 function processing()
 {
-<?=$filesArr?>
+<?= $filesArr ?>
 //	alert("типа идет процесс");
 /*
 var AJAX = new ajax_support("/lib/get_file_content.php?file="+filesArr[next],sent_blocing);

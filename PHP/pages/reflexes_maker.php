@@ -10,24 +10,23 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 //////////////////////////////////////////////////////////////
 
 
-$bsID=0;
-if(isset($_GET['bsID']))
-$bsID=$_GET['bsID'];            //  exit("> $bsID");
+$bsID = 0;
+if (isset($_GET['bsID']))
+	$bsID = $_GET['bsID'];            //  exit("> $bsID");
 
-$id_list="";
-$get_list="";
-if(isset($_GET['id_list']))
-{
-$id_list=$_GET['id_list'];
+$id_list = "";
+$get_list = "";
+if (isset($_GET['id_list'])) {
+	$id_list = $_GET['id_list'];
 
-$get_list=explode(";",$id_list); 
+	$get_list = explode(";", $id_list);
 }
 
 
 ?>
 <script Language="JavaScript" src="/ajax/ajax.js"></script>
 <script>
-var is_table_shoved=0;// 1 таблица показывается
+	var is_table_shoved = 0;// 1 таблица показывается
 function get_table()
 {
 var link="/pages/reflexes_maker_table.php?"+cur_condition_choose;
@@ -72,9 +71,18 @@ echo "<div style='position:absolute;top:10px;right:10px;border:solid 1px #8A3CA4
 // onChange='choode_base_cond(this)' - нет определенной зависимости...
 echo "<b>Базовое состояние:</b><br>
 <select id='base_id' onChange='refresh_context_combo(this)'> 
-<option value='1' "; if($bsID==1)echo "selected"; echo ">Плохо</option>
-<option value='2' "; if($bsID==2)echo "selected"; echo ">Норма</option>
-<option value='3' "; if($bsID==3)echo "selected"; echo ">Хорошо</option>
+<option value='1' ";
+if ($bsID == 1)
+	echo "selected";
+echo ">Плохо</option>
+<option value='2' ";
+if ($bsID == 2)
+	echo "selected";
+echo ">Норма</option>
+<option value='3' ";
+if ($bsID == 3)
+	echo "selected";
+echo ">Хорошо</option>
 </select><span title='Общее Базовое состояние формируется из отдельных состояний Базовых параметров гомеостаза и при этом никак не коррелирует с диапазонами состояний параметров гомеостаза.'> - Общее Базовое состояние</span><br>
 ";
 
@@ -89,8 +97,8 @@ echo "<b>Базовое состояние:</b><br>
 include_once($_SERVER['DOCUMENT_ROOT'] . "/lib/base_context_list.php");
 
 /* Все возможные сочетания активных контекстов выбираются из таблицы "Активности Базовых стилей" (минуса игнорируются и идет проверка на антагонистов).
-*/
-$contextsArr=array();// ID выбранных контекстов без антагонистов
+ */
+$contextsArr = array();// ID выбранных контекстов без антагонистов
 echo "<b>Выбрать сочетания контекстов:</b><br> 
 <div id='context_variations_id'></div>";
 
@@ -107,8 +115,8 @@ function get_context_variations(bc)
 { 
 	wait_begin();
 	// base_condition="+bc+"& 
-//	alert("/pages/reflexes_maker_b_contexts.php?get_list=<?=$id_list?>");
-var AJAX = new ajax_support("/pages/reflexes_maker_b_contexts.php?current_base_condition="+current_base_condition+"&get_list=<?=$id_list?>", send_context_variations);
+//	alert("/pages/reflexes_maker_b_contexts.php?get_list=<?= $id_list ?>");
+var AJAX = new ajax_support("/pages/reflexes_maker_b_contexts.php?current_base_condition="+current_base_condition+"&get_list=<?= $id_list ?>", send_context_variations);
 		AJAX.send_reqest();
 
 function send_context_variations(res) 

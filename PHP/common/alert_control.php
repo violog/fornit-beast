@@ -6,7 +6,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/common/alert_control.php");
 
 Применение:
 show_dlg_control(mess,this);   end_dlg_control()
-	
+
 Закрывается только крестиком или по end_dlg_control()
 */
 

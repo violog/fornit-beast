@@ -5,8 +5,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/pages/mirrors_automatizm_get_all_phra
 
 foreach ($triggerPhraseArr as $tArr)
 */
-$triggerPhraseArr=array();
-$tdir=$_SERVER["DOCUMENT_ROOT"]."/lib/condition_reflexes_basic_phrases/";
+$triggerPhraseArr = array();
+$tdir = $_SERVER["DOCUMENT_ROOT"] . "/lib/condition_reflexes_basic_phrases/";
 
 /*
 $n=0;
@@ -32,32 +32,30 @@ closedir($dh);
 }
 */
 // просто считать файл
-$tstr=read_t_file($_SERVER["DOCUMENT_ROOT"]."/lib/mirror_basic_phrases_common.txt");
-$str=explode("\r\n",$tstr);
-foreach($str as $s)
-{
-$p=explode("|",$s);
-array_push($triggerPhraseArr,$p[0]);
+$tstr = read_t_file($_SERVER["DOCUMENT_ROOT"] . "/lib/mirror_basic_phrases_common.txt");
+$str = explode("\r\n", $tstr);
+foreach ($str as $s) {
+	$p = explode("|", $s);
+	array_push($triggerPhraseArr, $p[0]);
 }
 
-$triggerPhraseArr=array_unique($triggerPhraseArr);  // var_dump($triggerPhraseArr);exit();
+$triggerPhraseArr = array_unique($triggerPhraseArr);  // var_dump($triggerPhraseArr);exit();
 
 
 ///////////////////////////////////////////////////
 function read_t_file($file)
 {
-if(!file_exists($file))
+	if (!file_exists($file))
+		return "";
+	if (filesize($file) == 0)
+		return "";
+	$hf = fopen($file, "rb");
+	if ($hf) {
+		$contents = fread($hf, filesize($file));
+		fclose($hf);
+		return $contents;
+	}//if($hf)
 	return "";
-if(filesize($file)==0)
-	return "";
-$hf=fopen($file,"rb");
-if($hf)
-{
-$contents=fread($hf,filesize($file));
-fclose($hf);
-return $contents;
-}//if($hf)
-return "";
 }
 ///////////////////////////////////////////////////
 ?>

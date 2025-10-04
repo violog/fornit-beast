@@ -29,20 +29,17 @@ copy($_SERVER['DOCUMENT_ROOT']."/tools/memory_reflex0/GomeostazParams.txt", $_SE
 */
 
 // очистить все в папке memory_psy
-$dir=$_SERVER['DOCUMENT_ROOT']."/memory_psy/";
-if($dh = opendir($dir)) 
-{ //exit("!!!");
-while(false !== ($file = readdir($dh))) 
-{		
-if($file=="." || $file=="..")
-	continue;
+$dir = $_SERVER['DOCUMENT_ROOT'] . "/memory_psy/";
+if ($dh = opendir($dir)) { //exit("!!!");
+	while (false !== ($file = readdir($dh))) {
+		if ($file == "." || $file == "..")
+			continue;
 
-	if(!is_dir($dir.$file))
-	{	
-write_empty($dir.$file);
+		if (!is_dir($dir . $file)) {
+			write_empty($dir . $file);
+		}
 	}
-}
-closedir($dh);
+	closedir($dh);
 }
 
 
@@ -52,15 +49,14 @@ echo "!";
 ///////////////////////////////////////////////////
 function write_empty($file)
 {
-$hf=fopen($file,"wb+");
-if($hf)
-{
-fwrite($hf,"",0);
-fclose($hf);
-chmod($file, 0666);
-return 1;
-}
-return 0;
+	$hf = fopen($file, "wb+");
+	if ($hf) {
+		fwrite($hf, "", 0);
+		fclose($hf);
+		chmod($file, 0666);
+		return 1;
+	}
+	return 0;
 }
 ///////////////////////////////
 

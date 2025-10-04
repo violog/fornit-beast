@@ -15,8 +15,8 @@ mb_http_output('UTF-8');
 mb_internal_encoding("UTF-8");
 
 
-cliner_file($_SERVER["DOCUMENT_ROOT"]."/memory_psy/automatizm_images.txt");
-write_file($_SERVER["DOCUMENT_ROOT"]."/memory_psy/automatizm_tree.txt","1|0|1|0|0|0|0|0
+cliner_file($_SERVER["DOCUMENT_ROOT"] . "/memory_psy/automatizm_images.txt");
+write_file($_SERVER["DOCUMENT_ROOT"] . "/memory_psy/automatizm_tree.txt", "1|0|1|0|0|0|0|0
 2|0|2|0|0|0|0|0
 3|0|3|0|0|0|0|0
 ");
@@ -25,27 +25,25 @@ write_file($_SERVER["DOCUMENT_ROOT"]."/memory_psy/automatizm_tree.txt","1|0|1|0|
 ///////////////////////////////////////////////////
 function cliner_file($file)
 {
-$hf=fopen($file,"wb+");
-if($hf)
-{
-fwrite($hf,"",0);
-fclose($hf);
-return 1;
-}
-return 0;
+	$hf = fopen($file, "wb+");
+	if ($hf) {
+		fwrite($hf, "", 0);
+		fclose($hf);
+		return 1;
+	}
+	return 0;
 }
 ///////////////////////////////////////////////////
-function write_file($file,$content)
+function write_file($file, $content)
 {
-$hf=fopen($file,"wb+");
-if($hf)
-{
-fwrite($hf,$content,strlen($content));
-fclose($hf);
-chmod($file, 0666);
-return 1;
-}
-return 0;
+	$hf = fopen($file, "wb+");
+	if ($hf) {
+		fwrite($hf, $content, strlen($content));
+		fclose($hf);
+		chmod($file, 0666);
+		return 1;
+	}
+	return 0;
 }
 //////////////////////////////////
 ?>

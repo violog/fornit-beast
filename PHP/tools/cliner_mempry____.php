@@ -52,15 +52,14 @@ echo "!";
 ///////////////////////////////////////////////////
 function write_empty($file)
 {
-$hf=fopen($file,"wb+");
-if($hf)
-{
-fwrite($hf,"",0);
-fclose($hf);
-chmod($file, 0666);
-return 1;
-}
-return 0;
+	$hf = fopen($file, "wb+");
+	if ($hf) {
+		fwrite($hf, "", 0);
+		fclose($hf);
+		chmod($file, 0666);
+		return 1;
+	}
+	return 0;
 }
 ///////////////////////////////
 

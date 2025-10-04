@@ -7,23 +7,23 @@ http://go/  связь с GO include($_SERVER["DOCUMENT_ROOT"]."/common/linking_
 // Fix of timezone warning
 date_default_timezone_set('UTC');
 
-$reflex_quick_working=0;
-if(isset($_GET['reflex_quick_working'])&&$_GET['reflex_quick_working']==1)
-$reflex_quick_working=1;// режим быстрой набивки б.рефлексов в зависимости от выставляемых условий без коннекта с Beast.
+$reflex_quick_working = 0;
+if (isset($_GET['reflex_quick_working']) && $_GET['reflex_quick_working'] == 1)
+	$reflex_quick_working = 1;// режим быстрой набивки б.рефлексов в зависимости от выставляемых условий без коннекта с Beast.
 
 $page_id = 0;
 $title = "Пульт связи с Beast";
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 
 // инициация записи истории общения
-$init_history=true;
+$init_history = true;
 include_once($_SERVER['DOCUMENT_ROOT'] . "/pages/history.php");//  exit("! $curHistoryFile");
-$init_history=false;
+$init_history = false;
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/spoiler.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/alert_confirm.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/alert2_dlg.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/common/alert_control.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/alert_control.php");
 
 // набор инструментов (загрузка и сохранение памяти Beast)
 include_once($_SERVER["DOCUMENT_ROOT"] . "/tools/tools.php");
@@ -41,13 +41,10 @@ display:none;"></div>';
 
 echo "<div class='main_page_div' style=''>";
 
-if($reflex_quick_working)
-{
-echo "<div style='position:absolute;top:-30px;left:300px;font=size:19px;color:#00C200;'><b>Это - режим быстрой набивки безусловных рефлексов</b></div>";
-}
-else
-{
-echo "<div style='position:absolute;top:-30px;left:300px;'>
+if ($reflex_quick_working) {
+	echo "<div style='position:absolute;top:-30px;left:300px;font=size:19px;color:#00C200;'><b>Это - режим быстрой набивки безусловных рефлексов</b></div>";
+} else {
+	echo "<div style='position:absolute;top:-30px;left:300px;'>
 <span id='link_warning_id' style=''></span>
 
 <span style='padding-left:40px;'>Пульс:</span> 
@@ -57,7 +54,7 @@ echo "<div style='position:absolute;top:-30px;left:300px;'>
 
 </div>";
 
-echo "<div id='common_status_id' type='button' style='position:absolute;top:-34px;left:560px;
+	echo "<div id='common_status_id' type='button' style='position:absolute;top:-34px;left:560px;
 border-radius: 7px;padding:4px;padding-left:8px;padding-right:8px;'></div>
 
 <div id='common_status_exit_id' class='alert_exit' style='position:absolute;z-index:10;top:-34px;left:622px;display:none;' title='Снять состояния Хорошо и Плохо.\n\nМожно использовать клавишу ESC.' onClick='end_whell_bad();'><span >&#10006;</span></div>
@@ -65,22 +62,22 @@ border-radius: 7px;padding:4px;padding-left:8px;padding-right:8px;'></div>
 
 ";
 
-// общий движок связи с Beast
-include_once($_SERVER['DOCUMENT_ROOT'] . "/common/linking.php");
+	// общий движок связи с Beast
+	include_once($_SERVER['DOCUMENT_ROOT'] . "/common/linking.php");
 
-?>
-<input id="bot_switcher" type='button' style="position:absolute;top:-30px;right:10px;display:block" value='&nbsp;Включить Beast&nbsp;' onClick="bot_switcher()">
-<div id="close_note_id" style="position:absolute;top:-47px;right:10px;display:none;">Корректное выключение сохраняет текущую память!</div>
-<input id="bot_switcher2" type='button' title='Некорректное выключение (память может не сохраниться), лучше пользоваться Выключить Beast справа-сверху шестеренка.' style="position:absolute;top:-30px;right:10px;display:none;color:red;" value='&nbsp;Выключить Beast&nbsp;' onClick="bot_switcher()">
+	?>
+			<input id="bot_switcher" type='button' style="position:absolute;top:-30px;right:10px;display:block" value='&nbsp;Включить Beast&nbsp;' onClick="bot_switcher()">
+			<div id="close_note_id" style="position:absolute;top:-47px;right:10px;display:none;">Корректное выключение сохраняет текущую память!</div>
+			<input id="bot_switcher2" type='button' title='Некорректное выключение (память может не сохраниться), лучше пользоваться Выключить Beast справа-сверху шестеренка.' style="position:absolute;top:-30px;right:10px;display:none;color:red;" value='&nbsp;Выключить Beast&nbsp;' onClick="bot_switcher()">
 
-<?
-// возраст:
-echo "<div style='position:absolute;top:0px;right:0px;'>";
-echo "<span id='life_time_id' style=''></span>";
+			<?
+			// возраст:
+			echo "<div style='position:absolute;top:0px;right:0px;'>";
+			echo "<span id='life_time_id' style=''></span>";
 
-echo '&nbsp;<img src="/img/edit.png" style="cursor:pointer;" title="Установить возраст" onClick="set_life_time(this)">';
+			echo '&nbsp;<img src="/img/edit.png" style="cursor:pointer;" title="Установить возраст" onClick="set_life_time(this)">';
 
-echo "</div>";
+			echo "</div>";
 }
 
 
@@ -105,25 +102,22 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/pult_base_contexts.php");
 
 
 ///////////////////////  НАБИВКА РЕФЛЕКСОВ
-if($reflex_quick_working)
-{
-echo "<div style='margin-top:10px;background-color:#eeeeee;padding:10px;border:solid 1px #8A3CA4;border-radius: 7px;box-shadow: 8px 8px 8px 0px rgba(122,122,122,0.3);'><b>Это - режим быстрой набивки безусловных рефлексов в зависимости от выставляемых условий без коннекта с Beast.</b>";
+if ($reflex_quick_working) {
+	echo "<div style='margin-top:10px;background-color:#eeeeee;padding:10px;border:solid 1px #8A3CA4;border-radius: 7px;box-shadow: 8px 8px 8px 0px rgba(122,122,122,0.3);'><b>Это - режим быстрой набивки безусловных рефлексов в зависимости от выставляемых условий без коннекта с Beast.</b>";
 
-echo "<br>Пояснение:
+	echo "<br>Пояснение:
 <br>
 <br>
 <br>
 ";
 
-echo "<br><a href='/pult.php'>Переключить нормальный режим Пульта</a>";
+	echo "<br><a href='/pult.php'>Переключить нормальный режим Пульта</a>";
 
-echo "</div>";
-}
-else
-{
+	echo "</div>";
+} else {
 
-// Диалог общения с Beast
-include_once($_SERVER['DOCUMENT_ROOT'] . "/pult_Bot_dialog.php");
+	// Диалог общения с Beast
+	include_once($_SERVER['DOCUMENT_ROOT'] . "/pult_Bot_dialog.php");
 }
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/pult_actions.php");
@@ -131,12 +125,11 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/pult_actions.php");
 // показ дейстивий и фраз от Beast
 include_once($_SERVER['DOCUMENT_ROOT'] . "/show_bot_actions.php");
 
-if(!$reflex_quick_working)
-{
-echo "<div id='extend_info_id' style='height:25px;padding-left:10px;margin-top:10px;'></div>";
+if (!$reflex_quick_working) {
+	echo "<div id='extend_info_id' style='height:25px;padding-left:10px;margin-top:10px;'></div>";
 
-// консоль событий
-include_once($_SERVER['DOCUMENT_ROOT'] . "/pult_consol.php");
+	// консоль событий
+	include_once($_SERVER['DOCUMENT_ROOT'] . "/pult_consol.php");
 }
 
 
@@ -163,7 +156,7 @@ var conStr=document.getElementById('contect_list_id').innerHTML;
 
 var context="Состояние: <b>"+bS+"</b></span>. Базовые контексты: <b>"+conStr+"</b></span> "+eInfo+"</span>\r\n";
 
-param="histoty_file=<?=$curHistoryFile?>&type="+type+"&context="+context+"&newInfoHist="+str; 
+param="histoty_file=<?= $curHistoryFile ?>&type="+type+"&context="+context+"&newInfoHist="+str; 
 // alert(param);
 var AJAX = new ajax_post_support('/pages/history.php',param,sent_history_mess,1);
 AJAX.send_reqest();

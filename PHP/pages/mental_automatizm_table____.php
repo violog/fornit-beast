@@ -12,8 +12,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/show_waiting.php");
 
 $out_str_for_del = ""
-?>
-<div style='position:absolute;top:40px;left:350px;font-family:courier;font-size:16px;cursor:pointer;' onClick="location.reload(true)"><b>Обновить</b></div>
+	?>
+<div style='position:absolute;top:40px;left:350px;font-family:courier;font-size:16px;cursor:pointer;'
+	onClick="location.reload(true)"><b>Обновить</b></div>
 
 <div id='div_id' style='font-family:courier;font-size:16px;'>Нужен коннект с Beast.</div>
 </div>
@@ -25,7 +26,9 @@ $out_str_for_del = ""
 
 <script Language="JavaScript" src="/ajax/ajax.js"></script>
 <script>
-var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>';
+	var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>'
+
+	;
 
 // ждем пока не включат бестию
 check_Beast_activnost(6);// после 6-го пульса И запускается get_info()

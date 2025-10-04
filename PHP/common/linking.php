@@ -11,7 +11,8 @@ include_once($_SERVER['DOCUMENT_ROOT']."/common/linking.php");
 
 ?>
 <script>
-var linking_address='<?include($_SERVER["DOCUMENT_ROOT"]."/common/linking_address.txt");?>';
+	var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>'
+	;
 //alert(linking_address)
 /*
 function bot_contact111(params,own_proc)

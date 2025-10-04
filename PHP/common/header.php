@@ -22,17 +22,17 @@ mb_internal_encoding("UTF-8");
 <html>
 <head>
   <meta charset="UTF-8">
-  <title><?=$title?></title>
+  <title><?= $title ?></title>
   <link rel="stylesheet" href="/common/common.css">
 </head>
 <body style="margin-left:20px;font-family:arial;font-size:14px;">
 <form name="open_another_win" method="post" action="" target="_blank"></form>
 <?
-include_once($_SERVER['DOCUMENT_ROOT']."/common/common.php"); 
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/common.php");
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/common/top_menu.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/common/top_menu.php");
 ?>
-<h1 style='font-size:18px;'><?=$title?></h1>
+<h1 style='font-size:18px;'><?= $title ?></h1>
 
 <script>
 function open_anotjer_win(link)
@@ -119,16 +119,16 @@ wait_end();
 </script>
 <?
 ///// стадии развития 
-$stages=read_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/stages.txt");
-$stages=trim($stages);
-switch($page_id)
-{
-case 1:case 3:case 4: // кроме слов case 2:
-	if($stages>0)
-	{
-echo "<div style='font-size:21px;color:red;'><b>Это - пройденная стадия развития! Не следует редактировать данные на этой станице!</b></div>";
-	}
-break;
+$stages = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/stages.txt");
+$stages = trim($stages);
+switch ($page_id) {
+	case 1:
+	case 3:
+	case 4: // кроме слов case 2:
+		if ($stages > 0) {
+			echo "<div style='font-size:21px;color:red;'><b>Это - пройденная стадия развития! Не следует редактировать данные на этой станице!</b></div>";
+		}
+		break;
 
 
 

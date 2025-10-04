@@ -50,11 +50,10 @@ $antFromId = array();// антагонисты для каждого выбра�
 foreach ($strArr as $str) {
 	$par = explode("|", $str);
 	$id = $par[0];
-	$as = explode(",", $par[1]); 
-	$antFromId[$id]=array();
-	foreach ($as as $a)
-	{			
-	array_push($antFromId[$id],$a);
+	$as = explode(",", $par[1]);
+	$antFromId[$id] = array();
+	foreach ($as as $a) {
+		array_push($antFromId[$id], $a);
 	}
 }
 // var_dump($antFromId);exit();
@@ -72,10 +71,9 @@ foreach ($strArr as $str) {
 	$par = explode("|", $str);
 	$id = $par[0];
 
-$contextArr[$id]=array();
-	for($n=1;$n<8;$n++)
-	{
-	array_push($contextArr[$id],$par[$n]);
+	$contextArr[$id] = array();
+	for ($n = 1; $n < 8; $n++) {
+		array_push($contextArr[$id], $par[$n]);
 	}
 }
 // var_dump($contextArr);exit();
@@ -85,11 +83,9 @@ $contextArr[$id]=array();
 //!!!! сделать все возможные сочетаия 12 контекстов, и потом из каждой поудалять антагонистов,
 //??? в список антагонистов включить минусы из таблицы
 
-ДОБАВЛЯТЬ ПЕРЕБОРЫ К УЖЕ СУЩЕСТВУЮЩЕМУ ПРЕДЫДУЩЕМУ, записывая результат в вызодной массив !!!
-
-???
-$outArr=array();// в выходной массив добавляется (array_push) $curArr с каждой итерацией, т.е. после каждой итерации он возрастает на 7*8=56 элементов. Всего в нем станет 7*56 элементов.
-$curArr=array();// текущий суммирующий массив 56 элементов - с каждой итерацией накапливает цифры ID при сдвиге следующей строки с уборкой повторов
+// ДОБАВЛЯТЬ ПЕРЕБОРЫ К УЖЕ СУЩЕСТВУЮЩЕМУ ПРЕДЫДУЩЕМУ, записывая результат в вызодной массив !!!
+$outArr = array();// в выходной массив добавляется (array_push) $curArr с каждой итерацией, т.е. после каждой итерации он возрастает на 7*8=56 элементов. Всего в нем станет 7*56 элементов.
+$curArr = array();// текущий суммирующий массив 56 элементов - с каждой итерацией накапливает цифры ID при сдвиге следующей строки с уборкой повторов
 
 /* попытка повторить то, что в ГО
 $nid=array();
@@ -122,19 +118,19 @@ function iterate($nrow)
 
 /// все комбинации по 7 без повторов
 function comb($m, $words) {
-    if (!$m) {
-        yield [];
-        return;
-    }
-    if (!$words) {
-        return;
-    }
-    $h = $words[0];
-    $t = array_slice($words, 1);
-    foreach(comb($m - 1, $t) as $c)
-        yield array_merge([$h], $c);
-    foreach(comb($m, $t) as $c)
-        yield $c;
+	if (!$m) {
+		yield [];
+		return;
+	}
+	if (!$words) {
+		return;
+	}
+	$h = $words[0];
+	$t = array_slice($words, 1);
+	foreach(comb($m - 1, $t) as $c)
+		yield array_merge([$h], $c);
+	foreach(comb($m, $t) as $c)
+		yield $c;
 }
 $words = array();
 for($m=0;$m<7;$m++)
@@ -143,9 +139,9 @@ array_push($words,$m);
 $cur_comb=array();
 foreach(range(1, 7) as $n)
 {
-    foreach(comb($n, $words) as $c)
+	foreach(comb($n, $words) as $c)
 	{
-       // echo join(' ', $c), "\n";
+	   // echo join(' ', $c), "\n";
 	   //$cur_comb.=implode('|', $c)."\r\n";
 	   array_push($cur_comb,$c);
 	}
@@ -166,95 +162,89 @@ $contextsArr0=array();// сочетания контекстов
 
 
 
-$combArr = array_unique($combArr); 
-var_dump($combArr);exit();
+$combArr = array_unique($combArr);
+var_dump($combArr);
+exit();
 
-$out="";
-foreach($combArr as $ccomb)
-{
-$out.=$ccomb."\r\n";
+$out = "";
+foreach ($combArr as $ccomb) {
+	$out .= $ccomb . "\r\n";
 }
-$out=md5($str)."\r\n".$out;
-write_combo_file($_SERVER["DOCUMENT_ROOT"]."/lib/contexts_combin.txt",$out);
+$out = md5($str) . "\r\n" . $out;
+write_combo_file($_SERVER["DOCUMENT_ROOT"] . "/lib/contexts_combin.txt", $out);
 exit("1111");
 
 
-$list=read_combo_file($_SERVER["DOCUMENT_ROOT"]."/lib/contexts_combin.txt");
-$combArr = explode("\r\n", $list);   
-var_dump($combArr);exit();
+$list = read_combo_file($_SERVER["DOCUMENT_ROOT"] . "/lib/contexts_combin.txt");
+$combArr = explode("\r\n", $list);
+var_dump($combArr);
+exit();
 
 // по каждому сочетанию готовим суммы строк
-$contextsArr0=array();// сочетания контекстов
-$n=0;
-foreach($combArr as $ccomb)
-{
-$sumArr=array();// сумматор значений ячеек данного сочетания $ccomb
-$pArr = explode("|", $ccomb);
-foreach($pArr as $cell)
-{
-$sumArr=array_merge($sumArr,$cell);
+$contextsArr0 = array();// сочетания контекстов
+$n = 0;
+foreach ($combArr as $ccomb) {
+	$sumArr = array();// сумматор значений ячеек данного сочетания $ccomb
+	$pArr = explode("|", $ccomb);
+	foreach ($pArr as $cell) {
+		$sumArr = array_merge($sumArr, $cell);
+	}
+	//var_dump($pArr);exit();
+	$sumArr = array_unique($sumArr);
+	sort($sumArr, SORT_NUMERIC);
+	reset($sumArr);
+	//if($n==10) {var_dump($sumArr);exit("<hr> $col1 | $row1 || $col2 | $row2 || $curComb1 | $curComb2");}
+	array_push($contextsArr0, $sumArr);
+	$n++;
 }
-//var_dump($pArr);exit();
-$sumArr=array_unique($sumArr);
-sort($sumArr, SORT_NUMERIC);reset($sumArr);
-//if($n==10) {var_dump($sumArr);exit("<hr> $col1 | $row1 || $col2 | $row2 || $curComb1 | $curComb2");}
-array_push($contextsArr0,$sumArr);
-$n++;
-}
-var_dump($contextsArr0);exit();
+var_dump($contextsArr0);
+exit();
 
 
 // убрать антагонистов, отрицательнеы контексты (которые должны госиться) и перевести сочетания контекстов в строки, оставить только уникальные
-$contextsArr=array();// сочетания контекстов
-foreach($contextsArr0 as $comb)
-{
-$str="";  
-$minusArr=array();
-$antArr=array();
+$contextsArr = array();// сочетания контекстов
+foreach ($contextsArr0 as $comb) {
+	$str = "";
+	$minusArr = array();
+	$antArr = array();
 
-foreach($comb as $a)// подготовка к удалению отрицательных
-{
-	if($a<0){
-		array_push($minusArr,-$a);
+	foreach ($comb as $a)// подготовка к удалению отрицательных
+	{
+		if ($a < 0) {
+			array_push($minusArr, -$a);
+		}
 	}
-}
-$antArr=array();// для проверки антагонистов
-foreach($comb as $a)
-{
-	if($a<0){
-		continue;
-	}
-// убрать отрицательнеы контексты (которые должны гаситься)
-if(in_array($a,$minusArr))
-{
-continue;
-}
+	$antArr = array();// для проверки антагонистов
+	foreach ($comb as $a) {
+		if ($a < 0) {
+			continue;
+		}
+		// убрать отрицательнеы контексты (которые должны гаситься)
+		if (in_array($a, $minusArr)) {
+			continue;
+		}
 
-// исключить антагонистов, проверка для каждого выбранного ID кроме уже прошедших проверку
-if(1)
-{
-$isAntagonist=0;
-foreach($antArr as $g)
-{ 
-if(in_array($a,$antFromId[$g]))
-{  
-$isAntagonist=1;  // var_dump($antArr); exit("<hr> $a");
-}
-}
-if($isAntagonist)
-continue;
-}
-
-	if(!empty($str))
-			{
-				$str.=";";
+		// исключить антагонистов, проверка для каждого выбранного ID кроме уже прошедших проверку
+		if (1) {
+			$isAntagonist = 0;
+			foreach ($antArr as $g) {
+				if (in_array($a, $antFromId[$g])) {
+					$isAntagonist = 1;  // var_dump($antArr); exit("<hr> $a");
+				}
 			}
-			$str.=$a;
-			array_push($antArr,$a);
+			if ($isAntagonist)
+				continue;
+		}
+
+		if (!empty($str)) {
+			$str .= ";";
+		}
+		$str .= $a;
+		array_push($antArr, $a);
+	}
+	array_push($contextsArr, $str);
 }
-array_push($contextsArr,$str);
-}
-$contextsArr=array_unique($contextsArr);// Число сочетаний - 35 :)
+$contextsArr = array_unique($contextsArr);// Число сочетаний - 35 :)
 
 //var_dump($contextsArr);exit("<hr>Число сочетаний: ".count($contextsArr));
 
@@ -266,70 +256,65 @@ $contextsArr=array_unique($contextsArr);// Число сочетаний - 35 :)
 ///////////////////////////////////////////
 // расположить по возрастанию чиcла контекстов
 uasort($contextsArr, "cmpare");
-function cmpare($a, $b) 
-{ 
-    if (strlen($a) == strlen($b)) {
-        return 0;
-    }
-    return (strlen($a) < strlen($b)) ? -1 : 1;
+function cmpare($a, $b)
+{
+	if (strlen($a) == strlen($b)) {
+		return 0;
+	}
+	return (strlen($a) < strlen($b)) ? -1 : 1;
 }
 
 // var_dump($contextsArr);exit("<hr>Число сочетаний: ".count($contextsArr));
 
 
 // сохранять строки комбо контекстов в раб.файле  combo_contexts_str.txt
-$list_id="";
-$list_name="";
-foreach($contextsArr as $str)
-{
-$list_id.=$str."\r\n";
+$list_id = "";
+$list_name = "";
+foreach ($contextsArr as $str) {
+	$list_id .= $str . "\r\n";
 
-$s="";
+	$s = "";
 	$p = explode(";", $str);
-foreach($p as $a)
-{
-	if(empty($a) || $a<0)
-		continue;
-if(!empty($s))
-	{
-	$s.=", ";
-	}
+	foreach ($p as $a) {
+		if (empty($a) || $a < 0)
+			continue;
+		if (!empty($s)) {
+			$s .= ", ";
+		}
 
-	$s.=$a." ".$baseContextArr[$a][0];
+		$s .= $a . " " . $baseContextArr[$a][0];
+	}
+	$list_name .= $s . "\r\n";
 }
-$list_name.=$s."\r\n";
-}
-write_combo_file($_SERVER["DOCUMENT_ROOT"]."/pages/combinations/combo_contexts_str.txt",$list_id);
-write_combo_file($_SERVER["DOCUMENT_ROOT"]."/pages/combinations/combo_contexts_names.txt",$list_name);
+write_combo_file($_SERVER["DOCUMENT_ROOT"] . "/pages/combinations/combo_contexts_str.txt", $list_id);
+write_combo_file($_SERVER["DOCUMENT_ROOT"] . "/pages/combinations/combo_contexts_names.txt", $list_name);
 
 
 ///////////////////////////////////////////////////
-function write_combo_file($file,$content)
+function write_combo_file($file, $content)
 {
-$hf=fopen($file,"wb+");
-if($hf)
-{
-fwrite($hf,$content,strlen($content));
-fclose($hf);
-chmod($file, 0666);
-return 1;
-}
-return 0;
+	$hf = fopen($file, "wb+");
+	if ($hf) {
+		fwrite($hf, $content, strlen($content));
+		fclose($hf);
+		chmod($file, 0666);
+		return 1;
+	}
+	return 0;
 }
 //////////////////////////////////
 ///////////////////////////////////////////////////
 function read_combo_file($file)
 {
-if(filesize($file)==0)
+	if (filesize($file) == 0)
+		return "";
+	$hf = fopen($file, "rb");
+	if ($hf) {
+		$contents = fread($hf, filesize($file));
+		fclose($hf);
+		return $contents;
+	}//if($hf)
 	return "";
-$hf=fopen($file,"rb");
-if($hf)
-{
-$contents=fread($hf,filesize($file));
-fclose($hf);
-return $contents;
-}//if($hf)
-return "";
 }
 ///////////////////////////////////////////////////
 ?>

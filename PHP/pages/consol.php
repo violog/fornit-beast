@@ -24,41 +24,42 @@ header('Content-Type: text/html; charset=UTF-8');
 
   </style>
   <div style="position:relative;">
-    <h3 style="margin-bottom:2px;">Консоль событий Бота:</h3> последнее - наверху<br>
-    <div style="position:absolute;top:0px;left:300px;cursor:pointer;" onClick='cline_log()'><b>Очистить лог</b></div>
+	<h3 style="margin-bottom:2px;">Консоль событий Бота:</h3> последнее - наверху<br>
+	<div style="position:absolute;top:0px;left:300px;cursor:pointer;" onClick='cline_log()'><b>Очистить лог</b></div>
   </div>
 
   <div id='consol_div_id' style="font-family:'Courier New';font-size:15px;"></div>
 
   <script Language="JavaScript" src="/ajax/ajax.js"></script>
   <script>
-    //alert(opener);
-    //alert(typeof(opener));
-    //if(typeof(opener)!='undefined')  
-    function get_info() {
-      var AJAX = new ajax_support('/pages/consol_get_info.php', sent_request_info);
-      AJAX.send_reqest();
+	//alert(opener);
+	//alert(typeof(opener));
+	//if(typeof(opener)!='undefined')  
+	function get_info() {
+	  var AJAX = new ajax_support('/pages/consol_get_info.php', sent_request_info)
+	  ;
+	AJAX.send_reqest();
 
-      function sent_request_info(res) {
-        //alert(res);
-        var out = res;
-        if (res.length == 0)
-          out = "<span style='color:#999999;font-size:18px;'>Пока нет событий.</span>";
-        //alert(out);
-        document.getElementById('consol_div_id').innerHTML = out;
-      }
-      //alert("1");
-      setTimeout("get_info()", 2000);
+	function sent_request_info(res) {
+	//alert(res);
+	var out = res;
+	if (res.length == 0)
+	  out = "<span style='color:#999999;font-size:18px;'>Пока нет событий.</span>";
+	//alert(out);
+	document.getElementById('consol_div_id').innerHTML = out;
+	}
+	//alert("1");
+	setTimeout("get_info()", 2000);
 
-    }
-    setTimeout("get_info()", 100);
+  }
+  setTimeout("get_info()", 100);
 
-    function cline_log() {
-      var AJAX = new ajax_support('/pages/consol_cliner_info.php', sent_request_info);
-      AJAX.send_reqest();
+  function cline_log() {
+	var AJAX = new ajax_support('/pages/consol_cliner_info.php', sent_request_info);
+	AJAX.send_reqest();
 
-      function sent_request_info(res) {
-        document.getElementById('consol_div_id').innerHTML = "";
-      }
-    }
+	function sent_request_info(res) {
+	document.getElementById('consol_div_id').innerHTML = "";
+	}
+  }
   </script>

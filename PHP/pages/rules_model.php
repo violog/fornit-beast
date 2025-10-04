@@ -4,18 +4,17 @@ http://go/pages/rules_model.php
 
 
 */
-$objID=$_GET['id'];
+$objID = $_GET['id'];
 
 
 $page_id = 666;
-$title = "Правила для объекта с ID=".$objID;
+$title = "Правила для объекта с ID=" . $objID;
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/show_waiting.php");
 
-if(empty($objID))
-{
-echo "Нужно задать параметр ID в адресной строке:<br>http://go/pages/rules_model.php?id=nn";
-exit();
+if (empty($objID)) {
+	echo "Нужно задать параметр ID в адресной строке:<br>http://go/pages/rules_model.php?id=nn";
+	exit();
 }
 
 // из-за конфликтов чтение-запись убрал авто обновление
@@ -76,7 +75,7 @@ var limitBasicID=0;//>0 - лимитировать показ только од�
 
 
 function get_info() {  
-var AJAX = new ajax_support(linking_address + "?objID=<?=$objID?>&get_undestand_model=1", sent_get_info);
+var AJAX = new ajax_support(linking_address + "?objID=<?= $objID ?>&get_undestand_model=1", sent_get_info);
 AJAX.send_reqest();
 function sent_get_info(res) {
 if(res.length<10)

@@ -15,9 +15,8 @@ echo "</div>";
 
 
 
-if($stages>0)
-{
-echo '<div style="margin-top:10px;color:;">По возможности предваряйте фразы подходящими действиями, сначала нажав кнопку (или несколько подряд) внизу.</div>';
+if ($stages > 0) {
+	echo '<div style="margin-top:10px;color:;">По возможности предваряйте фразы подходящими действиями, сначала нажав кнопку (или несколько подряд) внизу.</div>';
 }
 
 
@@ -25,17 +24,30 @@ echo '<div style="margin-top:10px;color:;">По возможности пред�
 <div style="position:relative;border:solid 1px #8A3CA4;background-color:#cccccc;width:1000px;padding:10px;
 margin-top:10px;">
 
-<b>Поcлать сообщение Beast</b>: <span id="stadia_warn" style="color:red;"></span><br>
-<div style='position:absolute;top:15px;right:10px;' title='Режим форсированного формирования вербальных распознавателей (без отсеивания мусорных слов) и условных рефлексов.'><nobr><input type="checkbox" value="1" onChange="switch_input_rejim(this)"> - режим форсированной обработки</nobr></div>
+	<b>Поcлать сообщение Beast</b>: <span id="stadia_warn" style="color:red;"></span><br>
+	<div style='position:absolute;top:15px;right:10px;'
+		title='Режим форсированного формирования вербальных распознавателей (без отсеивания мусорных слов) и условных рефлексов.'>
+		<nobr><input type="checkbox" value="1" onChange="switch_input_rejim(this)"> - режим форсированной обработки
+		</nobr>
+	</div>
 
-<div id="conditions_words_id" style='position:absolute;top:4px;left:250px;display:none;' title='Список слов, для которых есть условный рефлекс в этих условиях.'><img src='/img/words.png' onClick='get_conditions_words()' ></div>
+	<div id="conditions_words_id" style='position:absolute;top:4px;left:250px;display:none;'
+		title='Список слов, для которых есть условный рефлекс в этих условиях.'><img src='/img/words.png'
+			onClick='get_conditions_words()'></div>
 
-<div id="basic_words_id" style='position:absolute;top:4px;left:300px;display:none;' title='Список фраз, для которых есть автоматизм Beast в этих условиях.'><img src='/img/words.png' onClick='get_conditions_words_basic()' ></div>
+	<div id="basic_words_id" style='position:absolute;top:4px;left:300px;display:none;'
+		title='Список фраз, для которых есть автоматизм Beast в этих условиях.'><img src='/img/words.png'
+			onClick='get_conditions_words_basic()'></div>
 
 
-<div id="note_rejim_id" style='position:absolute;top:0px;right:0px;color:red;display:none;cursor:pointer;' title='Режим форсированного формирования вербальных распознавателей (без отсеивания мусорных слов) и условных рефлексов.' onClick="show_dlg_alert('<div style=`font-size:14px;font-weight:200;text-align:left;`>Включен режим форсированного формирования вербальных распознавателей (без отсеивания мусорных слов) и условных рефлексов.<br><br>Следует использовать для набивки фраз словарного запаса, для тестирования условных рефлексов и т.п. когда не требуется отсев случайного путем повторений.',0)"><nobr>Включен режим форсированной обработки.</nobr></div>
-<script>
-var is_input_rejim=1;
+	<div id="note_rejim_id" style='position:absolute;top:0px;right:0px;color:red;display:none;cursor:pointer;'
+		title='Режим форсированного формирования вербальных распознавателей (без отсеивания мусорных слов) и условных рефлексов.'
+		onClick="show_dlg_alert('<div style=`font-size:14px;font-weight:200;text-align:left;`>Включен режим форсированного формирования вербальных распознавателей (без отсеивания мусорных слов) и условных рефлексов.<br><br>Следует использовать для набивки фраз словарного запаса, для тестирования условных рефлексов и т.п. когда не требуется отсев случайного путем повторений.',0)">
+		<nobr>Включен режим форсированной обработки.</nobr>
+	</div>
+	<script>
+		var is_input_rejim = 1
+		;
 function switch_input_rejim(ch)
 {
 	if(ch.checked==true)
@@ -69,26 +81,26 @@ document.getElementById('radio2_4').checked=true;
 <input id='radio2_4' type='radio' name='rdi2' value='0' checked>Нормальное &nbsp;
 <?
 // получить эффекты от нажатий чтобы показать их в titles
-$effectsArr=array();// строки эффектив
+$effectsArr = array();// строки эффектив
 $progs = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/moode_dialog_effects.txt");
 $strArr = explode("\r\n", $progs);
-$n=5;
+$n = 5;
 foreach ($strArr as $str) {
 	$par = explode("|", $str);
 	$id = $par[0];
-	$e=$par[1];
-	$znak=substr($e,0,1);
-	$effect="".$znak.substr($e,1);
+	$e = $par[1];
+	$znak = substr($e, 0, 1);
+	$effect = "" . $znak . substr($e, 1);
 
-$bgcolor="";
-	if($znak=="+")
-		$bgcolor="#9FF0B3";
-	if($znak=="-")
-		$bgcolor="#FFC9D0";
+	$bgcolor = "";
+	if ($znak == "+")
+		$bgcolor = "#9FF0B3";
+	if ($znak == "-")
+		$bgcolor = "#FFC9D0";
 
-echo "<span style='background-color:".$bgcolor.";padding-right:2px;' title='Мотивационный эффект: ".$effect."'><input id='radio2_".$n."' type='radio' name='rdi2' value='".$id."'>".$par[2]."</span> &nbsp;";
-$n++;
-} 
+	echo "<span style='background-color:" . $bgcolor . ";padding-right:2px;' title='Мотивационный эффект: " . $effect . "'><input id='radio2_" . $n . "' type='radio' name='rdi2' value='" . $id . "'>" . $par[2] . "</span> &nbsp;";
+	$n++;
+}
 ?>
 
 <input id="reset_button_id" type="button"  value="Сброс" onClick="reset_go()" title="Разорвать цепочку кадров ЭП" style="position:absolute;bottom:-8px;right:80px;padding:4px;" disabled> 
@@ -197,20 +209,20 @@ var moode=0;
 var allr=document.getElementsByName('rdi');
 for(var i=0; i<allr.length; i++)
 {
-    if (allr[i].checked) 
+	if (allr[i].checked) 
 	{
 		tone=allr[i].value;
-      break; 
+	  break; 
 	}
  }
 //alert(tone);
 allr=document.getElementsByName('rdi2');
 for(var i=0; i<allr.length; i++)
 {
-    if (allr[i].checked) 
+	if (allr[i].checked) 
 	{
 		moode=allr[i].value;
-      break; 
+	  break; 
 	}
  }
 //alert(moode);

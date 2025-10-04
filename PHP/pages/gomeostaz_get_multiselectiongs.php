@@ -14,7 +14,7 @@ $columnN = $_GET['columnN'];
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/common.php");
 
-$mArr = array(1 => "1 Пищевой", 2 => "2 Поиск", 3 => "3 Игра", 4 => "4 Гон", 5 => "5 Защита", 6 => "6 Лень", 7 => "7 Ступор", 8 => "8 Страх", 9 => "9 Агрессия", 10 => "10 Злость", 11 => "11 Доброта", 12 => "12 Сон",);
+$mArr = array(1 => "1 Пищевой", 2 => "2 Поиск", 3 => "3 Игра", 4 => "4 Гон", 5 => "5 Защита", 6 => "6 Лень", 7 => "7 Ступор", 8 => "8 Страх", 9 => "9 Агрессия", 10 => "10 Злость", 11 => "11 Доброта", 12 => "12 Сон", );
 
 $out = "<table><tr><td>";
 
@@ -41,14 +41,16 @@ foreach ($strArr as $str) {
 		$out .= "Активируются:<br><select id='select_activ' multiple='multiple' size=8 style='width:300px;padding:4px;'>";
 		foreach ($mArr as $id => $name) {
 			$out .= "<option id='" . $id . "' value='" . $id . "'";
-			if (in_array($id, $aList)) $out .= "selected";
+			if (in_array($id, $aList))
+				$out .= "selected";
 			$out .= ">" . $name . "</option>";
 		}
 		$out .= "</select></td><td>";
 		$out .= "Гасятся:<br><select id='select_passive' multiple='multiple' size=8 style='width:300px;padding:4px;'>";
 		foreach ($mArr as $id => $name) {
 			$out .= "<option id='" . $id . "' value='" . $id . "'";
-			if (in_array($id, $dList)) $out .= "selected";
+			if (in_array($id, $dList))
+				$out .= "selected";
 			$out .= ">" . $name . "</option>";
 		}
 		$out .= "</select></td>

@@ -12,7 +12,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/show_waiting.php");
 
 $out_str_for_del = ""
-?>
+	?>
 
 
 <form name="refresh" method="post" action="/pages/condition_reflexes.php"></form>
@@ -103,8 +103,8 @@ if (isset($_POST['rdelID'])) {  //var_dump($_POST['rdelID']);exit();
 <div id='div_id' style='position:absolute;top:20px;left:0px;font-family:courier;font-size:18px;'><b>Нужен коннект с Beast.</b></div>
 
 <?
-if($stages>1)
-echo "<div style='position:absolute;top:40px;left:0px;font-size:21px;color:red;'><b>Это - пройденная стадия развития! Не следует редактировать данные на этой станице!</b></div>";
+if ($stages > 1)
+	echo "<div style='position:absolute;top:40px;left:0px;font-size:21px;color:red;'><b>Это - пройденная стадия развития! Не следует редактировать данные на этой станице!</b></div>";
 ?>
 
 </div>

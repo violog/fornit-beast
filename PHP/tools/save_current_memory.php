@@ -12,16 +12,16 @@ header('Content-Type: text/html; charset=UTF-8');
 
 
 // запись текущего состояния памяти в архив в папку /bot_files_save/
-$arc_file="CurrentMemory.zip";
+$arc_file = "CurrentMemory.zip";
 
 // удалить прежнюю запись
-@unlink($_SERVER["DOCUMENT_ROOT"]."/tools/bot_files_save/CurrentMemory.zip");
+@unlink($_SERVER["DOCUMENT_ROOT"] . "/tools/bot_files_save/CurrentMemory.zip");
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/lib/pclzip_lib.php");
-$fileout="bot_files_save/".$arc_file;
+include_once($_SERVER["DOCUMENT_ROOT"] . "/lib/pclzip_lib.php");
+$fileout = "bot_files_save/" . $arc_file;
 $archive = new PclZip($fileout);
 $v_list = $archive->add("../memory_reflex/,../memory_psy/");
 
 
-echo "!".$fileout;
+echo "!" . $fileout;
 ?>

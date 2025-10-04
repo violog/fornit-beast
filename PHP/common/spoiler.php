@@ -12,38 +12,43 @@ include_once($_SERVER['DOCUMENT_ROOT']."/common/spoiler.php");
 */
 function set_sopiler_icon($block_id)
 {
-echo "<span id='".$block_id."_icon'>&#9660;</span>";
+	echo "<span id='" . $block_id . "_icon'>&#9660;</span>";
 }
 ?>
 <style>
-.spoiler_header 			/* заголовок спойлера */
-{
-margin-left:0px;
-background-color:;
-cursor:pointer;
-padding:4px 4px 4px 0px;
-color:#00769F!important;
-font-size:19px;
-font-weight:bold;
-letter-spacing:1px;
-}
-.spoiler_header:hover
-{
-background-color:#B6E8F2;
-color: #000000!important;
-}
-.spoiler_block 			/* спойлер  */
-{
-#border:solid 1px #8A3CA4;
-overflow: hidden;
-transition: height 500ms ease;
-}
+	.spoiler_header
+
+	/* заголовок спойлера */
+		{
+		margin-left: 0px;
+		background-color: ;
+		cursor: pointer;
+		padding: 4px 4px 4px 0px;
+		color: #00769F !important;
+		font-size: 19px;
+		font-weight: bold;
+		letter-spacing: 1px;
+	}
+
+	.spoiler_header:hover {
+		background-color: #B6E8F2;
+		color: #000000 !important;
+	}
+
+	.spoiler_block
+
+	/* спойлер  */
+		{
+		#border: solid 1px #8A3CA4;
+		overflow: hidden;
+		transition: height 500ms ease;
+	}
 </style>
 
 <script>
-function open_close(block_id,incon=0)
-{  
-var elBlock=document.getElementById(block_id); 
+	function open_close(block_id, incon = 0) {
+		var elBlock = document.getElementById(block_id)
+		; 
 if(parseInt(elBlock.style.height)==0)
 {
 elBlock.clientHeight;

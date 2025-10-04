@@ -4,15 +4,15 @@ http://go/pages/conscience.php
 
 Пауза-Пуск для останова просмотра на стр.Сознания
 */
-$page_id=8;
-$title="Информационная среда осознания Beast";
-include_once($_SERVER['DOCUMENT_ROOT']."/common/header.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/common/show_waiting.php");
+$page_id = 8;
+$title = "Информационная среда осознания Beast";
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/show_waiting.php");
 //include_once($_SERVER['DOCUMENT_ROOT']."/common/spoiler.php");
 
 echo "Сохраненные циклы мышления можно смотреть на странице <a href='/pages/mental_cicles.php' target='_blank'>Сохраненные Циклы мышления</a>.<br>";
 //include_once($_SERVER['DOCUMENT_ROOT']."/pages/conscience_log.php");echo $conscienceArr[1];
-?>   
+?>
 
 
 <div id='puls_id' class='puls_passive' style='position:absolute;top:40px;left:450px;
@@ -21,8 +21,7 @@ echo "Сохраненные циклы мышления можно смотре
 <div id='switcher_id' class='context' style='position:absolute;top:40px;left:900px;
 width:100px;background-color:#D0FFD7;text-align:center;
 cursor:pointer;
-display:none;' onClick="show_switcher()"
-title="Временная остановка смены информации.">Пауза</div>
+display:none;' onClick="show_switcher()" title="Временная остановка смены информации.">Пауза</div>
 
 <!-- div id='cliner_all_id' class='context' style='position:absolute;top:70px;left:900px;
 width:100px;background-color:#FFC2BF;text-align:center;
@@ -51,9 +50,11 @@ title="Временная остановка смены информации.">�
 <script Language="JavaScript" src="/ajax/ajax.js"></script>
 <script Language="JavaScript" src="/ajax/ajax_post.js"></script>
 <script>
-//clinerlog();
+	//clinerlog();
 
-var linking_address='<?include($_SERVER["DOCUMENT_ROOT"]."/common/linking_address.txt");?>';
+	var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>'
+
+	;
 
 // ждем пока не включат бестию
 check_Beast_activnost(6);// после 4-го пульса И запускается get_info()

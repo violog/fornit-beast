@@ -3,9 +3,9 @@
 http://go/run.php
 
 $command = sprintf(
-    'server.exe %d %d',
-    intval($_GET['a']),
-    intval($_GET['b'])
+	'server.exe %d %d',
+	intval($_GET['a']),
+	intval($_GET['b'])
 );
 $ret= exec($command, $output); var_dump($output);exit("! $ret | ");
 
@@ -46,10 +46,10 @@ header('Content-Type: text/html; charset=UTF-8');
 
 */
 
-$ret= exec("go_build_BOT.exe"); // , $pid
+$ret = exec("go_build_BOT.exe"); // , $pid
 //$res=shell_exec('go_build_main_go.exe');
 
-exit("Статус ".$ret);
+exit("Статус " . $ret);
 
 // убить процесс
 //$ret= exec('kill '.$pid); echo "! $ret";

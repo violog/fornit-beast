@@ -14,21 +14,21 @@ mb_http_output('UTF-8');
 mb_internal_encoding("UTF-8");
 
 //var_dump($_POST);exit();
-$text=$_POST['text'];
+$text = $_POST['text'];
 
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/lib/separate_words_str.php"); 
-$out=prepare_str($text); //  exit($out);
+include_once($_SERVER["DOCUMENT_ROOT"] . "/lib/separate_words_str.php");
+$out = prepare_str($text); //  exit($out);
 
 // иногда остаются переносы строки, что вызывает ошибку js поэтому:
-$out=str_replace("\n","",$out);
+$out = str_replace("\n", "", $out);
 
 //exit("\r\n $out");
 
 //$out=urlencode($out); - в golang не нашел реально подходящую замену urldecode
-$out=str_replace("%","{#1}",$out);// достаточно экранировать %
+$out = str_replace("%", "{#1}", $out);// достаточно экранировать %
 //$out=str_replace('"',"{#2}",$out);
-$out=str_replace('"','',$out);// кавычки просто очищаем (пусть будет афазия :)
+$out = str_replace('"', '', $out);// кавычки просто очищаем (пусть будет афазия :)
 
 echo $out;
 ?>

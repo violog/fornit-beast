@@ -9,7 +9,7 @@ header("Pragma: no-cache");
 
 header('Content-Type: text/html; charset=windows-1251');
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/check_prompt.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/check_prompt.php");
 ?><!DOCTYPE html>
 <HTML>
 <HEAD>
@@ -19,7 +19,7 @@ include_once($_SERVER["DOCUMENT_ROOT"]."/check_prompt.php");
 <meta http-equiv="pragma" content="no-cache">
 </HEAD>
 <BODY>
-<?include_once($_SERVER['DOCUMENT_ROOT']."/common/common.php");?>
+<? include_once($_SERVER['DOCUMENT_ROOT'] . "/common/common.php"); ?>
 
 <h2>Примеры алерта</h2>
 
@@ -94,12 +94,12 @@ wait_end();
 
 <h2>Спойлер со вложенными спойлерами</h2>
 
-<span class="spoiler_header" onclick="open_close('block_id',1)" style="cursor:pointer;font-size:16pt"><?=set_sopiler_icon('block_id')?><b>Главный спойлер</b></span>
+<span class="spoiler_header" onclick="open_close('block_id',1)" style="cursor:pointer;font-size:16pt"><?= set_sopiler_icon('block_id') ?><b>Главный спойлер</b></span>
 <div id="block_id" class="spoiler_block spoiler" style="height:0px;">
 11111111111111<br>
 222222222222222<br>
 
-<span class="spoiler_header" onclick="open_close('block2_id',1)" style="cursor:pointer;font-size:14pt"><?=set_sopiler_icon('block2_id')?><b>Внутренний спойлер 1</b></span>
+<span class="spoiler_header" onclick="open_close('block2_id',1)" style="cursor:pointer;font-size:14pt"><?= set_sopiler_icon('block2_id') ?><b>Внутренний спойлер 1</b></span>
 <div id="block2_id" class="spoiler_block spoiler" style="height:0px;">
 aaaaaaaaaaa<br>
 ssssssssss<br>
@@ -128,11 +128,11 @@ xxxxxxxxxxxx<br>
 
 
 <h2>Поддержка свойств полей ввода</h2>
-<?include_once($_SERVER['DOCUMENT_ROOT']."/common/input.php");
+<? include_once($_SERVER['DOCUMENT_ROOT'] . "/common/input.php");
 
-echo "<input class='input_folder' type='text' style='color:#808F9E;border:solid 1px #808F9E;width:260px;'  ".set_input_mask("Введите число, не более 10 символов","")." ".only_numbers_input(10).">";
+echo "<input class='input_folder' type='text' style='color:#808F9E;border:solid 1px #808F9E;width:260px;'  " . set_input_mask("Введите число, не более 10 символов", "") . " " . only_numbers_input(10) . ">";
 
-echo " <input class='input_folder' type='text' style='color:#808F9E;border:solid 1px #808F9E;width:260px;'  ".set_input_mask("Введите строку латинских символов","")." ".only_latin_input().">";
+echo " <input class='input_folder' type='text' style='color:#808F9E;border:solid 1px #808F9E;width:260px;'  " . set_input_mask("Введите строку латинских символов", "") . " " . only_latin_input() . ">";
 
 ?>
 

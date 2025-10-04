@@ -11,38 +11,32 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 
 echo "В динамике изменений циклы мышления можно смотреть на странице <a href='/pages/conscience.php' target='_blank'>Информационная среда осознания Beast</a>.<br>";
 
-$files=array();
+$files = array();
 
-$isEmptyList=true;
-if($dh = opendir($_SERVER['DOCUMENT_ROOT']."/cycle_logs/")) 
-{ //exit("!!!");
-while(false !== ($file = readdir($dh))) 
-{		
-if($file=="." || $file=="..")
-	continue;
-	
-array_push($files,$file);
-$isEmptyList=false;
+$isEmptyList = true;
+if ($dh = opendir($_SERVER['DOCUMENT_ROOT'] . "/cycle_logs/")) { //exit("!!!");
+	while (false !== ($file = readdir($dh))) {
+		if ($file == "." || $file == "..")
+			continue;
 
-}
-closedir($dh);
+		array_push($files, $file);
+		$isEmptyList = false;
+
+	}
+	closedir($dh);
 }
 
-if($isEmptyList)
-{
-echo "Нет сохраненных циклов мышления от последнего периода бодрствования.";
-}
-else
-{
-sort($files, SORT_NUMERIC);
-reset($files);
+if ($isEmptyList) {
+	echo "Нет сохраненных циклов мышления от последнего периода бодрствования.";
+} else {
+	sort($files, SORT_NUMERIC);
+	reset($files);
 
 	echo "Циклы, сохраненные от последнего периода бодрствования:<br><br>";
-	foreach($files as $file)
-	{
-$num=substr($file,0,strlen($file)-4);
+	foreach ($files as $file) {
+		$num = substr($file, 0, strlen($file) - 4);
 
-echo "<span id='".$num."_id'  class='archive_num' onClick='show_cycle(".$num.",\"".$file."\")'>".$num."</span>";
+		echo "<span id='" . $num . "_id'  class='archive_num' onClick='show_cycle(" . $num . ",\"" . $file . "\")'>" . $num . "</span>";
 
 	}
 
@@ -56,7 +50,8 @@ echo "<span id='".$num."_id'  class='archive_num' onClick='show_cycle(".$num.",\
 
 <script Language="JavaScript" src="/ajax/ajax.js"></script>
 <script>
-var linking_address='<?include($_SERVER["DOCUMENT_ROOT"]."/common/linking_address.txt");?>';
+	var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>'
+	;
 function show_cycle(num,file)
 {
 //alert(file);

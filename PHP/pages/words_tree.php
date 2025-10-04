@@ -3,18 +3,20 @@
 http://go/pages/words_tree.php  
 
 */
-$page_id=-1;
-$title="Дерево слов";
-include_once($_SERVER['DOCUMENT_ROOT']."/common/header.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/common/show_waiting.php");
+$page_id = -1;
+$title = "Дерево слов";
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/show_waiting.php");
 ?>
-<div  style='position:absolute;top:40px;left:200px;font-family:courier;font-size:16px;cursor:pointer;' onClick="get_info()">Обновить</div>
+<div style='position:absolute;top:40px;left:200px;font-family:courier;font-size:16px;cursor:pointer;'
+	onClick="get_info()">Обновить</div>
 
 <div id='div_id' style='font-family:courier;font-size:16px;'>Нужен коннект с Beast.</div>
 </div>
 <script Language="JavaScript" src="/ajax/ajax.js"></script>
 <script>
-var linking_address='<?include($_SERVER["DOCUMENT_ROOT"]."/common/linking_address.txt");?>';
+	var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>'
+	;
 // ждем пока не включат бестию
 check_Beast_activnost(4);
 var old_size=0;

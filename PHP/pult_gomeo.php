@@ -17,8 +17,8 @@ foreach ($strArr as $s) {
 //var_dump($limits);exit();
 function set_porog1($limit)  // для энергии
 {
-$w_norm = 100 - $limit;
-echo '<div class="slider_norm" style="left:' . $limit . '%;width:' . $w_norm . '%;" >&nbsp;</div>
+	$w_norm = 100 - $limit;
+	echo '<div class="slider_norm" style="left:' . $limit . '%;width:' . $w_norm . '%;" >&nbsp;</div>
 	<div class="slider_bad" style="left:0%;width:' . $limit . '%;" >
 <span class="slider_shkala" style="left:20%">|</span>
 <span class="slider_shkala" style="left:40%">|</span>
@@ -28,8 +28,8 @@ echo '<div class="slider_norm" style="left:' . $limit . '%;width:' . $w_norm . '
 }
 function set_porog2($limit) // для остальных
 {
-$w_norm = 100 - $limit;
-echo '<div class="slider_norm" style="left:0%;width:' . $limit . '%;" >&nbsp;</div>
+	$w_norm = 100 - $limit;
+	echo '<div class="slider_norm" style="left:0%;width:' . $limit . '%;" >&nbsp;</div>
 	<div class="slider_bad2" style="left:' . $limit . '%;width:' . $w_norm . '%;" >
 <span class="slider_shkala" style="left:20%">|</span>
 <span class="slider_shkala" style="left:40%">|</span>
@@ -59,31 +59,31 @@ EOD;
 		echo set_porog1($limits[$id]);
 	else
 		echo set_porog2($limits[$id]);
-	echo "</div>";  
+	echo "</div>";
 }
 ?>
 
 <b>Управление жизненными параметрами</b>
 <?
-if(stages_dev <5){
-echo '<span style="color:red;cursor:pointer;padding-left:2px;padding-right:2px;border:solid 1px #8A3CA4;border-radius:50%;background-color:#ffffff" title="Сбросить все жизненные параметры в 0" onClick="cliner_gomeo_pars(this)"><b>X</b></span> &nbsp;&nbsp;&nbsp;&nbsp;';
+if (stages_dev < 5) {
+	echo '<span style="color:red;cursor:pointer;padding-left:2px;padding-right:2px;border:solid 1px #8A3CA4;border-radius:50%;background-color:#ffffff" title="Сбросить все жизненные параметры в 0" onClick="cliner_gomeo_pars(this)"><b>X</b></span> &nbsp;&nbsp;&nbsp;&nbsp;';
 }
 ?>
 - не использовать в качестве ответа на действия Beast:<br>
 <table border=0 cellpadding=0 cellspacing=4 width='100%'>
 	<tr>
 		<td class="slider_td" title="" valign="top">
-			<? slider(1, "Энергия", "",  "Уменьшается со временем и расходовании", "Задать запас энергии"); ?>
+			<? slider(1, "Энергия", "", "Уменьшается со временем и расходовании", "Задать запас энергии"); ?>
 		</td>
 
 		<td class="slider_td" title="">
-			<? slider(2, "Уровень стресса", "",  "Накапливается в течении дня и снимается во время сна. Увеличивается при стрессовых ситуациях", "Задать уровень стресса"); ?>
+			<? slider(2, "Уровень стресса", "", "Накапливается в течении дня и снимается во время сна. Увеличивается при стрессовых ситуациях", "Задать уровень стресса"); ?>
 		</td>
 		<td class="slider_td" title="">
-			<? slider(3, "Уровень гона", "",  "Жизненный параметр данного вида. Постепенно нарастает и требует разрядки", "Задать уровень гона"); ?>
+			<? slider(3, "Уровень гона", "", "Жизненный параметр данного вида. Постепенно нарастает и требует разрядки", "Задать уровень гона"); ?>
 		</td>
 		<td class="slider_td" title="">
-			<? slider(4, "Потребность в общении", "",  "Жизненный параметр данного вида. Постепенно нарастает и требует разрядки", "Задать уровень потребности в общении"); ?>
+			<? slider(4, "Потребность в общении", "", "Жизненный параметр данного вида. Постепенно нарастает и требует разрядки", "Задать уровень потребности в общении"); ?>
 		</td>
 	</tr>
 	<tr>
@@ -91,13 +91,13 @@ echo '<span style="color:red;cursor:pointer;padding-left:2px;padding-right:2px;b
 			<? slider(5, "Потребность в обучении", "", "Зависит от ситуации, но нарастает пока не будет разрядки", "Задать уровень потребности в обучении"); ?>
 		</td>
 		<td class="slider_td" title="Beast начнает часто экспериментировать (10 сек от последней активности Пульта)">
-			<? slider(6, "Любопытство", "",  "Основа поискового поведения. Зависит от ситуации, но нарастает в депривации", "Задать уровень любопытва"); ?>
+			<? slider(6, "Любопытство", "", "Основа поискового поведения. Зависит от ситуации, но нарастает в депривации", "Задать уровень любопытва"); ?>
 		</td>
 		<td class="slider_td" title="">
-			<? slider(7, "Самосохранение",  "", "Жадность, эгоизм, самозащита, страх. Зависит от ситуации, может сам уменьшаться при благополучии.", "Задать жадность"); ?>
+			<? slider(7, "Самосохранение", "", "Жадность, эгоизм, самозащита, страх. Зависит от ситуации, может сам уменьшаться при благополучии.", "Задать жадность"); ?>
 		</td>
 		<td class="slider_td" title="">
-			<? slider(8, "Повреждения", "",  "Параметр общего состояния организма. Повреждения нарастают со временем.", "Задать уровень повреждений"); ?>
+			<? slider(8, "Повреждения", "", "Параметр общего состояния организма. Повреждения нарастают со временем.", "Задать уровень повреждений"); ?>
 		</td>
 	</tr>
 </table>
@@ -231,7 +231,7 @@ var tv = p[1].split("@");    //show_dlg_alert2(p[1],0);
 			var g = pars[i].split(";"); //show_dlg_alert2(p[1],0);
 			var id = g[0];   //alert(id+" | "+val);
 			var val = g[1]; 
-			 			//if(id==2) alert(id+" | "+val);
+						 //if(id==2) alert(id+" | "+val);
 			var color = "#CCFF66";
 			var color2 = "#CCFFC1";
 			var title = "Жизненные параметры в норме.";
@@ -568,9 +568,9 @@ document.getElementById('common_status_exit_id').style.display="none";
 }
 
 document.addEventListener("keydown", function(event) {
-    if (event.keyCode == 27) {// по клавише ESC
-         end_whell_bad();
-    }
+	if (event.keyCode == 27) {// по клавише ESC
+		 end_whell_bad();
+	}
 });
 
 function endperiodIShow()

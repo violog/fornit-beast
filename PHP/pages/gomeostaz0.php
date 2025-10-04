@@ -3,148 +3,135 @@
 http://go/pages/gomeostaz.php  
 
 */
-$page_id=1;
-$title="Редактор гомеостаза";
-include_once($_SERVER['DOCUMENT_ROOT']."/common/header.php");
+$page_id = 1;
+$title = "Редактор гомеостаза";
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 //include_once($_SERVER['DOCUMENT_ROOT']."/pult_js.php");
 
-include_once($_SERVER['DOCUMENT_ROOT']."/common/alert2_dlg.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/alert2_dlg.php");
 
 
 //////////////////////////////////////// САБМИТЫ
 //Действия оператора - гомеостатический ээффект
-if(isset($_POST['gogogo'])&&$_POST['gogogo']==20)
-{
-$out="";
-//var_dump($_POST['ID']);exit();
-$n=0;
-foreach($_POST['effect'] as $id => $str)
-{
-$effect=$_POST['effect'][$id];
-$effect_common=$_POST['effect_common'][$id];
+if (isset($_POST['gogogo']) && $_POST['gogogo'] == 20) {
+	$out = "";
+	//var_dump($_POST['ID']);exit();
+	$n = 0;
+	foreach ($_POST['effect'] as $id => $str) {
+		$effect = $_POST['effect'][$id];
+		$effect_common = $_POST['effect_common'][$id];
 
-if($n)
-	{
-	$out.="\r\n";
+		if ($n) {
+			$out .= "\r\n";
+		}
+		$out .= $id . "|" . $effect . "|" . $effect_common;
+
+		$n++;
 	}
-$out.=$id."|".$effect."|".$effect_common;
 
-$n++;
-}
+	//exit($out);
+	write_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/Gomeostaz_pult_actions.txt", $out);
 
-//exit($out);
-write_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/Gomeostaz_pult_actions.txt",$out);
-
-echo "<form name=\"refresh\" method=\"post\" action=\"/pages/gomeostaz.php#gogogo20\"></form>";
-echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
-exit();
+	echo "<form name=\"refresh\" method=\"post\" action=\"/pages/gomeostaz.php#gogogo20\"></form>";
+	echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
+	exit();
 }
 ///////////////////////////////////////////////
 
-if(isset($_POST['gogogo'])&&$_POST['gogogo']==11)
-{
-$out="";
-$limitOut="";
-//var_dump($_POST['speed']);exit();
-$n=0;
-foreach($_POST['weight'] as $id => $str)
-{
-if($n)
-	{
-	$out.="\r\n";
-	$limitOut.="\r\n";
+if (isset($_POST['gogogo']) && $_POST['gogogo'] == 11) {
+	$out = "";
+	$limitOut = "";
+	//var_dump($_POST['speed']);exit();
+	$n = 0;
+	foreach ($_POST['weight'] as $id => $str) {
+		if ($n) {
+			$out .= "\r\n";
+			$limitOut .= "\r\n";
+		}
+		$out .= $id . "|" . $_POST['weight'][$id] . "|" . $_POST['speed'][$id];
+		$limitOut .= $id . "|" . $_POST['limits'][$id];
+
+		$n++;
 	}
-$out.=$id."|".$_POST['weight'][$id]."|".$_POST['speed'][$id];
-$limitOut.=$id."|".$_POST['limits'][$id];
 
-$n++;
-}
+	//exit($out);
+	write_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/GomeostasWeight.txt", $out);
+	write_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/GomeostazLimits.txt", $limitOut);
 
-//exit($out);
-write_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/GomeostasWeight.txt",$out);
-write_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/GomeostazLimits.txt",$limitOut);
-
-echo "<form name=\"refresh\" method=\"post\" action=\"/pages/gomeostaz.php\"></form>";
-echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
-exit();
+	echo "<form name=\"refresh\" method=\"post\" action=\"/pages/gomeostaz.php\"></form>";
+	echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
+	exit();
 }
 ///////////////////////////////////////////////
-if(isset($_POST['gogogo'])&&$_POST['gogogo']==12)
-{
-$out="";
-//var_dump($_POST['ID']);exit();
-$n=0;
-foreach($_POST['weight'] as $id => $str)
-{
-$weight=$_POST['weight'][$id];
+if (isset($_POST['gogogo']) && $_POST['gogogo'] == 12) {
+	$out = "";
+	//var_dump($_POST['ID']);exit();
+	$n = 0;
+	foreach ($_POST['weight'] as $id => $str) {
+		$weight = $_POST['weight'][$id];
 
-if($n)
-	{
-	$out.="\r\n";
+		if ($n) {
+			$out .= "\r\n";
+		}
+		$out .= $id . "|" . $weight;
+
+		$n++;
 	}
-$out.=$id."|".$weight;
 
-$n++;
-}
+	//exit($out);
+	write_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/base_context_weight.txt", $out);
 
-//exit($out);
-write_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/base_context_weight.txt",$out);
-
-echo "<form name=\"refresh\" method=\"post\" action=\"/pages/gomeostaz.php\"></form>";
-echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
-exit();
+	echo "<form name=\"refresh\" method=\"post\" action=\"/pages/gomeostaz.php\"></form>";
+	echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
+	exit();
 }
 ///////////////////////////////////////////////
 ///////////////////////////////////////////////
-if(isset($_POST['gogogo'])&&$_POST['gogogo']==3)
-{
-$out="";
-//var_dump($_POST['bad']);exit();
-$n=0;
-foreach($_POST['id'] as $id => $str)
-{
-$out.=$id;
-$out.="|".$_POST['bad'][$id];  
-$out.="|".$_POST['well'][$id];
-$out.="|".$_POST['d1'][$id];
-$out.="|".$_POST['d2'][$id];
-$out.="|".$_POST['d3'][$id];
-$out.="|".$_POST['d4'][$id];
-$out.="|".$_POST['d5'][$id];
-$out.="\r\n";                       // exit();
+if (isset($_POST['gogogo']) && $_POST['gogogo'] == 3) {
+	$out = "";
+	//var_dump($_POST['bad']);exit();
+	$n = 0;
+	foreach ($_POST['id'] as $id => $str) {
+		$out .= $id;
+		$out .= "|" . $_POST['bad'][$id];
+		$out .= "|" . $_POST['well'][$id];
+		$out .= "|" . $_POST['d1'][$id];
+		$out .= "|" . $_POST['d2'][$id];
+		$out .= "|" . $_POST['d3'][$id];
+		$out .= "|" . $_POST['d4'][$id];
+		$out .= "|" . $_POST['d5'][$id];
+		$out .= "\r\n";                       // exit();
 
-$n++;
-}
+		$n++;
+	}
 
-//exit($out);
-write_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/base_context_activnost.txt",$out);
+	//exit($out);
+	write_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/base_context_activnost.txt", $out);
 
-echo "<form name=\"refresh\" method=\"post\" action=\"/pages/gomeostaz.php#gogogo3\"></form>";
-echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
-exit();
+	echo "<form name=\"refresh\" method=\"post\" action=\"/pages/gomeostaz.php#gogogo3\"></form>";
+	echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
+	exit();
 }
 ///////////////////////////////////////////////
 
-if(isset($_POST['gogogo'])&&$_POST['gogogo']==4)
-{
-$out="";
-//var_dump($_POST['bad']);exit();
-$n=0;
-foreach($_POST['id'] as $id => $str)
-{
-$out.=$id;
-$out.="|".$_POST['ant'][$id];  
-$out.="\r\n";                       // exit();
+if (isset($_POST['gogogo']) && $_POST['gogogo'] == 4) {
+	$out = "";
+	//var_dump($_POST['bad']);exit();
+	$n = 0;
+	foreach ($_POST['id'] as $id => $str) {
+		$out .= $id;
+		$out .= "|" . $_POST['ant'][$id];
+		$out .= "\r\n";                       // exit();
 
-$n++;
-}
+		$n++;
+	}
 
-//exit($out);
-write_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/base_context_antagonists.txt",$out);
+	//exit($out);
+	write_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/base_context_antagonists.txt", $out);
 
-echo "<form name=\"refresh\" method=\"post\" action=\"/pages/gomeostaz.php\"></form>";
-echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
-exit();
+	echo "<form name=\"refresh\" method=\"post\" action=\"/pages/gomeostaz.php\"></form>";
+	echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
+	exit();
 }
 ///////////////////////////////////////////////
 
@@ -172,42 +159,40 @@ echo "<div class='main_page_div' style=''>";
 
 <form  name="form2" method="post" action="/pages/gomeostaz.php" >
 <?
-$nameArr=array(
-1=>array("Энергия","Уменьшается со временем и расходовании."),
-2=>array("Стресс","Накапливается в течении дня и снимается во время сна. Увеличивается при стрессовых ситуациях."),
-3=>array("Гон","Жизненный параметр данного вида. Постепенно нарастает и требует разрядки."),
-4=>array("Потребность в общении","Жизненный параметр данного вида. Постепенно нарастает и требует разрядки."),
-5=>array("Потребность в обучении","Зависит от ситуации, но нарастает пока не будет разрядки."),
-6=>array("Поиск","Основа поискового поведения. Зависит от ситуации, но нарастает в депривации."),
-7=>array("Самосохранение","Жадность, эгоизм, самозащита, страх смерти. Зависит от ситуации, может сам уменьшаться при благополучии."),
-8=>array("Повреждения","Параметр общего состояния организма. Повреждения нарастают со временем.")
+$nameArr = array(
+	1 => array("Энергия", "Уменьшается со временем и расходовании."),
+	2 => array("Стресс", "Накапливается в течении дня и снимается во время сна. Увеличивается при стрессовых ситуациях."),
+	3 => array("Гон", "Жизненный параметр данного вида. Постепенно нарастает и требует разрядки."),
+	4 => array("Потребность в общении", "Жизненный параметр данного вида. Постепенно нарастает и требует разрядки."),
+	5 => array("Потребность в обучении", "Зависит от ситуации, но нарастает пока не будет разрядки."),
+	6 => array("Поиск", "Основа поискового поведения. Зависит от ситуации, но нарастает в депривации."),
+	7 => array("Самосохранение", "Жадность, эгоизм, самозащита, страх смерти. Зависит от ситуации, может сам уменьшаться при благополучии."),
+	8 => array("Повреждения", "Параметр общего состояния организма. Повреждения нарастают со временем.")
 
 );
 // считать файлы
 
-$progs=read_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/GomeostazLimits.txt");
-$strArr=explode("\r\n",$progs);
-$limits=array();
-foreach($strArr as $s)
-{
-$p=explode("|",$s);
-$limits[$p[0]]=$p[1];
+$progs = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/GomeostazLimits.txt");
+$strArr = explode("\r\n", $progs);
+$limits = array();
+foreach ($strArr as $s) {
+	$p = explode("|", $s);
+	$limits[$p[0]] = $p[1];
 }
 
-$progs=read_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/GomeostasWeight.txt");
-$strArr=explode("\r\n",$progs);
-foreach($strArr as $str)
-{
-$par=explode("|",$str);
-$id=$par[0];
-echo "
+$progs = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/GomeostasWeight.txt");
+$strArr = explode("\r\n", $progs);
+foreach ($strArr as $str) {
+	$par = explode("|", $str);
+	$id = $par[0];
+	echo "
 <tr>
-<td class='table_cell' style='width:40px;'>".$par[0]."</td>
-<td class='table_cell'><b>".str_replace(" ","&nbsp;",$nameArr[$par[0]][0])."</b></td>
-<td class='table_cell' style='font-size:12px;'>".$nameArr[$par[0]][1]."</td>
-<td class='table_cell'><input class='table_input' type='text' name='weight[".$id."]' ".only_numbers_input()."  value='".$par[1]."'  ></td>
-<td class='table_cell'><input class='table_input' type='text' name='speed[".$id."]' ".only_numbers_input()."  value='".$par[2]."'  ></td>
-<td class='table_cell'><input class='table_input' type='text' name='limits[".$id."]' ".only_numbers_input()."  value='".$limits[$id]."'  ></td>
+<td class='table_cell' style='width:40px;'>" . $par[0] . "</td>
+<td class='table_cell'><b>" . str_replace(" ", "&nbsp;", $nameArr[$par[0]][0]) . "</b></td>
+<td class='table_cell' style='font-size:12px;'>" . $nameArr[$par[0]][1] . "</td>
+<td class='table_cell'><input class='table_input' type='text' name='weight[" . $id . "]' " . only_numbers_input() . "  value='" . $par[1] . "'  ></td>
+<td class='table_cell'><input class='table_input' type='text' name='speed[" . $id . "]' " . only_numbers_input() . "  value='" . $par[2] . "'  ></td>
+<td class='table_cell'><input class='table_input' type='text' name='limits[" . $id . "]' " . only_numbers_input() . "  value='" . $limits[$id] . "'  ></td>
 </tr>";
 
 }
@@ -232,34 +217,33 @@ echo "
 
 <form  name="form" method="post" action="/pages/gomeostaz.php" >
 <?
-$nameArr=array(
-1=>array("Пищевой","Пищевое поведение, восполнение энергии, на что тратится время и тормозятся антагонистические стили поведения."),
-2=>array("Поиск","Поисковое поведение, любопытство. Обследование объекта внимания, поиск новых возможностей."),
-3=>array("Игра","Игровое поведение - отработка опыта в облегченных ситуациях или при обучении."),
-4=>array("Гон","Половое поведение. Тормозятся антагонистические стили"),
-5=>array("Защита","Оборонительные поведение для явных признаков угрозы или плохом состоянии."),
-6=>array("Лень","Апатия в благополучном или безысходном состоянии."),
-7=>array("Ступор","Оцепенелость при непреодолимой опастности или когда нет мотивации при благополучии или отсуствии любых возможностей для активного поведения."),
-8=>array("Страх","Осторожность при признаках опасной ситуации."),
-9=>array("Агрессия","Агрессивное поведение для признаков легкой добычи или защиты (иногда - при плохом состоянии)."),
-10=>array("Злость","Безжалостность в случае низкой оценки ."),
-11=>array("Доброта","Альтруистическое поведение."),
-12=>array("Сон","Состояние сна. Освобождение стрессового состояния. Реконструкция необработанной информации."),
+$nameArr = array(
+	1 => array("Пищевой", "Пищевое поведение, восполнение энергии, на что тратится время и тормозятся антагонистические стили поведения."),
+	2 => array("Поиск", "Поисковое поведение, любопытство. Обследование объекта внимания, поиск новых возможностей."),
+	3 => array("Игра", "Игровое поведение - отработка опыта в облегченных ситуациях или при обучении."),
+	4 => array("Гон", "Половое поведение. Тормозятся антагонистические стили"),
+	5 => array("Защита", "Оборонительные поведение для явных признаков угрозы или плохом состоянии."),
+	6 => array("Лень", "Апатия в благополучном или безысходном состоянии."),
+	7 => array("Ступор", "Оцепенелость при непреодолимой опастности или когда нет мотивации при благополучии или отсуствии любых возможностей для активного поведения."),
+	8 => array("Страх", "Осторожность при признаках опасной ситуации."),
+	9 => array("Агрессия", "Агрессивное поведение для признаков легкой добычи или защиты (иногда - при плохом состоянии)."),
+	10 => array("Злость", "Безжалостность в случае низкой оценки ."),
+	11 => array("Доброта", "Альтруистическое поведение."),
+	12 => array("Сон", "Состояние сна. Освобождение стрессового состояния. Реконструкция необработанной информации."),
 );
 
 
 
 // считать файл 
-$progs=read_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/base_context_weight.txt");
-$strArr=explode("\r\n",$progs);
-foreach($strArr as $str)
-{
-$par=explode("|",$str);
-echo "<tr>
-<td class='table_cell' style='width:40px;'>".$par[0]."</td>
-<td class='table_cell'><b>".str_replace(" ","&nbsp;",$nameArr[$par[0]][0])."</b></td>
-<td class='table_cell' style='font-size:12px;'>".$nameArr[$par[0]][1]."</td>
-<td class='table_cell'><input class='table_input' type='text' name='weight[".$par[0]."]' ".only_numbers_input()."  value='".$par[1]."'  ></td>
+$progs = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/base_context_weight.txt");
+$strArr = explode("\r\n", $progs);
+foreach ($strArr as $str) {
+	$par = explode("|", $str);
+	echo "<tr>
+<td class='table_cell' style='width:40px;'>" . $par[0] . "</td>
+<td class='table_cell'><b>" . str_replace(" ", "&nbsp;", $nameArr[$par[0]][0]) . "</b></td>
+<td class='table_cell' style='font-size:12px;'>" . $nameArr[$par[0]][1] . "</td>
+<td class='table_cell'><input class='table_input' type='text' name='weight[" . $par[0] . "]' " . only_numbers_input() . "  value='" . $par[1] . "'  ></td>
 </tr>";
 }
 ?>
@@ -273,14 +257,13 @@ echo "<tr>
 
 <? // АНТАГОНИСТЫ
 // считать файл со строками  ID|7,5,12
-$progs=read_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/base_context_antagonists.txt");
-$strArr=explode("\r\n",$progs);  //exit("$progs");
-$iArr=array();
-foreach($strArr as $str)
-{
-$par=explode("|",$str);  
-$id=$par[0];
-$iArr[$id]=$par[1]; 
+$progs = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/base_context_antagonists.txt");
+$strArr = explode("\r\n", $progs);  //exit("$progs");
+$iArr = array();
+foreach ($strArr as $str) {
+	$par = explode("|", $str);
+	$id = $par[0];
+	$iArr[$id] = $par[1];
 }
 //var_dump($iArr);exit();
 ?>
@@ -298,37 +281,56 @@ $iArr[$id]=$par[1];
 <th  class='table_header'>Строка ID антагонистов (через запятую)</th>
 </tr>
 <?
-$name="";
-for($n=1;$n<13;$n++)
-{
-switch($n)
-{
-case 1: $name="Пищевой"; break;
-case 2: $name="Поиск"; break;
-case 3: $name="Игра"; break;
-case 4: $name="Гон"; break;
-case 5: $name="Защита"; break;
-case 6: $name="Лень"; break;
-case 7: $name="Ступор"; break;
-case 8: $name="Страх"; break;
-case 9: $name="Агрессия"; break;
-case 10: $name="Злость"; break;
-case 11: $name="Доброта"; break;
-case 12: $name="Сон"; break;
-}
-if(($n-1)%2==0)
-{
-echo "<tr>
-<td class='table_cell' >".$n.".".$name."<input type='hidden' name='id[".$n."]' value='".$n."' ></td>
-<td class='table_cell'><input id='col_ant_".$n."' class='table_input' type='text' name='ant[".$n."]' ".only_int_inp()."  value='".$iArr[$n]."' ><img src='/img/down17.png' class='select_control' onClick='show_control_ant(this,".$n.")' title='Выбор значений'></td>";
-}
-else
-{
-echo "<td class='table_cell' >".$n.".".$name."<inputtype='hidden' name='id[".$n."]' value='".$n."' ></td>
-<td class='table_cell'><input id='col_ant_".$n."' class='table_input' type='text' name='ant[".$n."]' ".only_int_inp()."  value='".$iArr[$n]."' ><img src='/img/down17.png' class='select_control' onClick='show_control_ant(this,".$n.")' title='Выбор значений'></td>
+$name = "";
+for ($n = 1; $n < 13; $n++) {
+	switch ($n) {
+		case 1:
+			$name = "Пищевой";
+			break;
+		case 2:
+			$name = "Поиск";
+			break;
+		case 3:
+			$name = "Игра";
+			break;
+		case 4:
+			$name = "Гон";
+			break;
+		case 5:
+			$name = "Защита";
+			break;
+		case 6:
+			$name = "Лень";
+			break;
+		case 7:
+			$name = "Ступор";
+			break;
+		case 8:
+			$name = "Страх";
+			break;
+		case 9:
+			$name = "Агрессия";
+			break;
+		case 10:
+			$name = "Злость";
+			break;
+		case 11:
+			$name = "Доброта";
+			break;
+		case 12:
+			$name = "Сон";
+			break;
+	}
+	if (($n - 1) % 2 == 0) {
+		echo "<tr>
+<td class='table_cell' >" . $n . "." . $name . "<input type='hidden' name='id[" . $n . "]' value='" . $n . "' ></td>
+<td class='table_cell'><input id='col_ant_" . $n . "' class='table_input' type='text' name='ant[" . $n . "]' " . only_int_inp() . "  value='" . $iArr[$n] . "' ><img src='/img/down17.png' class='select_control' onClick='show_control_ant(this," . $n . ")' title='Выбор значений'></td>";
+	} else {
+		echo "<td class='table_cell' >" . $n . "." . $name . "<inputtype='hidden' name='id[" . $n . "]' value='" . $n . "' ></td>
+<td class='table_cell'><input id='col_ant_" . $n . "' class='table_input' type='text' name='ant[" . $n . "]' " . only_int_inp() . "  value='" . $iArr[$n] . "' ><img src='/img/down17.png' class='select_control' onClick='show_control_ant(this," . $n . ")' title='Выбор значений'></td>
 </tr>";
 
-}
+	}
 }
 ?>
 </table>
@@ -349,21 +351,20 @@ echo "<td class='table_cell' >".$n.".".$name."<inputtype='hidden' name='id[".$n.
 Чтобы погасить ID стиля, нужно перед ним поставить знак "-", например: "4,-3" означает, что стиль с ID=3 будет погашен. При этом действуют установки таблицы: "Несовместимость активностей Базовых стилей".
 <?
 // считать файл со строками  ID|bad|1|2|3|4|5
-$progs=read_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/base_context_activnost.txt");
-$strArr=explode("\r\n",$progs);  //exit("$progs");
-$iArr=array();
+$progs = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/base_context_activnost.txt");
+$strArr = explode("\r\n", $progs);  //exit("$progs");
+$iArr = array();
 
-foreach($strArr as $str)
-{
-$par=explode("|",$str);  
-$id=$par[0];
-$iArr[$id][0]=$par[1]; 
-$iArr[$id][1]=$par[2];
-$iArr[$id][2]=$par[3];
-$iArr[$id][3]=$par[4];
-$iArr[$id][4]=$par[5];
-$iArr[$id][5]=$par[6];
-$iArr[$id][6]=$par[7];
+foreach ($strArr as $str) {
+	$par = explode("|", $str);
+	$id = $par[0];
+	$iArr[$id][0] = $par[1];
+	$iArr[$id][1] = $par[2];
+	$iArr[$id][2] = $par[3];
+	$iArr[$id][3] = $par[4];
+	$iArr[$id][4] = $par[5];
+	$iArr[$id][5] = $par[6];
+	$iArr[$id][6] = $par[7];
 }
 
 ?>
@@ -380,29 +381,43 @@ $iArr[$id][6]=$par[7];
 <th  class='table_header'>Норма 80-100%</th>
 </tr>
 <?
-for($n=1;$n<9;$n++)
-{
-$name="";
-switch($n)
-{
-case 1: $name="Энергия"; break;
-case 2: $name="Стресс"; break;
-case 3: $name="Гон"; break;
-case 4: $name="Потребность в общении"; break;
-case 5: $name="Потребность в обучении"; break;
-case 6: $name="Поиск"; break;
-case 7: $name="Самосохранение"; break;
-case 8: $name="Повреждения"; break;
-}
-echo "<tr>
-<td class='table_cell' >".$name."<input type='hidden' name='id[".$n."]' value='".$n."' ></td>
-<td class='table_cell'><input id='col_1_".$n."' class='table_input' type='text' name='bad[".$n."]' ".only_int_inp()."  value='".$iArr[$n][0]."' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,1,".$n.")' title='Выбор значений'></td>
-<td class='table_cell'><input id='col_2_".$n."' class='table_input' type='text' name='well[".$n."]' ".only_int_inp()."  value='".$iArr[$n][1]."' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,2,".$n.")' title='Выбор значений'></td>
-<td class='table_cell'><input id='col_3_".$n."' class='table_input' type='text' name='d1[".$n."]' ".only_int_inp()."  value='".$iArr[$n][2]."' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,3,".$n.")' title='Выбор значений'></td>
-<td class='table_cell'><input id='col_4_".$n."' class='table_input' type='text' name='d2[".$n."]' ".only_int_inp()."  value='".$iArr[$n][3]."' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,4,".$n.")' title='Выбор значений'></td>
-<td class='table_cell'><input id='col_5_".$n."' class='table_input' type='text' name='d3[".$n."]' ".only_int_inp()."  value='".$iArr[$n][4]."' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,5,".$n.")' title='Выбор значений'></td>
-<td class='table_cell'><input  id='col_6_".$n."' class='table_input' type='text' name='d4[".$n."]' ".only_int_inp()."  value='".$iArr[$n][5]."' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,6,".$n.")' title='Выбор значений'></td>
-<td class='table_cell'><input  id='col_7_".$n."' class='table_input' type='text' name='d5[".$n."]' ".only_int_inp()."  value='".$iArr[$n][6]."' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,7,".$n.")' title='Выбор значений'></td>
+for ($n = 1; $n < 9; $n++) {
+	$name = "";
+	switch ($n) {
+		case 1:
+			$name = "Энергия";
+			break;
+		case 2:
+			$name = "Стресс";
+			break;
+		case 3:
+			$name = "Гон";
+			break;
+		case 4:
+			$name = "Потребность в общении";
+			break;
+		case 5:
+			$name = "Потребность в обучении";
+			break;
+		case 6:
+			$name = "Поиск";
+			break;
+		case 7:
+			$name = "Самосохранение";
+			break;
+		case 8:
+			$name = "Повреждения";
+			break;
+	}
+	echo "<tr>
+<td class='table_cell' >" . $name . "<input type='hidden' name='id[" . $n . "]' value='" . $n . "' ></td>
+<td class='table_cell'><input id='col_1_" . $n . "' class='table_input' type='text' name='bad[" . $n . "]' " . only_int_inp() . "  value='" . $iArr[$n][0] . "' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,1," . $n . ")' title='Выбор значений'></td>
+<td class='table_cell'><input id='col_2_" . $n . "' class='table_input' type='text' name='well[" . $n . "]' " . only_int_inp() . "  value='" . $iArr[$n][1] . "' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,2," . $n . ")' title='Выбор значений'></td>
+<td class='table_cell'><input id='col_3_" . $n . "' class='table_input' type='text' name='d1[" . $n . "]' " . only_int_inp() . "  value='" . $iArr[$n][2] . "' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,3," . $n . ")' title='Выбор значений'></td>
+<td class='table_cell'><input id='col_4_" . $n . "' class='table_input' type='text' name='d2[" . $n . "]' " . only_int_inp() . "  value='" . $iArr[$n][3] . "' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,4," . $n . ")' title='Выбор значений'></td>
+<td class='table_cell'><input id='col_5_" . $n . "' class='table_input' type='text' name='d3[" . $n . "]' " . only_int_inp() . "  value='" . $iArr[$n][4] . "' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,5," . $n . ")' title='Выбор значений'></td>
+<td class='table_cell'><input  id='col_6_" . $n . "' class='table_input' type='text' name='d4[" . $n . "]' " . only_int_inp() . "  value='" . $iArr[$n][5] . "' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,6," . $n . ")' title='Выбор значений'></td>
+<td class='table_cell'><input  id='col_7_" . $n . "' class='table_input' type='text' name='d5[" . $n . "]' " . only_int_inp() . "  value='" . $iArr[$n][6] . "' ><img src='/img/down17.png' class='select_control' onClick='show_control(this,7," . $n . ")' title='Выбор значений'></td>
 </tr>";
 }
 ?>
@@ -432,45 +447,44 @@ echo "<tr>
 
 <form  name="form" method="post" action="/pages/gomeostaz.php" >
 <?
-$nameArr=array(
-1=>array("Непонятно","Оператору непонятны-неодобряет действия Beast."),
-2=>array("Понятно","Оператор понимает-одобряет действия Beast."),
-3=>array("Наказать","Наказание за действия Beast."),
-4=>array("Поощрить","Поощрение действий Beast"),
-5=>array("Накормить","Пополнение энергии."),
-6=>array("Успокоить","Снижение сресса."),
-7=>array("Предложить поиграть","Уменьшение потребности в общении при критическом значении."),
-8=>array("Предложить поучить","Уменьшение потребности учиться при критическом значении."),
-9=>array("Игнорировать","Показательное игнорирование."),
-10=>array("Сделать больно","Увеличить повреждения."),
-11=>array("Сделать приятно","Улучшение нескольких показателей."),
-12=>array("Заплакать","Показательная обида."),
-13=>array("Засмеяться","Улучшение нескольких показателей."),
-14=>array("Обрадоваться","Поощрить действия Beast, показать сопреживание."),
-15=>array("Испугаться","Показательное недовольство опасными действиями Beast."),
-16=>array("Простить","Улучшение ранее ухудшенных состояний."),
-17=>array("Вылечить","Улучшение параметра Повреждения."),
+$nameArr = array(
+	1 => array("Непонятно", "Оператору непонятны-неодобряет действия Beast."),
+	2 => array("Понятно", "Оператор понимает-одобряет действия Beast."),
+	3 => array("Наказать", "Наказание за действия Beast."),
+	4 => array("Поощрить", "Поощрение действий Beast"),
+	5 => array("Накормить", "Пополнение энергии."),
+	6 => array("Успокоить", "Снижение сресса."),
+	7 => array("Предложить поиграть", "Уменьшение потребности в общении при критическом значении."),
+	8 => array("Предложить поучить", "Уменьшение потребности учиться при критическом значении."),
+	9 => array("Игнорировать", "Показательное игнорирование."),
+	10 => array("Сделать больно", "Увеличить повреждения."),
+	11 => array("Сделать приятно", "Улучшение нескольких показателей."),
+	12 => array("Заплакать", "Показательная обида."),
+	13 => array("Засмеяться", "Улучшение нескольких показателей."),
+	14 => array("Обрадоваться", "Поощрить действия Beast, показать сопреживание."),
+	15 => array("Испугаться", "Показательное недовольство опасными действиями Beast."),
+	16 => array("Простить", "Улучшение ранее ухудшенных состояний."),
+	17 => array("Вылечить", "Улучшение параметра Повреждения."),
 );
 
 // считать файл 
-$progs=read_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/Gomeostaz_pult_actions.txt");
-$strArr=explode("\r\n",$progs);
-foreach($strArr as $str)
-{
-$par=explode("|",$str);
-$id=$par[0];
-echo "<tr>
-<td class='table_cell' style='width:40px;'>".$id."</td>
-<td class='table_cell'><b>".str_replace(" ","&nbsp;",$nameArr[$id][0])."</b></td>
-<td class='table_cell' style='font-size:12px;'>".$nameArr[$id][1]."</td>";
-if($id==5)
-echo "<td class='table_cell'>На кнопке есть выбор.<input type='hidden' name='effect[".$id."]' value=''></td>";
-else
-echo "<td class='table_cell'><input class='table_input' type='text' name='effect[".$id."]' ".only_allow_inp()."  value='".$par[1]."'  ></td>";
+$progs = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/Gomeostaz_pult_actions.txt");
+$strArr = explode("\r\n", $progs);
+foreach ($strArr as $str) {
+	$par = explode("|", $str);
+	$id = $par[0];
+	echo "<tr>
+<td class='table_cell' style='width:40px;'>" . $id . "</td>
+<td class='table_cell'><b>" . str_replace(" ", "&nbsp;", $nameArr[$id][0]) . "</b></td>
+<td class='table_cell' style='font-size:12px;'>" . $nameArr[$id][1] . "</td>";
+	if ($id == 5)
+		echo "<td class='table_cell'>На кнопке есть выбор.<input type='hidden' name='effect[" . $id . "]' value=''></td>";
+	else
+		echo "<td class='table_cell'><input class='table_input' type='text' name='effect[" . $id . "]' " . only_allow_inp() . "  value='" . $par[1] . "'  ></td>";
 
-echo "<td class='table_cell'><input class='table_input' type='text' name='effect_common[".$id."]' ".only_allow_inp2()."  value='".$par[2]."'  ></td>";
+	echo "<td class='table_cell'><input class='table_input' type='text' name='effect_common[" . $id . "]' " . only_allow_inp2() . "  value='" . $par[2] . "'  ></td>";
 
-echo "</tr>";
+	echo "</tr>";
 }
 ?>
 </table>
@@ -483,18 +497,18 @@ echo "</tr>";
 function only_allow_inp()
 {
 	// СТРОГО В ОДНУ СТРОКУ!
-$out = <<<EOD
+	$out = <<<EOD
 onKeyDown='only_allow_inp(this)' onKeyUp='only_allow_inp(this)' onMouseUp='only_allow_inp(this)'
 EOD;
-return $out;
+	return $out;
 }
 function only_allow_inp2()
 {
 	// СТРОГО В ОДНУ СТРОКУ!
-$out = <<<EOD
+	$out = <<<EOD
 onKeyDown='only_allow_inp2(this)' onKeyUp='only_allow_inp2(this)' onMouseUp='only_allow_inp2(this)'
 EOD;
-return $out;
+	return $out;
 }
 ?>
 <script>

@@ -9,48 +9,46 @@ var_dump($cellComb);exit();
 function get_ubicum_combination($max)
 {
 
-function permutations($arr,$n)
-{
-     $res = array();
+	function permutations($arr, $n)
+	{
+		$res = array();
 
-     foreach ($arr as $w)
-     {
-           if ($n==1) $res[] = $w;
-           else
-           {
-                 $perms = permutations($arr,$n-1);
+		foreach ($arr as $w) {
+			if ($n == 1)
+				$res[] = $w;
+			else {
+				$perms = permutations($arr, $n - 1);
 
-                 foreach ($perms as $p)
-                 {
-                      $res[] = $w."|".$p;
-                 } 
-           }
-     }
+				foreach ($perms as $p) {
+					$res[] = $w . "|" . $p;
+				}
+			}
+		}
 
-     return $res;
-}
+		return $res;
+	}
 
-$words = array();
-for($m=0;$m<$max;$m++)
-array_push($words,"$m");
+	$words = array();
+	for ($m = 0; $m < $max; $m++)
+		array_push($words, "$m");
 
-$pe = permutations($words,3); // var_dump($pe);exit();
+	$pe = permutations($words, 3); // var_dump($pe);exit();
 
 
-$cellComb = array();
-foreach($pe as $p)
-{
-	$arr=explode("|",$p);  //var_dump($arr);exit();
-	sort($arr, SORT_NUMERIC);reset($arr);
-	$arr=array_unique($arr);
-if(count($arr))
-	array_push($cellComb,$arr);
-}
-// убрать повторения
+	$cellComb = array();
+	foreach ($pe as $p) {
+		$arr = explode("|", $p);  //var_dump($arr);exit();
+		sort($arr, SORT_NUMERIC);
+		reset($arr);
+		$arr = array_unique($arr);
+		if (count($arr))
+			array_push($cellComb, $arr);
+	}
+	// убрать повторения
 //$cellComb=array_unique($cellComb, SORT_REGULAR);// array_unique для многомерных массивов оставляет некоторые
-$cellComb = array_map("unserialize", array_unique(array_map("serialize", $cellComb)));// убирает дубли идеально
+	$cellComb = array_map("unserialize", array_unique(array_map("serialize", $cellComb)));// убирает дубли идеально
 
-return $cellComb;
+	return $cellComb;
 }
 
 
@@ -67,34 +65,34 @@ array_push($cellStr,"$m");
 
 function placing($chars, $from=0, $to = 0){
 	global $cellStr;
-    $cnt = count($chars);
-    if(($from == 0) && ($to == 0)){
-        $from = 1;
-        $to = $cnt;
-    }
-    if($from == 0) $from = 1;
-    if($to == 0) $to = $from;
-    if($from < $to){
-        $plac = [];
-        for($num = $from; $num <= $to; $num++){
-            $plac = array_merge($plac, placing($cellStr, $num));
-        }
-    }else{
-        $plac = [""];   
-        for($n = 0; $n < $from; $n++){
-            $plac_old = $plac;
-            $plac = [];
-            foreach($plac_old as $item){
-                $last = strlen($item)-1;
-                for($m = $n; $m < $cnt; $m++){
-                    if($chars[$m] > $item[$last]){
-                        $plac[] = $item.$chars[$m];
-                    }
-                }
-            }
-        }
-    }
-    return $plac;
+	$cnt = count($chars);
+	if(($from == 0) && ($to == 0)){
+		$from = 1;
+		$to = $cnt;
+	}
+	if($from == 0) $from = 1;
+	if($to == 0) $to = $from;
+	if($from < $to){
+		$plac = [];
+		for($num = $from; $num <= $to; $num++){
+			$plac = array_merge($plac, placing($cellStr, $num));
+		}
+	}else{
+		$plac = [""];   
+		for($n = 0; $n < $from; $n++){
+			$plac_old = $plac;
+			$plac = [];
+			foreach($plac_old as $item){
+				$last = strlen($item)-1;
+				for($m = $n; $m < $cnt; $m++){
+					if($chars[$m] > $item[$last]){
+						$plac[] = $item.$chars[$m];
+					}
+				}
+			}
+		}
+	}
+	return $plac;
 }
 
 $cellComb = placing($cellStr);
@@ -134,7 +132,7 @@ foreach($tComb as $comb)
 	for($m=0;$m<count($comb)-1;$m++)
 	{ 
 		var_dump($arr);echo "<hr>";
-      unset($arr[$m]);
+	  unset($arr[$m]);
 	  //$arr = array_shift($arr);
 	  array_push($tComb,$arr);
 	}
@@ -157,34 +155,34 @@ array_push($cellStr,$m);
 
 function placing($chars, $from=0, $to = 0){
 	global $cellStr;
-    $cnt = count($chars);
-    if(($from == 0) && ($to == 0)){
-        $from = 1;
-        $to = $cnt;
-    }
-    if($from == 0) $from = 1;
-    if($to == 0) $to = $from;
-    if($from < $to){
-        $plac = [];
-        for($num = $from; $num <= $to; $num++){
-            $plac = array_merge($plac, placing($cellStr, $num));
-        }
-    }else{
-        $plac = [""];   
-        for($n = 0; $n < $from; $n++){
-            $plac_old = $plac;
-            $plac = [];
-            foreach($plac_old as $item){
-                $last = strlen($item)-1;
-                for($m = $n; $m < $cnt; $m++){
-                    if($chars[$m] > $item[$last]){
-                        $plac[] = $item.$chars[$m];
-                    }
-                }
-            }
-        }
-    }
-    return $plac;
+	$cnt = count($chars);
+	if(($from == 0) && ($to == 0)){
+		$from = 1;
+		$to = $cnt;
+	}
+	if($from == 0) $from = 1;
+	if($to == 0) $to = $from;
+	if($from < $to){
+		$plac = [];
+		for($num = $from; $num <= $to; $num++){
+			$plac = array_merge($plac, placing($cellStr, $num));
+		}
+	}else{
+		$plac = [""];   
+		for($n = 0; $n < $from; $n++){
+			$plac_old = $plac;
+			$plac = [];
+			foreach($plac_old as $item){
+				$last = strlen($item)-1;
+				for($m = $n; $m < $cnt; $m++){
+					if($chars[$m] > $item[$last]){
+						$plac[] = $item.$chars[$m];
+					}
+				}
+			}
+		}
+	}
+	return $plac;
 }
 
 $cellComb = placing($cellStr);
@@ -196,16 +194,16 @@ var_dump($cellComb);exit();
 /* //как мой алгоритм без вычитаний средних
 function permutation(array $arr)
 {
-    while($ele=array_shift($arr))
-    {
-        $x=$ele;
-        echo $x."<br>";
-        foreach($arr as $rest)
-        {
-            $x.=" $rest";
-            echo $x."<br>";
-        }
-    }
+	while($ele=array_shift($arr))
+	{
+		$x=$ele;
+		echo $x."<br>";
+		foreach($arr as $rest)
+		{
+			$x.=" $rest";
+			echo $x."<br>";
+		}
+	}
 }
 permutation(array("1","2","3","4"));
 exit();
@@ -266,7 +264,7 @@ foreach($tComb as $comb)
 	$arr=$comb;
 	for($m=1;$m<count($comb)-1;$m++)
 	{
-      unset($arr[$m]);
+	  unset($arr[$m]);
 	  array_push($tComb,$arr);
 	}
 
@@ -283,34 +281,34 @@ array_push($cellStr,$m);
 
 function placing($chars, $from=0, $to = 0){
 	global $cellStr;
-    $cnt = count($chars);
-    if(($from == 0) && ($to == 0)){
-        $from = 1;
-        $to = $cnt;
-    }
-    if($from == 0) $from = 1;
-    if($to == 0) $to = $from;
-    if($from < $to){
-        $plac = [];
-        for($num = $from; $num <= $to; $num++){
-            $plac = array_merge($plac, placing($cellStr, $num));
-        }
-    }else{
-        $plac = [""];   
-        for($n = 0; $n < $from; $n++){
-            $plac_old = $plac;
-            $plac = [];
-            foreach($plac_old as $item){
-                $last = strlen($item)-1;
-                for($m = $n; $m < $cnt; $m++){
-                    if($chars[$m] > $item[$last]){
-                        $plac[] = $item.$chars[$m];
-                    }
-                }
-            }
-        }
-    }
-    return $plac;
+	$cnt = count($chars);
+	if(($from == 0) && ($to == 0)){
+		$from = 1;
+		$to = $cnt;
+	}
+	if($from == 0) $from = 1;
+	if($to == 0) $to = $from;
+	if($from < $to){
+		$plac = [];
+		for($num = $from; $num <= $to; $num++){
+			$plac = array_merge($plac, placing($cellStr, $num));
+		}
+	}else{
+		$plac = [""];   
+		for($n = 0; $n < $from; $n++){
+			$plac_old = $plac;
+			$plac = [];
+			foreach($plac_old as $item){
+				$last = strlen($item)-1;
+				for($m = $n; $m < $cnt; $m++){
+					if($chars[$m] > $item[$last]){
+						$plac[] = $item.$chars[$m];
+					}
+				}
+			}
+		}
+	}
+	return $plac;
 }
 
 $cellComb = placing($cellStr);

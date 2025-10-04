@@ -12,13 +12,13 @@ header('Content-Type: text/html; charset=UTF-8');
 
 
 // запись текущего состояния памяти в архив в папку /bot_files_save/
-$arc_file=date("Y_m_d_H_i").".zip";
+$arc_file = date("Y_m_d_H_i") . ".zip";
 
-include_once($_SERVER["DOCUMENT_ROOT"]."/lib/pclzip_lib.php");
-$fileout="bot_files_save/".$arc_file;
+include_once($_SERVER["DOCUMENT_ROOT"] . "/lib/pclzip_lib.php");
+$fileout = "bot_files_save/" . $arc_file;
 $archive = new PclZip($fileout);
 $v_list = $archive->add("../memory_reflex/,../memory_psy/");
 
 
-echo "!".$fileout;
+echo "!" . $fileout;
 ?>

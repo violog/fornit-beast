@@ -14,24 +14,23 @@ mb_http_output('UTF-8');
 mb_internal_encoding("UTF-8");
 
 
-cliner_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/reflex_tree.txt");
-cliner_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/condition_reflexes.txt");
-cliner_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/trigger_stimuls_images.txt");
-cliner_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/base_style_images.txt");
+cliner_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/reflex_tree.txt");
+cliner_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/condition_reflexes.txt");
+cliner_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/trigger_stimuls_images.txt");
+cliner_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/base_style_images.txt");
 
 
 
 ///////////////////////////////////////////////////
 function cliner_file($file)
 {
-$hf=fopen($file,"wb+");
-if($hf)
-{
-fwrite($hf,"",0);
-fclose($hf);
-return 1;
-}
-return 0;
+	$hf = fopen($file, "wb+");
+	if ($hf) {
+		fwrite($hf, "", 0);
+		fclose($hf);
+		return 1;
+	}
+	return 0;
 }
 //////////////////////////////////
 ?>

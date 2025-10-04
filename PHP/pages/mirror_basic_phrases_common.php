@@ -14,72 +14,63 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 echo '<div style="position:absolute;top:35px;right:10px;color:red"> - только после формирования шаблонов условных рефлексов</div>';
 
 
-if(isset($_POST['gogogo'])&&$_POST['gogogo']==1)
-{  
-//	var_dump($_POST);exit();
-$newslines=$_POST['newslines']; //exit("! $newslines");
-$out="";
-$uniqueArr=array();
-foreach($_POST['trigg'] as $id => $trigg)
-{
-$_POST['answ'][$id]=trim($_POST['answ'][$id]);
-$_POST['actn'][$id]=trim($_POST['actn'][$id]);
-// !!!! if(empty($_POST['answ'][$id]) && empty($_POST['actn'][$id]))// незаполненные фразы не писать
+if (isset($_POST['gogogo']) && $_POST['gogogo'] == 1) {
+	//	var_dump($_POST);exit();
+	$newslines = $_POST['newslines']; //exit("! $newslines");
+	$out = "";
+	$uniqueArr = array();
+	foreach ($_POST['trigg'] as $id => $trigg) {
+		$_POST['answ'][$id] = trim($_POST['answ'][$id]);
+		$_POST['actn'][$id] = trim($_POST['actn'][$id]);
+		// !!!! if(empty($_POST['answ'][$id]) && empty($_POST['actn'][$id]))// незаполненные фразы не писать
 //	continue;
 
-if(!in_array($trigg,$uniqueArr) || empty($trigg))
-		{
-	array_push($uniqueArr,$trigg);
-$out.=$trigg."|".$_POST['answ'][$id]."|".$_POST['ton_mood'][$id]."|".$_POST['actn'][$id]."\r\n"; // exit("$out");
+		if (!in_array($trigg, $uniqueArr) || empty($trigg)) {
+			array_push($uniqueArr, $trigg);
+			$out .= $trigg . "|" . $_POST['answ'][$id] . "|" . $_POST['ton_mood'][$id] . "|" . $_POST['actn'][$id] . "\r\n"; // exit("$out");
 		}
-}
-
-//................................
-if($newslines==1)// добавить 10 пустых строк
-{  
-for($n=0;$n<10;$n++)
-	{
-$out.="||0,0|\r\n";
 	}
-}
-//................................
-if($newslines==2)// добавить все слова из условных рефлексов
-{  
-$tdir=$_SERVER["DOCUMENT_ROOT"]."/lib/condition_reflexes_basic_phrases/";
-$n=0;
-if($dh = opendir($tdir)) 
-{ //exit("!!!");
-while(false !== ($file = readdir($dh))) 
-{		
-if($file=="." || $file=="..")
-	continue;
-if(filesize($tdir.$file)>0)
+
+	//................................
+	if ($newslines == 1)// добавить 10 пустых строк
 	{
-$tstr=reading_file($tdir.$file);
-$str=explode("\r\n",$tstr);
-foreach($str as $s)
-{
-$p=explode("|",$s);
-if(!in_array($p[5],$uniqueArr))
-		{
-	array_push($uniqueArr,$p[5]);
-$out.=$p[5]."||0,0|\r\n"; // exit("$out");
+		for ($n = 0; $n < 10; $n++) {
+			$out .= "||0,0|\r\n";
 		}
-}
-$n++;
 	}
-}
-closedir($dh);
-}
-}
-//................................
+	//................................
+	if ($newslines == 2)// добавить все слова из условных рефлексов
+	{
+		$tdir = $_SERVER["DOCUMENT_ROOT"] . "/lib/condition_reflexes_basic_phrases/";
+		$n = 0;
+		if ($dh = opendir($tdir)) { //exit("!!!");
+			while (false !== ($file = readdir($dh))) {
+				if ($file == "." || $file == "..")
+					continue;
+				if (filesize($tdir . $file) > 0) {
+					$tstr = reading_file($tdir . $file);
+					$str = explode("\r\n", $tstr);
+					foreach ($str as $s) {
+						$p = explode("|", $s);
+						if (!in_array($p[5], $uniqueArr)) {
+							array_push($uniqueArr, $p[5]);
+							$out .= $p[5] . "||0,0|\r\n"; // exit("$out");
+						}
+					}
+					$n++;
+				}
+			}
+			closedir($dh);
+		}
+	}
+	//................................
 
-//exit("$out");
-writing_file($_SERVER["DOCUMENT_ROOT"]."/lib/mirror_basic_phrases_common.txt",$out);
+	//exit("$out");
+	writing_file($_SERVER["DOCUMENT_ROOT"] . "/lib/mirror_basic_phrases_common.txt", $out);
 
-echo "<form name=\"refresh\" method=\"post\" action=\"/pages/mirror_basic_phrases_common.php\"></form>";
-echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
-exit();
+	echo "<form name=\"refresh\" method=\"post\" action=\"/pages/mirror_basic_phrases_common.php\"></form>";
+	echo "<script language=\"JavaScript\">document.forms['refresh'].submit();</script>";
+	exit();
 }
 //////////////////////////////////////////////
 
@@ -90,27 +81,26 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/pages/mirrors_automatizm_get_all_phra
 
 ///////////////////////////////////////
 // сохраненные фразы-ответы   trigg|answers|ton,mood|actions
-$file=$_SERVER["DOCUMENT_ROOT"]."/lib/mirror_basic_phrases_common.txt";
-$progs = reading_file($file); 
+$file = $_SERVER["DOCUMENT_ROOT"] . "/lib/mirror_basic_phrases_common.txt";
+$progs = reading_file($file);
 $strArr = explode("\r\n", $progs);  //var_dump($strArr);exit();
 
-$uniqueArr=array();
-$phraseArr=array();
-$n=0;
-	foreach ($strArr as $str) {
-		if (empty($str))
-			continue;
-		$p = explode("|", $str);
-// в левой колонке - только уникальные фразы (кроме вставленных пустых)
-if(!in_array($p[0],$uniqueArr) || empty($p[0]))
-		{
-	array_push($uniqueArr,$p[0]);
-		$phraseArr[$n][0]=$p[0];
-		$phraseArr[$n][1]=$p[1];
-		$phraseArr[$n][2]=$p[2];
-		$phraseArr[$n][3]=$p[3];
-$n++;
-		}
+$uniqueArr = array();
+$phraseArr = array();
+$n = 0;
+foreach ($strArr as $str) {
+	if (empty($str))
+		continue;
+	$p = explode("|", $str);
+	// в левой колонке - только уникальные фразы (кроме вставленных пустых)
+	if (!in_array($p[0], $uniqueArr) || empty($p[0])) {
+		array_push($uniqueArr, $p[0]);
+		$phraseArr[$n][0] = $p[0];
+		$phraseArr[$n][1] = $p[1];
+		$phraseArr[$n][2] = $p[2];
+		$phraseArr[$n][3] = $p[3];
+		$n++;
+	}
 }
 //  var_dump($phraseArr);exit();
 
@@ -120,7 +110,7 @@ $n++;
 
 
 
-$out="<table class='main_table' cellpadding=0 cellspacing=0 border=1 width='1000px'>
+$out = "<table class='main_table' cellpadding=0 cellspacing=0 border=1 width='1000px'>
 		<tr>
 			<th width=150  class='table_header'>Пусковая фраза</th>
 			<th  class='table_header'>Ответная фраза</th>
@@ -128,42 +118,38 @@ $out="<table class='main_table' cellpadding=0 cellspacing=0 border=1 width='1000
 			<th  width=150 class='table_header'>Ответные действия</th>
 		</tr>";
 
-$nid=0;
-foreach ($phraseArr as $tArr)
-{
-//if($nid==488)	{var_dump($tArr);exit("<hr>$trig");}
-$out.="<tr class='r_table highlighting' style='background-color:#eeeeee;' onClick='set_sel(this,`" . $index . "`)'>";
+$nid = 0;
+foreach ($phraseArr as $tArr) {
+	//if($nid==488)	{var_dump($tArr);exit("<hr>$trig");}
+	$out .= "<tr class='r_table highlighting' style='background-color:#eeeeee;' onClick='set_sel(this,`" . $index . "`)'>";
 
-// фразы-ответы
-$answ="";
-$tm="0,0";
-$actn="";
+	// фразы-ответы
+	$answ = "";
+	$tm = "0,0";
+	$actn = "";
 
-$trig=$tArr[0];
-$answ=$tArr[1];
-$tm=$tArr[2];
-$actn=$tArr[3];
+	$trig = $tArr[0];
+	$answ = $tArr[1];
+	$tm = $tArr[2];
+	$actn = $tArr[3];
 
-// пусковые стимулы
-if(empty($trig))
-	{
-$out.="<td  class='table_cell' ><input id='insert_".$nid."' name='trigg[]' class='table_input' type='text' value='' ></td>";
-	}
-	else
-	{
-$out.="<td class='table_cell'><input type='hidden'  name='trigg[]' value='".$trig."'><nobr>".$trig."</nobr></td>";
+	// пусковые стимулы
+	if (empty($trig)) {
+		$out .= "<td  class='table_cell' ><input id='insert_" . $nid . "' name='trigg[]' class='table_input' type='text' value='' ></td>";
+	} else {
+		$out .= "<td class='table_cell'><input type='hidden'  name='trigg[]' value='" . $trig . "'><nobr>" . $trig . "</nobr></td>";
 	}
 
-$out.="<td  class='table_cell'><input  name='answ[]' class='table_input' type='text' value='".$answ."' ></td>";
+	$out .= "<td  class='table_cell'><input  name='answ[]' class='table_input' type='text' value='" . $answ . "' ></td>";
 
-$out.="<td  class='table_cell'><input id='insert_".$nid."' name='ton_mood[]' class='table_input' type='text' value='".$tm."' ><img src='/img/down17.png' class='select_control' onClick='show_ton_mood(".$nid.")' title='Выбор Тона и Настроения'></td>";
+	$out .= "<td  class='table_cell'><input id='insert_" . $nid . "' name='ton_mood[]' class='table_input' type='text' value='" . $tm . "' ><img src='/img/down17.png' class='select_control' onClick='show_ton_mood(" . $nid . ")' title='Выбор Тона и Настроения'></td>";
 
-$out.="<td  class='table_cell'><input id='insert2_".$nid."' name='actn[]' class='table_input' type='text' value='".$actn."' ><img src='/img/down17.png' class='select_control' onClick='show_actions_list(".$nid.")' title='Выбор действий'></td>";
+	$out .= "<td  class='table_cell'><input id='insert2_" . $nid . "' name='actn[]' class='table_input' type='text' value='" . $actn . "' ><img src='/img/down17.png' class='select_control' onClick='show_actions_list(" . $nid . ")' title='Выбор действий'></td>";
 
-$out.="</tr>";
-$nid++;
+	$out .= "</tr>";
+	$nid++;
 }
-$out.="</table>";
+$out .= "</table>";
 
 
 /////////////////////////////////////////////////////////
@@ -191,7 +177,7 @@ echo "
 //////////////////////////////////////
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/alert2_dlg.php");
 
-$ton_moode_dlg="<br><div style='text-align:left;'>
+$ton_moode_dlg = "<br><div style='text-align:left;'>
 <b>Тон:</b> &nbsp; 
 <input id='radio_0' type='radio' name='rdi' value='0' checked>0 нормальный &nbsp;
 <input id='radio_1' type='radio' name='rdi' value='1'>1 вялый &nbsp;
@@ -211,9 +197,8 @@ $ton_moode_dlg="<br><div style='text-align:left;'>
 <script Language="JavaScript" src="/ajax/ajax.js"></script>
 <script>
 
-function prases_saver()
-{
-document.forms.form_saver.submit(); // alert(document.forms.newslines+" | "+document.forms.form_saver);
+	function prases_saver() {
+		document.forms.form_saver.submit() ; // alert(document.forms.newslines+" | "+document.forms.form_saver);
 }
 //////
 function add_lines(type)
@@ -243,20 +228,20 @@ var allr=document.getElementsByName('rdi'); //alert(allr.length);
 var ton=0;
 for(var i=0; i<allr.length; i++)
 {
-    if (allr[i].checked) 
+	if (allr[i].checked) 
 	{
 		ton=allr[i].value;
-      break; 
+	  break; 
 	}
 }
 var allr=document.getElementsByName('rdi2');
 var moode=0;
 for(var i=0; i<allr.length; i++)
 {
-    if (allr[i].checked) 
+	if (allr[i].checked) 
 	{
 		moode=allr[i].value;
-      break; 
+	  break; 
 	}
 }
 var inp=document.getElementById('insert_'+cur_ton_moode_id).value=ton+","+moode;
@@ -266,7 +251,7 @@ var cur_ton_moode_id=0;
 function show_ton_mood(id)
 {  
 cur_ton_moode_id=id;
-var cont=`<?=$ton_moode_dlg?>`;
+var cont=`<?= $ton_moode_dlg ?>`;
 is_onw_dlg_exit_proc=1; //предопределенная переменнная
 show_dlg_alert("<br><span style='font-weight:normal;'>Выберите Тон и настроение:<br>" + cont + "<br>", 0);
 // проставить выделение старого выбора
@@ -372,59 +357,56 @@ aStr += nodes[i].value;
 
 function get_prase_exists($index)
 {
-global $phraseArr; //exit("$id");
+	global $phraseArr; //exit("$id");
 //echo "$bsID | $id_list | $actions<br>";
 
-if(isset($phraseArr[$index]))
-	return $phraseArr[$index];// вернуть фразу
+	if (isset($phraseArr[$index]))
+		return $phraseArr[$index];// вернуть фразу
 
-return "";
+	return "";
 }
 ///////////////////////////////////////////////////
 function get_actions($trArr)
 {
 	global $rActionsArr;
-$acts="";
-$aArr=explode(",",$trArr); 
-foreach($aArr as $a)
-{
-	if(empty($a))
-		continue;
-	if(!empty($acts))
-		$acts.=", ";
-$acts.=$a." ".$rActionsArr[$a]."";
-}
-return $acts;
+	$acts = "";
+	$aArr = explode(",", $trArr);
+	foreach ($aArr as $a) {
+		if (empty($a))
+			continue;
+		if (!empty($acts))
+			$acts .= ", ";
+		$acts .= $a . " " . $rActionsArr[$a] . "";
+	}
+	return $acts;
 }
 ///////////////////////////////////////////////////
 function reading_file($file)
 {
-if(!file_exists($file))
+	if (!file_exists($file))
+		return "";
+	if (filesize($file) == 0)
+		return "";
+	$hf = fopen($file, "rb");
+	if ($hf) {
+		$contents = fread($hf, filesize($file));
+		fclose($hf);
+		return $contents;
+	}//if($hf)
 	return "";
-if(filesize($file)==0)
-	return "";
-$hf=fopen($file,"rb");
-if($hf)
-{
-$contents=fread($hf,filesize($file));
-fclose($hf);
-return $contents;
-}//if($hf)
-return "";
 }
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
-function writing_file($file,$content)
+function writing_file($file, $content)
 {
-$hf=fopen($file,"wb+");
-if($hf)
-{
-fwrite($hf,$content,strlen($content));
-fclose($hf);
-chmod($file, 0666);
-return 1;
-}
-return 0;
+	$hf = fopen($file, "wb+");
+	if ($hf) {
+		fwrite($hf, $content, strlen($content));
+		fclose($hf);
+		chmod($file, 0666);
+		return 1;
+	}
+	return 0;
 }
 //////////////////////////////////
 ?>

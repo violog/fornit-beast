@@ -25,13 +25,13 @@ setlocale(LC_ALL, "ru_RU.UTF-8");
 
 set_time_limit(0);
 
-$current_base_condition=0;
-if(isset($_GET['current_base_condition']))
-$current_base_condition=$_GET['current_base_condition']; //  exit("> $current_base_condition");
+$current_base_condition = 0;
+if (isset($_GET['current_base_condition']))
+	$current_base_condition = $_GET['current_base_condition']; //  exit("> $current_base_condition");
 
 
-$base_condition=$_GET['base_condition']; // НЕ ИСПОЛЬЗУЕТСЯ т.к. нет отпределенной зависимости
-$get_list=$_GET['get_list'];  //exit($get_list);
+$base_condition = $_GET['base_condition']; // НЕ ИСПОЛЬЗУЕТСЯ т.к. нет отпределенной зависимости
+$get_list = $_GET['get_list'];  //exit($get_list);
 
 
 // сгенерировать рабочие сочетания Базовых контекстов НЕ ПОЛУЧАЕТСЯ КОРРЕКТНО
@@ -58,20 +58,19 @@ $get_list=$_GET['get_list'];  //exit($get_list);
 $idText = read_file($_SERVER["DOCUMENT_ROOT"] . "/pages/combinations/combo_contexts_str.txt");
 //$nameText = read_file($_SERVER["DOCUMENT_ROOT"] . "/pages/combinations/combo_contexts_names.txt");
 
-$contextsArr=array();
+$contextsArr = array();
 $cList = explode("\r\n", $idText);    // var_dump($cList);exit();
-$n=0;
-foreach($cList as $c)
-{
-	if(empty($c))
+$n = 0;
+foreach ($cList as $c) {
+	if (empty($c))
 		continue;
-if(substr_count($c, ',')>2)// не более 3-х сочетаний контектосв!
-	continue;
+	if (substr_count($c, ',') > 2)// не более 3-х сочетаний контектосв!
+		continue;
 
-//$contextsArr[$n]=array();
+	//$contextsArr[$n]=array();
 //$p = explode(";", $aArr);
-$c=str_replace(",",";",$c);
-array_push($contextsArr,$c);
+	$c = str_replace(",", ";", $c);
+	array_push($contextsArr, $c);
 }
 //var_dump($contextsArr);exit();
 ///////////////////////////////////////////////////////////////
@@ -81,38 +80,34 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/lib/base_context_list.php");
 
 
 
-$rtxts = read_file($_SERVER["DOCUMENT_ROOT"]."/memory_reflex/dnk_reflexes.txt");
-$rtxts=trim($rtxts);
+$rtxts = read_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/dnk_reflexes.txt");
+$rtxts = trim($rtxts);
 $rtArr = explode("\r\n", $rtxts);
 
 // собрать комбобокс
-$out="<select id='base_context_id' size=12 style='max-width:360px;'>";// multiple='multiple' 
-foreach($contextsArr as $aArr)
-{
-	$str="";
+$out = "<select id='base_context_id' size=12 style='max-width:360px;'>";// multiple='multiple' 
+foreach ($contextsArr as $aArr) {
+	$str = "";
 	$p = explode(";", $aArr); //var_dump($p);exit();
-	foreach($p as $a)
-{
-	if(empty($a) || $a<0)
-		continue;
-if(!empty($str))
-	{
-	$str.=",&nbsp;";
+	foreach ($p as $a) {
+		if (empty($a) || $a < 0)
+			continue;
+		if (!empty($str)) {
+			$str .= ",&nbsp;";
+		}
+		$a = (int) $a;
+		$str .= $a . "&nbsp;" . $baseContextArr[$a][0];
 	}
-$a=(int)$a;
-	$str.=$a."&nbsp;".$baseContextArr[$a][0];
-}
 
-// сколько рефлексов сделано в этом сочетании
-$combStr=preg_replace('/[^0-9,]/','',$str); //echo $combStr."<br>";
-$rcount=0;
-foreach($rtArr as $cur)
-{
-	$p = explode("|", $cur); 
-	if($p[1]==$current_base_condition && $combStr==$p[2])
-		$rcount++;
-}
-// exit($p[1]."==$current_base_condition && $combStr==".$p[2]);
+	// сколько рефлексов сделано в этом сочетании
+	$combStr = preg_replace('/[^0-9,]/', '', $str); //echo $combStr."<br>";
+	$rcount = 0;
+	foreach ($rtArr as $cur) {
+		$p = explode("|", $cur);
+		if ($p[1] == $current_base_condition && $combStr == $p[2])
+			$rcount++;
+	}
+	// exit($p[1]."==$current_base_condition && $combStr==".$p[2]);
 //echo $combStr." $rcount <br>";
 
 
@@ -120,33 +115,31 @@ foreach($rtArr as $cur)
 
 
 
-$out.="<option  value='".$aArr."' ";   //exit($get_list."<hr>".$aArr);
-if(!empty($get_list) && $get_list==$aArr)
-{
-$out.="selected";
-}
+	$out .= "<option  value='" . $aArr . "' ";   //exit($get_list."<hr>".$aArr);
+	if (!empty($get_list) && $get_list == $aArr) {
+		$out .= "selected";
+	}
 
-$out.=" title='".$str." (рефлексов: $rcount)'>".$str." (рефлексов: $rcount)</option>";
-//	array_push($contextsNameArr,$str);
+	$out .= " title='" . $str . " (рефлексов: $rcount)'>" . $str . " (рефлексов: $rcount)</option>";
+	//	array_push($contextsNameArr,$str);
 }
-$out.="</select><br>";
+$out .= "</select><br>";
 
 //exit($out);
-echo "!".$out;
+echo "!" . $out;
 
 ///////////////////////////////////////////////////
 function read_file($file)
 {
-if(filesize($file)==0)
+	if (filesize($file) == 0)
+		return "";
+	$hf = fopen($file, "rb");
+	if ($hf) {
+		$contents = fread($hf, filesize($file));
+		fclose($hf);
+		return $contents;
+	}//if($hf)
 	return "";
-$hf=fopen($file,"rb");
-if($hf)
-{
-$contents=fread($hf,filesize($file));
-fclose($hf);
-return $contents;
-}//if($hf)
-return "";
 }
 ///////////////////////////////////////////////////
 

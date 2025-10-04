@@ -1,5 +1,6 @@
 <?php
-class Stemmer_RU {
+class Stemmer_RU
+{
 	private $vowel = "аеёиоуыэюя";
 	private $regexPerfectiveGerunds = array(
 		"(в|вши|вшись)$",
@@ -26,13 +27,15 @@ class Stemmer_RU {
 	private $R2 = 0;
 	private $cache = array();
 
-	public function getWordBase($word){
-		if( isset($this->cache[$word]) ) return $this->cache[$word];
+	public function getWordBase($word)
+	{
+		if (isset($this->cache[$word]))
+			return $this->cache[$word];
 		$this->word = $word;
 		$this->findRegions();
-		if( !$this->removeEndings($this->regexPerfectiveGerunds, $this->RV) ){
+		if (!$this->removeEndings($this->regexPerfectiveGerunds, $this->RV)) {
 			$this->removeEndings($this->regexReflexives, $this->RV);
-			if( !($this->removeEndings(array($this->regexParticiple[0] . $this->regexAdjective, $this->regexParticiple[1] . $this->regexAdjective), $this->RV ) || $this->removeEndings($this->regexAdjective, $this->RV)) ){
+			if (!($this->removeEndings(array($this->regexParticiple[0] . $this->regexAdjective, $this->regexParticiple[1] . $this->regexAdjective), $this->RV) || $this->removeEndings($this->regexAdjective, $this->RV))) {
 				if (!$this->removeEndings($this->regexVerb, $this->RV)) {
 					$this->removeEndings($this->regexNoun, $this->RV);
 				}
@@ -40,16 +43,18 @@ class Stemmer_RU {
 		}
 		$this->removeEndings($this->regexI, $this->RV);
 		$this->removeEndings($this->regexDerivational, $this->R2);
-		if ($this->removeEndings($this->regexNN, $this->RV)) $this->word .= 'н';
+		if ($this->removeEndings($this->regexNN, $this->RV))
+			$this->word .= 'н';
 		$this->removeEndings($this->regexSuperlative, $this->RV);
 		$this->removeEndings($this->regexSoftSign, $this->RV);
 		$this->cache[$word] = $this->word;
 		return $this->word;
 	}
 
-	public function removeEndings($regex, $region){
+	public function removeEndings($regex, $region)
+	{
 		$prefix = mb_substr($this->word, 0, $region, 'utf8');
-		$word   = substr($this->word,strlen($prefix));
+		$word = substr($this->word, strlen($prefix));
 		if (is_array($regex)) {
 			if (preg_match('/.+[а|я]' . $regex[0] . '/u', $word)) {
 				$this->word = $prefix . preg_replace('/' . $regex[0] . '/u', '', $word);
@@ -64,35 +69,37 @@ class Stemmer_RU {
 		return false;
 	}
 
-	private function findRegions(){
+	private function findRegions()
+	{
 		$state = 0;
 		$wordLength = mb_strlen($this->word, 'utf8');
 		for ($i = 1; $i < $wordLength; $i++) {
 			$prevChar = mb_substr($this->word, $i - 1, 1, 'utf8');
-			$char	 = mb_substr($this->word, $i, 1, 'utf8');
+			$char = mb_substr($this->word, $i, 1, 'utf8');
 			switch ($state) {
 				case 0:
 					if ($this->isVowel($char)) {
 						$this->RV = $i + 1;
-						$state	= 1;
+						$state = 1;
 					}
-				break;
+					break;
 				case 1:
 					if ($this->isVowel($prevChar) && !$this->isVowel($char)) {
-						$state	= 2;
+						$state = 2;
 					}
-				break;
+					break;
 				case 2:
 					if ($this->isVowel($prevChar) && !$this->isVowel($char)) {
 						$this->R2 = $i + 1;
 						return;
 					}
-				break;
+					break;
 			}
 		}
 	}
 
-	private function isVowel($char){
+	private function isVowel($char)
+	{
 		return (strpos($this->vowel, $char) !== false);
 	}
 }

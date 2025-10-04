@@ -12,27 +12,33 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/header.php");
 //include_once($_SERVER['DOCUMENT_ROOT']."/pult_js.php");
 //////////////////////////////////////////////////////////////
 
-$fileList="/lib/mirror_basic_phrases_common.txt";
+$fileList = "/lib/mirror_basic_phrases_common.txt";
 
 
 echo "<div id='div_id' style='font-family:courier;font-size:18px;'><b>Нужен коннект с Beast.</b></div>";
 
 
-include_once($_SERVER['DOCUMENT_ROOT']."/common/linking.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/common/linking.php");
 ?>
 Сначала нужно:<br>
-1. Включить Beast и запустить процесс: <span style="font-size:21px;border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;cursor:pointer;" onClick='location.reload(true)' title='Если Beast включен, то можно нажимать.'>Поехали</span><br>
+1. Включить Beast и запустить процесс: <span
+	style="font-size:21px;border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;cursor:pointer;"
+	onClick='location.reload(true)' title='Если Beast включен, то можно нажимать.'>Поехали</span><br>
 2. Дождаться окончания и автоматического выключения Beast.<br>
 <br>
 
 
 
-<div id='div_id' style='font-family:courier;font-size:16px;display:block;'><span style="font-size:18px;color:red;"><b>Нужен коннект с Beast.</b></span> Включите Beast на Пульте и <a href='/pages/mirrors_automatizm_maker_from_template.php'>перезагрузите эту страницу</a>.</div>
+<div id='div_id' style='font-family:courier;font-size:16px;display:block;'><span
+		style="font-size:18px;color:red;"><b>Нужен коннект с Beast.</b></span> Включите Beast на Пульте и <a
+		href='/pages/mirrors_automatizm_maker_from_template.php'>перезагрузите эту страницу</a>.</div>
 
 
 <script Language="JavaScript" src="/ajax/ajax.js"></script>
 <script>
-var linking_address='<?include($_SERVER["DOCUMENT_ROOT"]."/common/linking_address.txt");?>';
+	var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>'
+
+	;
 
 // ждем пока не включат бестию
 check_Beast_activnost(4);// после 4-го пульса И запускается get_info()
@@ -54,7 +60,7 @@ processing();
 ///////////////////////
 function processing()
 {
-// alert("/lib/get_file_content.php?file=<?=$fileList?>");
+// alert("/lib/get_file_content.php?file=<?= $fileList ?>");
 var AJAX = new ajax_support(linking_address + "?mirror_making_temp=/lib/mirror_basic_phrases_common.txt", sent_process_info);
 AJAX.send_reqest();
 function sent_process_info(res) {
