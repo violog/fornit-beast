@@ -29,7 +29,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/show_waiting.php");
 var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>';
 
 // ждем пока не включат бестию
-check_Beast_activnost(6);// после 6-го пульса И запускается get_info()
+check_activity(6);// после 6-го пульса И запускается get_info()
 //get_info();
 
 var old_size = 0;
@@ -39,7 +39,7 @@ var c_timer=0;
 function get_info() {  
 c_timer=setTimeout("connecting()",5000);// проверка коннекта
 
-var AJAX = new ajax_support(linking_address + "?get_mental_undestanding_models_info=1", sent_get_info);
+var AJAX = new ajax_support(linking_address + "?get_mental_understanding_models_info=1", sent_get_info);
 AJAX.send_reqest();
 function sent_get_info(res) { //alert(res);
 
@@ -71,7 +71,7 @@ show_dlg_alert("Нет коннекта с Beast.<br>Включите Beast и <
 
 function show_atmzm_tree(id)
 {
-var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_atmzm_tree_info=1", sent_atmzm_tree_info);
+var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_automatism_tree_info=1", sent_atmzm_tree_info);
 AJAX.send_reqest();
 function sent_atmzm_tree_info(res) {
 			//alert(res);
@@ -81,7 +81,7 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 }
 function show_unde_tree(id)
 {
-var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_undstg_tree_info=1", sent_undstg_info);
+var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_understanding_tree_info=1", sent_undstg_info);
 AJAX.send_reqest();
 function sent_undstg_info(res) {
 			//alert(res);
@@ -92,7 +92,7 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 
 function show_ment_atmzm(id)
 {
-var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_ment_atmzm_info=1", sent_ment_atmzm_info);
+var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_mental_automatism_info=1", sent_ment_atmzm_info);
 AJAX.send_reqest();
 function sent_ment_atmzm_info(res) {
 			//alert(res);
@@ -104,9 +104,9 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 
 
 
-function get_ment_model_index(id)//образ типа extremImportance
+function get_mental_model(id)//образ типа extremImportance
 {
-var AJAX = new ajax_support(linking_address + "?autNodeID="+id+"&get_ment_model_index=1", sent_purpose_info);
+var AJAX = new ajax_support(linking_address + "?autNodeID="+id+"&get_mental_model=1", sent_purpose_info);
 AJAX.send_reqest();
 function sent_purpose_info(res) {
 			//alert(res);

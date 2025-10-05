@@ -1,6 +1,6 @@
 <?
 /*   список автоматизмов
-http://go/pages/automatizm_table.php  
+http://go/pages/automatism_table.php
 
 Формат записи:
 id|BranchID|Usefulness||Sequence||NextID|Energy|Belief
@@ -25,7 +25,7 @@ $out_str_for_del = ""
 </div>
 
 
-<div id='automatizm_info_id' style='font-family:courier;font-size:16px;'></div>
+<div id='automatism_info_id' style='font-family:courier;font-size:16px;'></div>
 
 
 
@@ -36,7 +36,7 @@ $out_str_for_del = ""
 	;
 
 // ждем пока не включат бестию
-check_Beast_activnost(4);// после 4-го пульса И запускается get_info()
+check_activity(4);// после 4-го пульса И запускается get_info()
 
 var old_size = 0;
 var limitBasicID=0;//>0 - лимитировать показ только одним из базовых состояний Плохо,Норма,Хорошо
@@ -45,13 +45,13 @@ var limitBasicID=0;//>0 - лимитировать показ только од�
 function get_info() {
 	end_dlg_alert();
 	wait_begin();
-		var AJAX = new ajax_support(linking_address + "?limitBasicID="+limitBasicID+"&get_automatizm_list_info=1", sent_get_info);
+		var AJAX = new ajax_support(linking_address + "?limitBasicID="+limitBasicID+"&get_automatism_list_info=1", sent_get_info);
 		AJAX.send_reqest();
 
 		function sent_get_info(res) {
 			//alert(res);
 			wait_end();
-			document.getElementById('automatizm_info_id').innerHTML = res;
+			document.getElementById('automatism_info_id').innerHTML = res;
 			document.getElementById('unblockingAll_id').style.display="block";
 document.getElementById('div_id').innerHTML="Информация - по щелчку на Пусковой стимул или Действия автоматизма.";
 					}
@@ -123,9 +123,9 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 }
 }
 
-function cliner_block(id)// разблокировать автоматизм
+function clear_block(id)// разблокировать автоматизм
 {
-var AJAX = new ajax_support(linking_address + "?atmtzmID="+id+"&cliner_atmtzm_block=1", sent_unblock_info);
+var AJAX = new ajax_support(linking_address + "?atmtzmID="+id+"&clear_atmtzm_block=1", sent_unblock_info);
 AJAX.send_reqest();
 function sent_unblock_info(res) {
 			//alert(res);
@@ -137,7 +137,7 @@ location.reload(true);
 
 function unblockingAll()
 {
-var AJAX = new ajax_support(linking_address + "?unblocking_all=1", sent_unblock_all_info);
+var AJAX = new ajax_support(linking_address + "?unblock_all_automatisms=1", sent_unblock_all_info);
 AJAX.send_reqest();
 function sent_unblock_all_info(res) {
 			//alert(res);

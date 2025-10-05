@@ -260,7 +260,7 @@ func getFavoritInfoFunc() []int {
 ////////////////////////////////////////////////////////
 
 // для пульта выдать номера инфо-фукнций, привычных для данных условий
-func GetMentalAutomatizmForPult() string {
+func GetMentalAutomatismForPult() string {
 	mentAtmzmActualFuncs := getFavoritInfoFunc()
 	if mentAtmzmActualFuncs != nil && len(mentAtmzmActualFuncs) > 0 {
 		maStr := ""

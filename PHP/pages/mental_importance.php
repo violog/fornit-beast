@@ -27,7 +27,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/show_waiting.php");
 var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>';
 
 // ждем пока не включат бестию
-check_Beast_activnost(6);// после 6-го пульса И запускается get_info()
+check_activity(6);// после 6-го пульса И запускается get_info()
 //get_info();
 
 var old_size = 0;
@@ -65,7 +65,7 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 
 function show_unde_tree(id)
 {
-var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_undstg_tree_info=1", sent_undstg_info);
+var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_understanding_tree_info=1", sent_undstg_info);
 AJAX.send_reqest();
 function sent_undstg_info(res) {
 			//alert(res);
@@ -75,7 +75,7 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 }
 function show_atmzm_tree(id)
 {
-var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_atmzm_tree_info=1", sent_atmzm_tree_info);
+var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_automatism_tree_info=1", sent_atmzm_tree_info);
 AJAX.send_reqest();
 function sent_atmzm_tree_info(res) {
 			//alert(res);
@@ -86,7 +86,7 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 
 function show_ment_atmzm(id)
 {
-var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_ment_atmzm_info=1", sent_ment_atmzm_info);
+var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_mental_automatism_info=1", sent_ment_atmzm_info);
 AJAX.send_reqest();
 function sent_ment_atmzm_info(res) {
 			//alert(res);

@@ -1,6 +1,6 @@
 <?
 /*   очистка деревьев слов и фраз
-/lib/tree_cliner_server.php
+/lib/tree_clear_server.php
 */
 header("Expires: Tue, 1 Jul 2003 05:00:00 GMT");
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");

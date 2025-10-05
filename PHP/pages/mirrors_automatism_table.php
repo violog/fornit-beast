@@ -1,7 +1,7 @@
 <?
 /* сформировать таблицу для http://go/pages/mirror_reflexes_basic_phrases.php 
 
-/pages/mirrors_automatizm_table.php?bsID=1&id_list=1;8
+/pages/mirrors_automatism_table.php?bsID=1&id_list=1;8
 */
 
 header("Expires: Tue, 1 Jul 2003 05:00:00 GMT");
@@ -19,7 +19,7 @@ $kind = $_GET['kind'];
 
 // Пусковые стимулы
 // все используемые фразы в шаблонах условных рефлексов
-include_once($_SERVER['DOCUMENT_ROOT'] . "/pages/mirrors_automatizm_get_all_phrases.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/pages/mirrors_automatism_get_all_phrases.php");
 // var_dump($triggerPhraseArr);exit();
 
 ////////////////////////////////////////////////////////////////////

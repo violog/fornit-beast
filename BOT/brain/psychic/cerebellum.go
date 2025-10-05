@@ -12,14 +12,14 @@
 максимально сильно, очень сильно, ... едва-едва.
 
 Это - только на уровне осмысления в Дереве Понимания:
-   cerebellumCoordination(LastAutomatizmWeiting.ID)
+   cerebellumCoordination(LastAutomatismWeiting.ID)
 Должно быть осознание цели и перебора - недобора!
 
-В каждом автоматизме есть параметр силы: Automatizm.Energy вот он и корректируется.
+В каждом автоматизме есть параметр силы: Automatism.Energy вот он и корректируется.
 т.е. функция рефлекса мозжечка состоит в нахождении излишней или недостаточной силы по результатам действия
-и поправки силы действия автоматизма getCerebellumReflexAddEnergy(automatizmID int)
+и поправки силы действия автоматизма getCerebellumReflexAddEnergy(automatismID int)
 Но самое полезное - выполнение дополнительных действий сразу после исходного автоматизма
-по рефлексу, привязанному к исходному автоматизму: runCerebellumReflex(automatizmID int)
+по рефлексу, привязанному к исходному автоматизму: runCerebellumReflex(automatismID int)
 
 В частности, одна из корректирующих функций - энергосберегательная и рефлекс должен это учитывать.
 т.е. рефлекс создается при повышенном расходе и уменьшает силу данной реакции.
@@ -38,7 +38,7 @@ import (
 )
 
 /*
-	Создать или дополнить автоматизм рефлексом мозжечка cerebellumReflexFromID[LastAutomatizmWeiting.ID]
+	Создать или дополнить автоматизм рефлексом мозжечка cerebellumReflexFromID[LastAutomatismWeiting.ID]
 
 другими корректирующими действиеями
 У автоматзма есть свой параметр Energy, но т.к. автоматизм может использоваться в разных случаях,
@@ -51,7 +51,7 @@ todo - типа запроса на оптимизацию:
 0 - оптимизировать в зависимости от предыдущего значения
 1 - усилить
 */
-func cerebellumCoordination(atmzm *Automatizm, todo int) bool {
+func cerebellumCoordination(atmzm *Automatism, todo int) bool {
 	if atmzm == nil {
 		return false
 	}

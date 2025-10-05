@@ -72,11 +72,11 @@ document.getElementById(num+'_id').style.backgroundColor="#A8FFAA";
 
 
 
-function show_automatizms(id)
+function show_automatisms(id)
 {
-var AJAX = new ajax_support(linking_address + "?autNodeID="+id+"&get_node_automatizms=1", sent_automatizms_info);
+var AJAX = new ajax_support(linking_address + "?autNodeID="+id+"&get_node_automatisms=1", sent_automatisms_info);
 AJAX.send_reqest();
-function sent_automatizms_info(res) {
+function sent_automatisms_info(res) {
 			//alert(res);
 res=res.replace(/\<\/b\>/g,'</b><br>');
 show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",0);
@@ -128,9 +128,9 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 }
 }
 
-function show_cyckle(id) // GetCyckleInfo()
+function show_cycle(id) // GetCyckleInfo()
 {
-var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_show_cyckle_info=1", sent_undstg_info);
+var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_show_cycle_info=1", sent_undstg_info);
 AJAX.send_reqest();
 function sent_undstg_info(res) {
 			//alert(res);

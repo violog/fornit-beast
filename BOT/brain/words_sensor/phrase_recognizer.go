@@ -1,7 +1,7 @@
 /* распознавание фразы
 вербальная иерархия распознавателей
 
-Распознавание фраз начинается в main.go с word_sensor.VerbalDetection(text_dlg, is_input_rejim, moodID)
+Распознавание фраз начинается в main.go с word_sensor.VerbalDetection(text_split, is_forced_mode, moodID)
 Память о воспринятых фразах в текущем активном контексте (Vernike_detector.go): var MemoryDetectedArr []MemoryDetected
 */
 

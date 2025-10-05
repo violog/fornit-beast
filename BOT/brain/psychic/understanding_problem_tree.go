@@ -47,11 +47,11 @@ var problemTreeInfo prTrInfo
 
 Дерево может переактивароваться при срабатывании мент.автоматизмов с действиями
 MentalActionsImages.activateBaseID и MentalActionsImages.activateEmotion
-в mental_automatizm_actions.go RunMentalAutomatizm(
+в mental_automatism_actions.go RunMentalAutomatism(
 */
 type ProblemTreeNode struct { // узел дерева проблем
 	ID              int
-	autTreeID       int // образ автоматизма (узел дерева автоматизмов AutomatizmTreeFromID)
+	autTreeID       int // образ автоматизма (узел дерева автоматизмов AutomatismTreeFromID)
 	situationTreeID int // образ понимания ситуации (узел дерева понимания ситуации UnderstandingNodeFromID)
 	themeID         int // образ темы
 	purposeID       int // образ цели. Это - не сознательная цель, а мотивирующая потребность, дающая направленность мышлению.
@@ -131,7 +131,7 @@ func ProblemTreeActivation() {
 	currentProblemActivedNodes = nil
 	///////// если еще не были активрованы деревья автоматизмов и ситуации (при просыпании)
 	if detectedActiveLastNodID == 0 {
-		automatizmTreeActivation()
+		automatismTreeActivation()
 	}
 
 	// 4 уровня условий в виде ID их образов

@@ -187,13 +187,13 @@ func GotoDreaming(cycle *cycleInfo) {
 		}
 		if curActionImgID == 0 {
 			/* при опасной ситуации в первую очередь думаем про ответное действие,
-			по статусу состояния отсуствия автоматизма: automatizmStatus
+			по статусу состояния отсуствия автоматизма: automatismStatus
 			0 - сброс рассматривания автоматизма
 			1 - если автоматизм заблокирован
 			2 - нет автоматизма или есть старый автоматизм, например, при игнорировании Ответа оператором
 			*/
 			if CurrentInformationEnvironment.veryActualSituation || CurrentInformationEnvironment.danger { // опасно
-				if automatizmStatus > 0 && mentalInfoStruct.motorAtmzmID > 0 {
+				if automatismStatus > 0 && mentalInfoStruct.motorAtmzmID > 0 {
 					curActionImgID = mentalInfoStruct.motorAtmzmID
 				}
 			}

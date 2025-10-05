@@ -23,10 +23,10 @@ width:100px;background-color:#D0FFD7;text-align:center;
 cursor:pointer;
 display:none;' onClick="show_switcher()" title="Временная остановка смены информации.">Пауза</div>
 
-<!-- div id='cliner_all_id' class='context' style='position:absolute;top:70px;left:900px;
+<!-- div id='clear_all_id' class='context' style='position:absolute;top:70px;left:900px;
 width:100px;background-color:#FFC2BF;text-align:center;
 cursor:pointer;
-display:none;' onClick="cliner_all()"
+display:none;' onClick="clear_all()"
 title="Временная остановка смены информации.">Очистить</div -->
 
 <div id='archive_id' style='min-height:30px;max-height:70px;overflow:auto;'></div>
@@ -50,14 +50,14 @@ title="Временная остановка смены информации.">�
 <script Language="JavaScript" src="/ajax/ajax.js"></script>
 <script Language="JavaScript" src="/ajax/ajax_post.js"></script>
 <script>
-	//clinerlog();
+	//clearlog();
 
 	var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>'
 
 	;
 
 // ждем пока не включат бестию
-check_Beast_activnost(6);// после 4-го пульса И запускается get_info()
+check_activity(6);// после 4-го пульса И запускается get_info()
 
 var c_timer=0;
 var info_timer=0;  //clearTimeout(info_timer);
@@ -197,11 +197,11 @@ get_info();
 ///////////////////////////////////////////////////
 
 
-function show_automatizms(id)
+function show_automatisms(id)
 {
-var AJAX = new ajax_support(linking_address + "?autNodeID="+id+"&get_node_automatizms=1", sent_automatizms_info);
+var AJAX = new ajax_support(linking_address + "?autNodeID="+id+"&get_node_automatisms=1", sent_automatisms_info);
 AJAX.send_reqest();
-function sent_automatizms_info(res) {
+function sent_automatisms_info(res) {
 			//alert(res);
 res=res.replace(/\<\/b\>/g,'</b><br>');
 show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",0);
@@ -253,9 +253,9 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 }
 }
 
-function show_cyckle(id) // GetCyckleInfo()
+function show_cycle(id) // GetCyckleInfo()
 {
-var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_show_cyckle_info=1", sent_undstg_info);
+var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_show_cycle_info=1", sent_undstg_info);
 AJAX.send_reqest();
 function sent_undstg_info(res) {
 			//alert(res);

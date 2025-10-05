@@ -46,22 +46,22 @@ margin-top:10px;">
 		<nobr>Включен режим форсированной обработки.</nobr>
 	</div>
 	<script>
-		var is_input_rejim = 1
+		var is_forced_mode = 1
 		;
 function switch_input_rejim(ch)
 {
 	if(ch.checked==true)
 	{
 document.getElementById('note_rejim_id').style.display="block";
-is_input_rejim=0;
+is_forced_mode=0;
 	}
 	else
 	{
 document.getElementById('note_rejim_id').style.display="none";
-is_input_rejim=1;
+is_forced_mode=1;
 	}
 }
-function mood_cliner()
+function mood_clear()
 {
 document.getElementById('radio_2').checked=true;
 document.getElementById('radio2_4').checked=true;
@@ -69,7 +69,7 @@ document.getElementById('radio2_4').checked=true;
 </script>
 
 <div style="position:relative;">
-<div style="position:absolute;top:10px;left:-20px;color:red;cursor:pointer;padding:4px;border:solid 1px #8A3CA4;border-radius:50%;background-color:#ffffff" title="Очистить окно ввода" onClick="cliner_textarea()"><b>X</b></div>
+<div style="position:absolute;top:10px;left:-20px;color:red;cursor:pointer;padding:4px;border:solid 1px #8A3CA4;border-radius:50%;background-color:#ffffff" title="Очистить окно ввода" onClick="clear_textarea()"><b>X</b></div>
 <textarea id="input_id"  style="width:calc(100% - 10px);margin-top:10px;" rows="6" maxlength="500" onMouseDown="click_textarea()" onKeyDown="click_textarea()" disabled>Привет</textarea><br>
 <b>Тон:</b> 
 <input id='radio_1' type='radio' name='rdi' value='4' >повышенный 
@@ -110,12 +110,12 @@ foreach ($strArr as $str) {
 
 <div style="position:absolute;top:-48px;left:750px;font-size:12px;cursor:pointer;
 line-height: 0.8;padding-left:3px;padding-right:3px;border-radius: 7px;
-border:solid 1px #8A3CA4;background-color:#efefef;" onClick="mood_cliner()" title="Очистить Тон и настроение."><br><img src='/img/delete.gif'><br>&larr;<br><br></div>
+border:solid 1px #8A3CA4;background-color:#efefef;" onClick="mood_clear()" title="Очистить Тон и настроение."><br><img src='/img/delete.gif'><br>&larr;<br><br></div>
 
 
 <!-- div style="position:absolute;top:4px;right:170px;font-size:12px;"><nobr><a href='/pages/words_tree.php' target='showpage2' style='position:absolute;top:0px;right:0px;'>Дерево слов</a></nobr></div>
 <div style="position:absolute;top:4px;right:80px;font-size:12px;"><nobr><a href='/pages/phrase_tree.php' target='showpage2' style='position:absolute;top:0px;right:0px;'>Дерево фраз</a></nobr></div>
-<div style="position:absolute;top:4px;right:4px;font-size:12px;cursor:pointer;" onClick="tree_cliner()" title="Очистить дерево слов и фраз чтобы начать заново.">- очистить</div -->
+<div style="position:absolute;top:4px;right:4px;font-size:12px;cursor:pointer;" onClick="tree_clear()" title="Очистить дерево слов и фраз чтобы начать заново.">- очистить</div -->
 
 <span style="color:#666666;font-size:15px;">Распознаное:</span><br><span id="pult_result_id" style="margin-top:10px;height:20px;"></span>
 
@@ -160,21 +160,21 @@ function explane_sending()
 show_dlg_alert("Чтобы добавить действия (кнопки внизу) нужно просто нащелкать нужные (не нажимая треугольнички) тогда эти действия добавятся в образ сообщения.",0);
 }
 
-function tree_cliner()
+function tree_clear()
 {
-	show_dlg_confirm("Вам придется заново набивать фразы.<br>Точно очистить детектор фраз?",1,1,cliner_continue);
+	show_dlg_confirm("Вам придется заново набивать фразы.<br>Точно очистить детектор фраз?",1,1,clear_continue);
 
 }
-function cliner_continue()
+function clear_continue()
 {
-var AJAX = new ajax_support("/lib/tree_cliner_server.php",sent_tree_cliner);
+var AJAX = new ajax_support("/lib/tree_clear_server.php",sent_tree_clear);
 AJAX.send_reqest();
-function sent_tree_cliner(res)
+function sent_tree_clear(res)
 {
 show_dlg_alert("Деревья слов и фраз очищены.",0);
 }
 }
-function cliner_textarea()
+function clear_textarea()
 {
 end_dlg_alert();
 //end_ReceiveAnsvetFromPult();
@@ -236,7 +236,7 @@ function sent_request_bot(res)
 {
 // если выбраны действия для добавления
 //alert(allow_sent_to_beast);
-params="is_input_rejim="+is_input_rejim+"&pult_tone="+tone+"&pult_mood="+moode+"&text_dlg="+res;
+params="is_forced_mode="+is_forced_mode+"&control_tone="+tone+"&control_mood="+moode+"&text_split="+res;
 
 var triggers_str="";
 if(allow_sent_to_beast)
@@ -247,7 +247,7 @@ for(i=0;i<actionsArr.length;i++)
 triggers_str+=actionsArr[i]+"|";//! нельзя разделять ; или ,
 	}
 var food_portion = document.getElementById("food_portion_id").selectedIndex + 1;
-params+="&set_img_action=" + triggers_str + "&food_portion=" + food_portion;
+params+="&actions_image=" + triggers_str + "&food_portion=" + food_portion;
 
 //addInfoToHistory(3,""+triggers_str);
 

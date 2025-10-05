@@ -23,8 +23,8 @@ $out_str_for_del = ""
 	function end_deleting() {
 		//show_dlg_alert("Beast выключается...", 2000);
 		
-		//Выключить без сохранения памяти (bot_closing=2), просто погасить исполняемый файл
-		var AJAX = new ajax_support(linking_address + "?bot_closing=2", sent_info);
+		//Выключить без сохранения памяти (bot_shutdown=2), просто погасить исполняемый файл
+		var AJAX = new ajax_support(linking_address + "?bot_shutdown=2", sent_info);
 		AJAX.send_reqest();
 		function sent_info(res) {
 			// не будет ответа
@@ -98,7 +98,7 @@ if (isset($_POST['rdelID'])) {  //var_dump($_POST['rdelID']);exit();
 <div style='position:absolute;top:-20px;right:100px;font-size:16px;cursor:pointer;color:#7E58FF;background-color:#eeeeee;padding-left:4px;padding-right:4px;border:solid 1px #8A3CA4;border-radius: 7px;' onClick="open_anotjer_win('/pages/condition_reflexes_basic_phrases_maker.php')" title="Сформировать условные рефлексы на основе списка фраз-синонимов.
 ПОСЛЕ ПОЛНОЙ ГОТОВНОСТИ ФРАЗ-СИНОНИМОВ!"><b>Сформировать условные рефлексы</b></div>
 
-<div style='position:absolute;top:0px;left:360px;font-size:16px;cursor:pointer;color:#7E58FF;' onClick="cliner_reflex_times()" title="Чтобы рефлексы не просрочили свое время жизни, нужно обновлять его перед началом использования."><b>Обновить время жизни рефлексов</b></div>
+<div style='position:absolute;top:0px;left:360px;font-size:16px;cursor:pointer;color:#7E58FF;' onClick="clear_reflex_times()" title="Чтобы рефлексы не просрочили свое время жизни, нужно обновлять его перед началом использования."><b>Обновить время жизни рефлексов</b></div>
 
 <div id='div_id' style='position:absolute;top:20px;left:0px;font-family:courier;font-size:18px;'><b>Нужен коннект с Beast.</b></div>
 
@@ -126,7 +126,7 @@ if ($stages > 1)
 	var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>';
 
 // ждем пока не включат бестию
-check_Beast_activnost(4);// после 4-го пульса И запускается get_info()
+check_activity(4);// после 4-го пульса И запускается get_info()
 
 	var old_size = 0;
 var limitBasicID=0;//>0 - лимитировать показ только одним из базовых состояний Плохо,Норма,Хорошо 
@@ -172,9 +172,9 @@ get_info();
 		document.forms.form_del.submit();
 	}
 
-function cliner_reflex_times()
+function clear_reflex_times()
 {
-var AJAX = new ajax_support(linking_address + "?cliner_time_condition_reflex=1", sent_get_info);
+var AJAX = new ajax_support(linking_address + "?clear_cond_reflex_timer=1", sent_get_info);
 AJAX.send_reqest();
 function sent_get_info(res) 
 {

@@ -1,6 +1,6 @@
 <?
 /*   список цепочек действий AmtzmNextString 
-http://go/pages/automatizm_next_actions_table.php  
+http://go/pages/automatism_next_actions_table.php
 
 
 */
@@ -29,7 +29,7 @@ $out_str_for_del = "";
 var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>';
 
 // ждем пока не включат бестию
-check_Beast_activnost(6);// после 4-го пульса И запускается get_info()
+check_activity(6);// после 4-го пульса И запускается get_info()
 
 var old_size = 0;
 var limitBasicID=0;//>0 - лимитировать показ только одним из базовых состояний Плохо,Норма,Хорошо
@@ -38,7 +38,7 @@ var limitBasicID=0;//>0 - лимитировать показ только од�
 function get_info() {
 	end_dlg_alert();
 	wait_begin();
-		var AJAX = new ajax_support(linking_address + "?limitBasicID="+limitBasicID+"&get_next_actions_info_list=1", sent_get_info);
+		var AJAX = new ajax_support(linking_address + "?limitBasicID="+limitBasicID+"&get_next_actions=1", sent_get_info);
 		AJAX.send_reqest();
 
 		function sent_get_info(res) {

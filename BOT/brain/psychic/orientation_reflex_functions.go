@@ -13,7 +13,7 @@ package psychic
    25 пульсов следить за измнением жизненных параметров и ответными действиями - считать следствием действия
    оценить результат и скорректировать силу мозжечком в записи автоматизма.
 */
-func createAutomatizm(pc *PurposeGenetic) *Automatizm {
+func createAutomatism(pc *PurposeGenetic) *Automatism {
 	if pc == nil || pc.actionID == nil {
 		return nil
 	}
@@ -37,7 +37,7 @@ func createAutomatizm(pc *PurposeGenetic) *Automatizm {
 
 	ActionsImageID, _ := CreateNewlastActionsImageID(0, 0, aArr, sArr, t, m, true)
 	// создать автоматизм
-	_, atzm := CreateNewAutomatizm(BranchID, ActionsImageID)
+	_, atzm := CreateNewAutomatism(BranchID, ActionsImageID)
 	if atzm != nil {
 		atzm.Energy = 5
 

@@ -14,9 +14,9 @@ import (
 /*
 	Определение Цели в данной ситуации - на уровне наследственных функций
 
-Здесь getPurposeGenetic2AndRunAutomatizm.
+Здесь getPurposeGenetic2AndRunAutomatism.
 */
-func getPurposeGeneticAndRunAutomatizm() *Automatizm {
+func getPurposeGeneticAndRunAutomatism() *Automatism {
 	var flgBlockAtmz bool // флаг блокировки автоматизма
 
 	purpose := getPurposeGenetic() // выбираются наиболее подходящие действия для автоматизмаы
@@ -35,10 +35,10 @@ func getPurposeGeneticAndRunAutomatizm() *Automatizm {
 			Выбрать любое действие, т.к. послед создания автоматизма в данной ветке detectedActiveLastNodID
 			он уже не вызовет orientation_1(), а будет orientation_2()
 			*/
-			atmzm := createAndRunAutomatizmFromPurpose(purpose)
+			atmzm := createAndRunAutomatismFromPurpose(purpose)
 			if atmzm.Usefulness >= 0 {
 				if doWritingFile {
-					SaveAutomatizm()
+					SaveAutomatism()
 				}
 				return atmzm
 			} else {
@@ -48,10 +48,10 @@ func getPurposeGeneticAndRunAutomatizm() *Automatizm {
 		/* нет действий (практически невозможная ситуация потому, что если нет рефлексов,
 		то дейсвтвия в GetActualReflexAction() берутся из эффектов действий)
 		*/
-		if purpose.actionID == nil || flgBlockAtmz { // AutomatizmSuccessFromIdArr=make(map[int]*Automatizm)
+		if purpose.actionID == nil || flgBlockAtmz { // AutomatismSuccessFromIdArr=make(map[int]*Automatism)
 			// ранее найденные удачные автоматизмы
 			// выбрать из ранее удачного автоматизма, перекрыть цель новой и запустить новый автоматизм
-			atmzm := chooseAutomatizmSuccessAndRun(purpose)
+			atmzm := chooseAutomatismSuccessAndRun(purpose)
 			if atmzm != nil {
 				return atmzm
 			}
@@ -61,13 +61,13 @@ func getPurposeGeneticAndRunAutomatizm() *Automatizm {
 				phraseID := findSuitablePhrase()
 				if len(phraseID) > 0 {
 					purpose.actionID.PhraseID = phraseID
-					atmzm := createAutomatizm(purpose)
+					atmzm := createAutomatism(purpose)
 					// запустить автоматизм
-					if RumAutomatizm(atmzm) {
-						// отслеживать последствия в automatizm_result.go
-						setAutomatizmRunning(atmzm, purpose)
+					if RumAutomatism(atmzm) {
+						// отслеживать последствия в automatism_result.go
+						setAutomatismRunning(atmzm, purpose)
 					}
-					// в automatizm_result.go после оценки результата будет осмысление с активацией Дерева Понимания
+					// в automatism_result.go после оценки результата будет осмысление с активацией Дерева Понимания
 					if atmzm != nil {
 						return atmzm
 					}
@@ -80,7 +80,7 @@ func getPurposeGeneticAndRunAutomatizm() *Automatizm {
 			// тупо метод тыка
 			// Тупо поэкспериментировать для пополнения опыта (не)удачных автоматизмов
 			// TODO !не проверено!
-			// в отличии от createAndRunAutomatizmFromPurpose(purpose) не использовать текущие рефлексы, а пробовать всякое
+			// в отличии от createAndRunAutomatismFromPurpose(purpose) не использовать текущие рефлексы, а пробовать всякое
 			// Выдавая это на стадии 3, тварь получает реакцию оператора, которую отзеркаливает
 			atmzm := findAnySympleRandActions()
 			if atmzm != nil {
@@ -90,9 +90,9 @@ func getPurposeGeneticAndRunAutomatizm() *Automatizm {
 	}
 	// НЕ ИГРА  И НЕ ПОИСК, нет атаса, пониженная мотивация что-то делать если нет актуальности
 	if EvolushnStage == 2 {
-		// нет действий, попробовать использовать AutomatizmSuccessFromIdArr.GomeoIdSuccesArr
+		// нет действий, попробовать использовать AutomatismSuccessFromIdArr.GomeoIdSuccesArr
 		// выбрать из ранее удачного автоматизма, перекрыть цель новой и запустить новый автоматизм
-		atmzm := chooseAutomatizmSuccessAndRun(purpose)
+		atmzm := chooseAutomatismSuccessAndRun(purpose)
 		return atmzm
 	}
 	// ЛЕНЬ

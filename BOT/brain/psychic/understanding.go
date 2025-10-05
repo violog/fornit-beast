@@ -28,7 +28,7 @@ import (
 var only3ltvelMind = false
 
 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
-var levelOfRunAutomatizm = 0
+var levelOfRunAutomatism = 0
 
 // only3ltvelMind =true
 
@@ -58,15 +58,15 @@ var oldThemeImageType = 0 // старый Type образа темы
 //var cikleExtremImportanceObject *extremImportance // объект внимания в цикле (перекрывается новым, очистка - при запуске цикла)
 
 /*
-	automatizmStatus значения:
+	automatismStatus значения:
 
 0 - сброс рассматривания автоматизма
 1 - если автоматизм заблокирован
 2 - нет автоматизма или есть старый автоматизм, например, при игнорировании Ответа оператором
 */
-var automatizmStatus = 0 // для передачи действий в новый цикл ()
+var automatismStatus = 0 // для передачи действий в новый цикл ()
 
-var atmtzmActualTreeNode *Automatizm // отслеживание штатного автоматизма
+var atmtzmActualTreeNode *Automatism // отслеживание штатного автоматизма
 var atmtzmActualTreeNodeID = 0
 
 var mentAtmzmActualFuncs []int // из функции getFavoritInfoFunc() - выдать номера инфо-фукнции, привычные для данных условий
@@ -97,7 +97,7 @@ var motorActionEffect = 0
 */
 func consciousnessElementary() bool { // return true
 
-	//levelOfRunAutomatizm = 0
+	//levelOfRunAutomatism = 0
 
 	if EvolushnStage < 4 {
 		return false
@@ -110,7 +110,7 @@ func consciousnessElementary() bool { // return true
 
 		IsFirstActivation = false
 		initMentalMemories()
-		clinerCycleLogsFiles()
+		clearCycleLogsFiles()
 	} else { //if IsFirstActivation  {
 		/* Не дергать func consciousnessElementary()
 		при незначительных изменениеях гомео-параметров
@@ -132,10 +132,10 @@ func consciousnessElementary() bool { // return true
 	///////////////////////////////////////////////////////////
 
 	/* освободить запрет на запуск автоматизма (обычно запущенного ментально)
-	wasRunTreeStandardAutomatizm=true устанавливается при любом запуске автоматизма в func RumAutomatizm
-	ТЕПЕРЬ всегда после запуска автоматизма LastRunAutomatizmPulsCount >0
+	wasRunTreeStandardAutomatism=true устанавливается при любом запуске автоматизма в func RumAutomatism
+	ТЕПЕРЬ всегда после запуска автоматизма LastRunAutomatismPulsCount >0
 	*/
-	//wasRunTreeStandardAutomatizm = false
+	//wasRunTreeStandardAutomatism = false
 
 	//initInfoFunc8pars()
 
@@ -196,14 +196,14 @@ func consciousnessElementary() bool { // return true
 
 		//  1 и 2 уровни - только для обработки рвущегося на выполнение автоматизма
 
-		/*!!Не всегда currentAutomatizmAfterTreeActivatedID определяеется ДО understandingSituation(1)
-		поэтому в func consciousnessElementary есть свой atmtzmActualTreeNodeID := getAutomatizmFromNodeID(detectedActiveLastNodID)
+		/*!!Не всегда currentAutomatismAfterTreeActivatedID определяеется ДО understandingSituation(1)
+		поэтому в func consciousnessElementary есть свой atmtzmActualTreeNodeID := getAutomatismFromNodeID(detectedActiveLastNodID)
 		и тогда atmtzmActualTreeNodeID оказывается из предыдущей активации дерева автоматизмов.
 		*/
 		atmtzmActualTreeNodeID = 0 // atmtzmActualTreeNodeID определяется только здесь!
-		if wasCurrentAutomatizmAfterTree > 0 && currentAutomatizmAfterTreeActivatedID > 0 {
+		if wasCurrentAutomatismAfterTree > 0 && currentAutomatismAfterTreeActivatedID > 0 {
 
-			atmtzmActualTreeNodeID = currentAutomatizmAfterTreeActivatedID
+			atmtzmActualTreeNodeID = currentAutomatismAfterTreeActivatedID
 			// это значит, что 	atmtzmActualTreeNodeID - из старой активации, не требует осмысления как актуальный рвущийся автоматизм
 
 			/*распознать: не навязывают ли стимулом то, что не соотвествует текущей Теме и Цели?
@@ -213,12 +213,12 @@ func consciousnessElementary() bool { // return true
 			recognizerStimulToForce()
 		} else {
 			atmtzmActualTreeNodeID = 0 // если не нашелся автоматизм на стимул, нужно обнулить ID предыдущего активного автоматизма, иначе он полезет как рвушийся на исполнение и не даст запустить infoFunc()13
-			//wasCurrentAutomatizmAfterTree=0// на всякий случай
-			//atmtzmActualTreeNodeID = getAutomatizmFromNodeID(detectedActiveLastNodID)
+			//wasCurrentAutomatismAfterTree=0// на всякий случай
+			//atmtzmActualTreeNodeID = getAutomatismFromNodeID(detectedActiveLastNodID)
 		}
 		////////////////////////////////////
 
-		if isIgnoreAutomatizmID(atmtzmActualTreeNodeID) {
+		if isIgnoreAutomatismID(atmtzmActualTreeNodeID) {
 			atmtzmActualTreeNodeID = 0
 			conscienceStatus += "Игнорирующий штатный автоматизм - расценивается как отсуствие реакции.<br>"
 		}
@@ -243,29 +243,29 @@ func consciousnessElementary() bool { // return true
 		// есть ли штатный мот.автоматизм и нужно ли его менять или задумываться
 		if atmtzmActualTreeNodeID > 0 { // есть рвущийся на выполнение штатный автоматизм
 			//ниже точно такой же вызов - зачем 2 раза одно и тоже?
-			//conscienceStatus+="Есть штатный автоматизм <b> <span style='cursor:pointer;color:blue' onClick='show_automatizms(" + strconv.Itoa(atmtzmActualTreeNodeID) + ")'>" + strconv.Itoa(atmtzmActualTreeNodeID) + "</span>" + "</b><br>"
+			//conscienceStatus+="Есть штатный автоматизм <b> <span style='cursor:pointer;color:blue' onClick='show_automatisms(" + strconv.Itoa(atmtzmActualTreeNodeID) + ")'>" + strconv.Itoa(atmtzmActualTreeNodeID) + "</span>" + "</b><br>"
 			mentalInfoStruct.noStaffAtmzmID = false
 			mentalInfoStruct.motorAtmzmID = atmtzmActualTreeNodeID // для последующего использования в инфо-фукнциях
-			/* Период ожидания ответа LastRunAutomatizmPulsCount при поочередном Стимуле-Ответе есть всегда.
-			   А здсь - поиск Ответа именно после каждого Стимула. Так что LastRunAutomatizmPulsCount в функции не учитываем.
+			/* Период ожидания ответа LastRunAutomatismPulsCount при поочередном Стимуле-Ответе есть всегда.
+			   А здсь - поиск Ответа именно после каждого Стимула. Так что LastRunAutomatismPulsCount в функции не учитываем.
 			*/
 			////////////////////////////// 1 уровень ////////////////////
 			// ПЕРВЫЙ УРОВЕНЬ, самый примитивный уровень:
 
-			//НЕТ!!! atmtzmActualTreeNode := GetBelief2AutomatizmListFromTreeId(detectedActiveLastNodID)
+			//НЕТ!!! atmtzmActualTreeNode := GetBelief2AutomatismListFromTreeId(detectedActiveLastNodID)
 			/* учитывается именно тот автоматизм, что рвется на выполнение при активации дерева автоматизмов,
-			   даже если он подобран "мягким алгоритмом" в getAutomatizmFromNodeID
+			   даже если он подобран "мягким алгоритмом" в getAutomatismFromNodeID
 			   При атасе он выполняется не раздумявая, иначе подвергается сомнению в infoFunc6()
 			*/
 
-			//			atmtzmActualTreeNode = AutomatizmFromId[atmtzmActualTreeNodeID]
-			atmtzmActualTreeNode, ok := ReadeAutomatizmFromId(atmtzmActualTreeNodeID)
+			//			atmtzmActualTreeNode = AutomatismFromId[atmtzmActualTreeNodeID]
+			atmtzmActualTreeNode, ok := ReadeAutomatismFromId(atmtzmActualTreeNodeID)
 			if ok && atmtzmActualTreeNode != nil { // есть незаблокированный автоматизм
 				if atmtzmActualTreeNode.Usefulness >= 0 { //незаблокированный, м.б. нештатным!
 
 					//	isDangerousModelAutomatism(atmtzmActualTreeNode.ActionsImageID) // проверка функции
 
-					conscienceStatus += "Есть моторный автоматизм <b><span style='cursor:pointer;color:blue' onClick='show_automatizms(" + strconv.Itoa(atmtzmActualTreeNodeID) + ")'>" + strconv.Itoa(atmtzmActualTreeNodeID) + "</span>" + "</b><br>"
+					conscienceStatus += "Есть моторный автоматизм <b><span style='cursor:pointer;color:blue' onClick='show_automatisms(" + strconv.Itoa(atmtzmActualTreeNodeID) + ")'>" + strconv.Itoa(atmtzmActualTreeNodeID) + "</span>" + "</b><br>"
 					// Если период сомнений или важная ситуация и нет опасности, то - ПОДВЕРГНУТЬ СОМНЕНИЮ автоматизм.
 					if (EvolushnStage == 4 || CurrentInformationEnvironment.veryActualSituation) &&
 						!CurrentInformationEnvironment.danger {
@@ -274,18 +274,18 @@ func consciousnessElementary() bool { // return true
 						/* Здесь можно, в зависимости от наработанной инфо-базы, подставлять более подходящий автоматизм, если он
 						обнаруживается и привязать его к дереву.
 						При этом другие позитивные автоматизмы дерева не блокируются.  В бессознанке выбирается штатный или самый привычный из них.
-						Использотьва модели понимания и правила, м.б. значимости для этого в checkAutomatizm(atmtzmActualTreeNode)
+						Использотьва модели понимания и правила, м.б. значимости для этого в checkAutomatism(atmtzmActualTreeNode)
 						*/
 						conscienceStatus += "Подвергнуть сомнению автоматизм в спокойной ситуации.<br>"
 						//infoFunc6(cycle) // если все в порядке, он в infoFunc6() запустится, если запущен альтарнативный, то он стал штатным,
-						// func checkAutomatizm - бездумная версия проверки
-						resA := checkAutomatizm(atmtzmActualTreeNode)
+						// func checkAutomatism - бездумная версия проверки
+						resA := checkAutomatism(atmtzmActualTreeNode)
 						if resA == nil {
 							mentalInfoStruct.noStaffAtmzmID = true
 							mentalInfoStruct.motorAtmzmID = 0 // чтобы в usualThinkProcess/infoFunc8 не вернуло true, иначе в usualThinkProcess не дойдет до infoFunc2, а в самой infoFunc2 не дойдет до func13
 							atmtzmActualTreeNode = nil        // чтобы сначало отработал поиск в ментальных правилах findSuitableMentalFunc(), а потом уже func13
 							//были использованы Правила, но бесрезультатно и нет смысла снова пробовать на втором уровне
-							levelOfRunAutomatizm = 1 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
+							levelOfRunAutomatism = 1 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
 							conscienceStatus += "1 уровень мышления. Автоматизм ID=" + strconv.Itoa(atmtzmActualTreeNodeID) + " подвергнут сомнению и остановлен.<br>"
 							isDreamInterrupt = false // прерывание процесса размышления с новой актуальной проблемой после стимула.
 							return true              // блокировать старый штатный автоматизм потому, что nil означает опасную ситуацию и отсутствие в правилах положительной перспективы
@@ -333,7 +333,7 @@ func consciousnessElementary() bool { // return true
 									//return true // запретить штатный	НЕТ пусть пройдет до конца функции
 
 									// понизить такой автоматизм, но правило не удалять!
-									passivationAutomatizm(resA, -1)
+									passivationAutomatism(resA, -1)
 									/* TODO нужно как-то учитывать в infoFunc2 mentalInfoStruct.prognoseEffect, особенно отрицательный.
 									т.е. нужно учитывать прогноз (как информированность об эффекте) в соотвествующих инфо-функциях и не только
 									*/
@@ -348,12 +348,12 @@ func consciousnessElementary() bool { // return true
 							if mentalInfoStruct.prognoseEffect >= 0 && !isUnrecognizedPhraseFromAtmtzmTreeActivation {
 								return false // запустить штатный автоматизм
 							} else {
-								CurrentInformationEnvironment.needThinkingAboutAutomatizm = true
+								CurrentInformationEnvironment.needThinkingAboutAutomatism = true
 							}
 						}
 						if resA.ID != atmtzmActualTreeNodeID { // был выбран альтернативный из привязанных к ветке
-							runConsciousnessAutomatizm(resA)
-							levelOfRunAutomatizm = 1 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
+							runConsciousnessAutomatism(resA)
+							levelOfRunAutomatism = 1 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
 							conscienceStatus += "1 уровень мышления. Автоматизм ID=" + strconv.Itoa(atmtzmActualTreeNodeID) + " остановлен и запущен альтернативный ID=" + strconv.Itoa(resA.ID) + ".<br>"
 							isDreamInterrupt = false // прерывание процесса размышления с новой актуальной проблемой после стимула.
 							return true              // блокировать старый штатный автоматизм т.к. запущен альтернативный.
@@ -406,7 +406,7 @@ func consciousnessElementary() bool { // return true
 						  	}
 						*/
 					} else { // при опасности некогда думать, нужно действовать привычно
-						conscienceStatus += "Опасная ситуация - запустить штатный автоматизм <b><span style='cursor:pointer;color:blue' onClick='show_automatizms(" + strconv.Itoa(atmtzmActualTreeNodeID) + ")'>" + strconv.Itoa(atmtzmActualTreeNodeID) + "</span>" + "</b>.<br>"
+						conscienceStatus += "Опасная ситуация - запустить штатный автоматизм <b><span style='cursor:pointer;color:blue' onClick='show_automatisms(" + strconv.Itoa(atmtzmActualTreeNodeID) + ")'>" + strconv.Itoa(atmtzmActualTreeNodeID) + "</span>" + "</b>.<br>"
 						motorActionEffect = atmtzmActualTreeNode.Usefulness
 
 						// ЗАПИСАТЬ В ДЕРЕВО НОВЫЙ ЭПИЗОД со стимулом и ответом, хотя почему-то было newEpisodeMemory(0,0) без Правила
@@ -418,26 +418,26 @@ func consciousnessElementary() bool { // return true
 					} // если нет - далее искать альтернативу
 				} else { // если автоматизм заблокирован
 					/*удалить авторитарное Правило с таким действием.
-										Иначе никогда не сработает checkForUnbolokingAutomatizm, см. ниже об этом
+										Иначе никогда не сработает checkForUnbolokingAutomatism, см. ниже об этом
 					НЕЛЬЗЯ УДАЛЯТЬ КАДР ЭПИЗЮПАМЯТИ!!!
 					*/
 					//conscienceStatus+="Удалить авторитарное Правило с действием заблокированного автоматизма<br>"
 					/* НО при создании авторитарного правила (func fixNewRules(lastCommonDiffValue int)) определяется,
 										есть ли автоматизм с действием оператора curActiveActionsID, и если у него atmtzmActualTreeNode.Usefulness<0 -
-										снять блокировку и сделать штатным (checkForUnbolokingAutomatizm(curActiveActionsID))
+										снять блокировку и сделать штатным (checkForUnbolokingAutomatism(curActiveActionsID))
 
 					В func searchingRules(trigger int,rImg []int,condType int )(int,int){ делается проверка:
 					если действие правила имеется в заблокированном автоматизме, то такое правило исключается и ищутся другие:
-					blockExist:=checkBlockedAutomatizm(curR)
+					blockExist:=checkBlockedAutomatism(curR)
 					*/
 
 					//Нужно подумать о проблеме автоматизма или проявить инициативу, в общем, запустить func infoFunc25()
-					CurrentInformationEnvironment.needThinkingAboutAutomatizm = true
+					CurrentInformationEnvironment.needThinkingAboutAutomatism = true
 
 					if EvolushnStage > 4 { // вместо плохого автоматизма - из успешной доминанты
-						automatizmStatus = 1
+						automatismStatus = 1
 					}
-					/*заблокированный автоматизм посылается в RumAutomatizm() не смотря на то, что будет там гарантировано остановлен потому, что так будет виден ответ
+					/*заблокированный автоматизм посылается в RumAutomatism() не смотря на то, что будет там гарантировано остановлен потому, что так будет виден ответ
 					на пульте: автоматизм найден, но заблокирован. При этом mentalInfoStruct.motorAtmzmID = atmtzmActualTreeNodeID позволит потом разобраться с ним с помощью осмысления
 					Если заблокировать и сделать переход на 2 уровень, это ничего не даст: там создается автоматизм по учительскому правилу, а не прямому, которое фиксирует существующую
 					отработанную реакцию.
@@ -446,13 +446,13 @@ func consciousnessElementary() bool { // return true
 					// не позволять рефлексов! return true
 				}
 			}
-			//if currentAutomatizmAfterTreeActivatedID > 0{ // есть рвущийся на выполнение автоматизм
+			//if currentAutomatismAfterTreeActivatedID > 0{ // есть рвущийся на выполнение автоматизм
 		} else { // нет автоматизма или есть старый автоматизм, например, при игнорировании Ответа оператором
 			conscienceStatus += "Нет штатного моторного автоматизма.<br>"
 			mentalInfoStruct.noStaffAtmzmID = true
 			mentalInfoStruct.motorAtmzmID = 0
 			if EvolushnStage > 4 {
-				automatizmStatus = 2
+				automatismStatus = 2
 			}
 			// conscienceStatus+="Нет штатного моторного автоматизма.<br>"
 
@@ -524,8 +524,8 @@ func consciousnessElementary() bool { // return true
 		if mentalInfoStruct.motorAtmzmID > 0 { // все еще есть рвущийся на выполнение штатный автоматизм
 			conscienceStatus += "Остается проблема оценки штатного автоматизма на втором уровне.<br>"
 
-			//atmtzmActualTreeNode := AutomatizmFromId[mentalInfoStruct.motorAtmzmID]
-			atmtzmActualTreeNode, ok := ReadeAutomatizmFromId(mentalInfoStruct.motorAtmzmID)
+			//atmtzmActualTreeNode := AutomatismFromId[mentalInfoStruct.motorAtmzmID]
+			atmtzmActualTreeNode, ok := ReadeAutomatismFromId(mentalInfoStruct.motorAtmzmID)
 			// если автоматизм уверенный и ситуация не опасна, то сбросить проблему
 			if ok && atmtzmActualTreeNode.Usefulness > 1 && atmtzmActualTreeNode.Count > 3 &&
 				CurrentInformationEnvironment.veryActualSituation &&
@@ -541,7 +541,7 @@ func consciousnessElementary() bool { // return true
 				if CurrentInformationEnvironment.veryActualSituation || CurrentInformationEnvironment.danger {
 					runNewTheme(12, 5)
 				}
-				CurrentInformationEnvironment.needThinkingAboutAutomatizm = true
+				CurrentInformationEnvironment.needThinkingAboutAutomatism = true
 			}
 		}
 		/////////////////////////////////////////
@@ -555,16 +555,16 @@ func consciousnessElementary() bool { // return true
 	// ....
 
 	if CurrentInformationEnvironment.isStimulToForce {
-		levelOfRunAutomatizm = 2 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
+		levelOfRunAutomatism = 2 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
 		conscienceStatus += "2 уровень мышления. Автоматизм ID=" + strconv.Itoa(atmtzmActualTreeNodeID) + " остановлен, так как не соответствует текущей цели.<br>"
 		return true // блокировать всеболее низкоуровневое.
 	}
 
-	if currentAutomatizmAfterTreeActivatedID > 0 {
+	if currentAutomatismAfterTreeActivatedID > 0 {
 		// если это плохой автоматизм, или плохой прогноз в правилах по нему, то не запускать
-		a, ok := ReadeAutomatizmFromId(currentAutomatizmAfterTreeActivatedID)
+		a, ok := ReadeAutomatismFromId(currentAutomatismAfterTreeActivatedID)
 		if !ok || a.Usefulness < 0 || mentalInfoStruct.prognoseEffect < 0 {
-			currentAutomatizmAfterTreeActivatedID = 0 // не запускать автоматизм, но разрешить рефлексы
+			currentAutomatismAfterTreeActivatedID = 0 // не запускать автоматизм, но разрешить рефлексы
 		}
 	}
 
@@ -766,9 +766,9 @@ func consciousnessThinking(cID int, cycle *cycleInfo) {
 	//ТЕСТИРОВАНИЕ только третьего уровня, без вмешательства первых Включается наверху!
 	if only3ltvelMind {
 		idleness = false
-		automatizmStatus = 2 // нет автоматизма
+		automatismStatus = 2 // нет автоматизма
 		mentalInfoStruct.motorAtmzmID = 0
-		CurrentInformationEnvironment.needThinkingAboutAutomatizm = true // думать как сделать действие
+		CurrentInformationEnvironment.needThinkingAboutAutomatism = true // думать как сделать действие
 	}
 
 	if idleness { // ЛЕНЬ
@@ -800,7 +800,7 @@ func consciousnessThinking(cID int, cycle *cycleInfo) {
 		// освободить запрет на запуск автоматизмов.
 		wasRunPurposeActionFunc = false
 
-		// cycle.log+="Отработка третьего уровня осмысления  "+strconv.Itoa(cycle.ID)+" мышления с ID циикла "+onClickStr(cycle.ID,"show_cyckle","")+"<br>"
+		// cycle.log+="Отработка третьего уровня осмысления  "+strconv.Itoa(cycle.ID)+" мышления с ID циикла "+onClickStr(cycle.ID,"show_cycle","")+"<br>"
 		/* Ментальное определение ближайшей Цели без текущей темы - УЖЕ БЫЛО В НАЧАЛЕ: resetMineCycleAndBeginAsNew()
 		   и Активация дерева понимания проблемы ProblemTreeActivation().
 		   Если досюда не дошло detectedActiveLastProblemNodID пусть остается старая проблема
@@ -820,14 +820,14 @@ func consciousnessThinking(cID int, cycle *cycleInfo) {
 			}
 		}
 
-		if automatizmStatus == 1 { //если автоматизм заблокирован
+		if automatismStatus == 1 { //если автоматизм заблокирован
 			// запускать решение доминанты в подходящих условиях т.е. взять опыт из ранее решенных проблм
 			res := runDominantaAction(cycle, true) //если подходящий автоматизм найден в успешной Доминанте то он будет запущен
 			if res {                               // найден и запущен
 				return
 			}
 		}
-		if automatizmStatus == 2 { //нет автоматизма или есть старый автоматизм, например, при игнорировании Ответа оператором
+		if automatismStatus == 2 { //нет автоматизма или есть старый автоматизм, например, при игнорировании Ответа оператором
 			// запускать решение доминанты в подходящих условиях т.е. взять опыт из ранее решенных проблм
 			// не только закрытая доминанта, но и точная по условиям, но не проверенная.
 			res := runDominantaAction(cycle, false) //если подходящий автоматизм найден в успешной Доминанте то он будет запущен
@@ -835,8 +835,8 @@ func consciousnessThinking(cID int, cycle *cycleInfo) {
 				return
 			}
 		}
-		if automatizmStatus > 0 { // проблема автоматизма не решена
-			//automatizmStatus = 0
+		if automatismStatus > 0 { // проблема автоматизма не решена
+			//automatismStatus = 0
 			if infoFunc2(cycle) {
 				return
 			}

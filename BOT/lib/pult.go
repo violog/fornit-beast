@@ -154,10 +154,10 @@ func SentConfusion(detaile string) {
 можно ли показывать акции рефлексов с автоматизмами в одной плашке действия Beast на пульте
 ТЕПЕРЬ: НИКОГДА НЕЛЬЗЯ показывать акции рефлексов с автоматизмами в одной плашке!
 РАНБШЕ БЫЛО:
-Eсли noReflexWithAutomatizm==true и если в ActionsForPultStr есть автоматизм, то строки рефлексов удаляются.
-При запуске автоматизма из цикла мышления (на 3-м уровне осмысления) устанавливается NoReflexWithAutomatizm =true
+Eсли noReflexWithAutomatism==true и если в ActionsForPultStr есть автоматизм, то строки рефлексов удаляются.
+При запуске автоматизма из цикла мышления (на 3-м уровне осмысления) устанавливается NoReflexWithAutomatism =true
 Применение:
-ActionsForPultStr=SharedRflexWithAutomatizm(true)
+ActionsForPultStr=SharedRflexWithAutomatism(true)
 */
 
 // TODO @violog из-за этого кода не работают условные рефлексы, т.к. id == 1 для них;
@@ -165,6 +165,6 @@ ActionsForPultStr=SharedRflexWithAutomatizm(true)
 //
 // нужно не давать активироваться одновременно рефлексу и автоматизму, вместо того,
 // чтобы скрывать на пульте то, что уже активировалось
-func SharedReflexWithAutomatizm() string {
+func SharedReflexWithAutomatism() string {
 	return ActionsForPultStr
 }

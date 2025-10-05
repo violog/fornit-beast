@@ -399,7 +399,7 @@ func checkGestalt(effect int) {
 	if curStimulImage.ActID == nil && curStimulImage.PhraseID == nil { // не учитывать с пустым Стимулом
 		return
 	}
-	answerID := LastAutomatizmWeiting.ActionsImageID // ответный образ действий Beast
+	answerID := LastAutomatismWeiting.ActionsImageID // ответный образ действий Beast
 	if answerID == 0 {
 		return
 	}

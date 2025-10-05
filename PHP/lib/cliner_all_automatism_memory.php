@@ -1,7 +1,7 @@
 <?
-/*  удалить содержимое в файлов /memory_psy/automatizm_images.txt и /memory_psy/automatizm_tree.txt
+/*  удалить содержимое в файлов /memory_psy/automatism_images.txt и /memory_psy/automatism_tree.txt
 
-/lib/cliner_all_automatizm_memory.php
+/lib/clear_all_automatism_memory.php
 
 */
 header("Expires: Tue, 1 Jul 2003 05:00:00 GMT");
@@ -15,15 +15,15 @@ mb_http_output('UTF-8');
 mb_internal_encoding("UTF-8");
 
 
-cliner_file($_SERVER["DOCUMENT_ROOT"] . "/memory_psy/automatizm_images.txt");
-write_file($_SERVER["DOCUMENT_ROOT"] . "/memory_psy/automatizm_tree.txt", "1|0|1|0|0|0|0|0
+clear_file($_SERVER["DOCUMENT_ROOT"] . "/memory_psy/automatism_images.txt");
+write_file($_SERVER["DOCUMENT_ROOT"] . "/memory_psy/automatism_tree.txt", "1|0|1|0|0|0|0|0
 2|0|2|0|0|0|0|0
 3|0|3|0|0|0|0|0
 ");
 
 
 ///////////////////////////////////////////////////
-function cliner_file($file)
+function clear_file($file)
 {
 	$hf = fopen($file, "wb+");
 	if ($hf) {

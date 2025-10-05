@@ -575,7 +575,7 @@ func negativeFromActionAfterStimul(Trigger int, Action int) (int, int) {
 /*
 	предсказание последствий выполнения действия автоматизма
 
-для understanding_functions.go func getPrognoze(atmtzm *Automatizm)
+для understanding_functions.go func getPrognoze(atmtzm *Automatism)
 
 Алгоритм:
 Поиск цепочек, заканчивающихся большим негативом (превышающим позитив промежуточных)
@@ -665,7 +665,7 @@ return 0, 0
 /*
 	предсказание последствий выполнения действия автоматизма
 
-для understanding_functions.go func getPrognoze(atmtzm *Automatizm)
+для understanding_functions.go func getPrognoze(atmtzm *Automatism)
 
 Алгоритм:
 Поиск цепочек, заканчивающихся большим негативом (превышающим позитив промежуточных)

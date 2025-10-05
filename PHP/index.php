@@ -278,7 +278,7 @@ function get_bot_connect() {
 
 		if (new_gomeo_par_id > 0) {
 			//	alert(new_gomeo_par_id);
-			bot_params = "set_params=" + new_gomeo_par_id + "&params_val=" + cur_gomeo_val;
+			bot_params = "set_params=" + new_gomeo_par_id + "&params_list=" + cur_gomeo_val;
 			new_gomeo_par_id = 0;
 			req_bot_answer = 1;
 			bot_contact(bot_params, bot_answer);
@@ -365,7 +365,7 @@ var stopingBeast=false;
 		if (IsBeastDeath) {
 			cn = "puls_death";
 			document.getElementById('puls_id').className = cn;
-			bot_closing(); //bot_switcher();// выключить 
+			bot_shutdown(); //bot_switcher();// выключить
 			return;
 		}
 		// show_dlg_alert(cn,500);
@@ -411,7 +411,7 @@ show_dlg_alert("Включаем...", 1500);
 			function sent_save_answer(res) {  //alert(res);
 				if (res != "yes") {
 					show_dlg_alert("Не удалось сохранить память Beast. Выключение отменено.", 0);
-					bot_closing();
+					bot_shutdown();
 					return;
 				}
 				/*
@@ -421,7 +421,7 @@ show_dlg_alert("Включаем...", 1500);
 				function sent_end_answer(res) {  //alert(res);
 					close_end()
 				}*/
-				bot_closing();
+				bot_shutdown();
 			}
 		}
 	}
@@ -716,9 +716,9 @@ show_dlg_alert("Нужно определить хотя бы одно из зн
 	return;
 }
 var server = "/lib/set_life_time.php?yeas="+yeas+"&month="+month+"&days="+days;    alert(server);
-var AJAX = new ajax_support(server, sent_cliner_gomeo);
+var AJAX = new ajax_support(server, sent_clear_gomeo);
 AJAX.send_reqest();
-function sent_cliner_gomeo(res)
+function sent_clear_gomeo(res)
 {
 	if (res=="0")
 	{

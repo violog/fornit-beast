@@ -1,8 +1,8 @@
 <?
-/* Сохранить рефлексы табцы из http://go/pages/mirrors_automatizm.php
+/* Сохранить рефлексы табцы из http://go/pages/mirrors_automatism.php
 
 trigger=xxxx&answer=rrrr&tonMood=|1,2|actions=23,43||
-http://go/pages/mirrors_automatizm_saver.php
+http://go/pages/mirrors_automatism_saver.php
 */
 
 header("Expires: Tue, 1 Jul 2003 05:00:00 GMT");

@@ -1,6 +1,6 @@
 <?
 /* Очистка лога файла /pult_consol.txt
-/pages/consol_cliner_info.php
+/pages/consol_clear_info.php
 */
 
 header("Expires: Tue, 1 Jul 2003 05:00:00 GMT");

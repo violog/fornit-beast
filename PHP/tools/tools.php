@@ -47,7 +47,7 @@ echo "<div class='tools' title='Сбросить память психики (me
 
 echo "<div class='tools' title='Выключить и снова включить Beast.' onClick='reload_beast()'>Перезагрузить Beast</div>";
 
-echo "<div class='tools' title='Корректное выключение Beast.' onClick='bot_closing()'>Выключить Beast</div>";
+echo "<div class='tools' title='Корректное выключение Beast.' onClick='bot_shutdown()'>Выключить Beast</div>";
 
 // это - только для нижнего отсупа:
 echo "<div class='tools' ></div>";
@@ -89,7 +89,7 @@ open_anotjer_win("/pages/history_show.php");
 
 	function expr_larv() {
 		tools_action_ID = 11;
-		bot_contact_get("set_exp_param=1", result_expr_larv);
+		bot_contact_get("export_data=1", result_expr_larv);
 
 		function result_expr_larv(res) {
 			tools_action_ID = 0;
@@ -108,7 +108,7 @@ open_anotjer_win("/pages/history_show.php");
 
 	function impr_larv() {
 		tools_action_ID = 12;
-		bot_contact_get("set_imp_param=1", result_impr_larv);
+		bot_contact_get("import_data=1", result_impr_larv);
 
 		function result_impr_larv(res) {
 			tools_action_ID = 0;
@@ -151,7 +151,7 @@ open_anotjer_win("/pages/history_show.php");
 			// alert(res);
 			if (res[0] != "!") {
 				show_dlg_alert(res.substr(1), 0);
-				//bot_closing();
+				//bot_shutdown();
 				return;
 			}
 
@@ -166,12 +166,12 @@ open_anotjer_win("/pages/history_show.php");
 
 	function save_all_bot_files() {
 		tools_action_ID = 1;
-		stop_activnost();
+		stop_activity();
 	}
 
 	function archive_all_bot_files() {
 		tools_action_ID = 2; // нужно останавливать при архивировании чтобы все хохранить и замереть
-		stop_activnost();
+		stop_activity();
 	}
 
 	// Востановить память из архива
@@ -179,7 +179,7 @@ open_anotjer_win("/pages/history_show.php");
 		//show_dlg_alert("Еще не сделано",0);return;
 		//show_dlg_confirm("Точно заменить память на выбранный архив?",1,-1,archive_restore2);
 		//tools_action_ID=3;
-		//stop_activnost();
+		//stop_activity();
 		// получить список имеющихся архивов
 		var server = "/tools/memory_load.php";
 		var AJAX = new ajax_support(server, sent_save_memory);
@@ -189,12 +189,12 @@ open_anotjer_win("/pages/history_show.php");
 			// alert(res);
 			if (res[0] != "!") {
 				show_dlg_alert(res.substr(1), 0);
-				//bot_closing();
+				//bot_shutdown();
 				return;
 			}
 
 			show_dlg_alert("Архивы памяти:<br>" + res.substr(1), 2);
-			start_activnost();
+			start_activity();
 		}
 	}
 	// восстановить архив
@@ -219,7 +219,7 @@ open_anotjer_win("/pages/history_show.php");
 				return;
 			}
 			// выключить Beast
-			bot_closing();
+			bot_shutdown();
 
 			show_dlg_alert("Восстановлена память Beast из архива. " + cur_archive_file +
 				"<br><br><span style='color:red'>Beast выключен</span> чтобы получить новую память при включении.", 0);
@@ -259,12 +259,12 @@ open_anotjer_win("/pages/history_show.php");
 
 	function removeing_all2() {
 		wait_begin();
-		bot_closing(); // выключить Beast
+		bot_shutdown(); // выключить Beast
 		setTimeout("removeing_all3()", 2000); // выждать завершения процессов
 	}
 
 	function removeing_all3() {
-		var AJAX = new ajax_support("/tools/cliner_mempry.php", sent_info);
+		var AJAX = new ajax_support("/tools/clear_mempry.php", sent_info);
 		AJAX.send_reqest();
 
 		function sent_info(res) {
@@ -290,11 +290,11 @@ open_anotjer_win("/pages/history_show.php");
 				//alert(res);
 				if (res != "yes") {
 					show_dlg_alert("Не удалось сохранить память Beast", 0);
-					bot_closing();
+					bot_shutdown();
 					return;
 				}
 				show_dlg_alert("Память сохранена.", 0);
-				start_activnost();
+				start_activity();
 			}
 		}
 		if (tools_action_ID == 2) //Создать архив всей памяти
@@ -307,7 +307,7 @@ open_anotjer_win("/pages/history_show.php");
 				if (res != "yes") {
 					wait_end();
 					show_dlg_alert("Не удалось сохранить память Beast", 0);
-					bot_closing();
+					bot_shutdown();
 					return;
 				}
 				// теперь создать архив
@@ -319,12 +319,12 @@ open_anotjer_win("/pages/history_show.php");
 					wait_end(); // alert(res);
 					if (res[0] != "!") {
 						show_dlg_alert(res, 0);
-						bot_closing();
+						bot_shutdown();
 						return;
 					}
 
 					show_dlg_alert("Архив создан и доступен в списке для восстановления:<br>" + res.substr(1), 0);
-					start_activnost();
+					start_activity();
 				}
 
 			}
@@ -334,9 +334,9 @@ open_anotjer_win("/pages/history_show.php");
 	/* это - глабальная блокировка-разблокировка всех действий на Пульте и Beast
 	для совершения критических операций, которым мешает такая активность.
 	*/
-	function stop_activnost() {
+	function stop_activity() {
 		wait_begin();
-		var AJAX = new ajax_support(linking_address + "?stop_activnost=1", sent_info);
+		var AJAX = new ajax_support(linking_address + "?stop_activity=1", sent_info);
 		AJAX.send_reqest();
 
 		function sent_info(res) {
@@ -352,9 +352,9 @@ open_anotjer_win("/pages/history_show.php");
 		}
 	}
 
-	function start_activnost() {
+	function start_activity() {
 		wait_end();
-		var AJAX = new ajax_support(linking_address + "?start_activnost=1", sent_info);
+		var AJAX = new ajax_support(linking_address + "?start_activity=1", sent_info);
 		AJAX.send_reqest();
 
 		function sent_info(res) {
@@ -367,11 +367,11 @@ open_anotjer_win("/pages/history_show.php");
 		}
 	}
 
-	function bot_closing() {// bot_closing=1 - с сохранением памяти
+	function bot_shutdown() {// bot_shutdown=1 - с сохранением памяти
 		// wait_begin(); нет сигнала для сброса гифки 
 		actived_contact = 0;
 		show_dlg_alert("Beast выключается...", 2000);
-		var AJAX = new ajax_support(linking_address + "?bot_closing=1", sent_info);
+		var AJAX = new ajax_support(linking_address + "?bot_shutdown=1", sent_info);
 		AJAX.send_reqest();
 
 		function sent_info(res) {

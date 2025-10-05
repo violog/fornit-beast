@@ -228,7 +228,7 @@ func dangerActualProcess(cycle *cycleInfo) bool {
 // творчество, мышление о Доминанте, фантазия - как функция интенсивного подбора ассоциаций
 func dominantsProcess(cycle *cycleInfo) bool {
 	cycle.lastProcessID = "dominantsProcess"
-	// cycle.log+=" Отработка четвертого уровня осмысления с ID циикла "+strconv.Itoa(cycle.ID)+" мышления  "+onClickStr(cycle.ID,"show_cyckle","")+"<br>"
+	// cycle.log+=" Отработка четвертого уровня осмысления с ID циикла "+strconv.Itoa(cycle.ID)+" мышления  "+onClickStr(cycle.ID,"show_cycle","")+"<br>"
 	// уже может быть запущена доминанта нерешенной проблемы
 	// и тут - Стек отложенных дел.
 
@@ -307,7 +307,7 @@ func mentAtmzmProcess(cycle *cycleInfo) bool {
 */
 func makeActionFromRooles(rules Rule) bool {
 	// по правилу найти или создать (в случае AmtzmNextString) автоматизм и запустить его
-	var atmzm *Automatizm
+	var atmzm *Automatism
 
 	conscienceStatus += "Найдено Правило по которому можно совершить действие.<br>"
 
@@ -326,20 +326,20 @@ func makeActionFromRooles(rules Rule) bool {
 				// можно использовать субъективный образ
 				purpose := getPurposeGenetic()
 				purpose.actionID = ai
-				atmzm = createAndRunAutomatizmFromPurpose(purpose)
+				atmzm = createAndRunAutomatismFromPurpose(purpose)
 			}
 		} //if ai.Answer==1 { // субъективный образ
 		/////////////////////////////////
 	}
 
 	if atmzm != nil {
-		automatizmCorrection(atmzm, rules.Effect, nil)
+		automatismCorrection(atmzm, rules.Effect, nil)
 
 		// вытащить образ действий успешного автоматизма и попробовать решить подходящую по аналогии Домимнату
 		checkRelevantAction(curActions.ID, atmzm.ActionsImageID, atmzm.Usefulness)
 		mentalInfoStruct.motorAtmzmID = 0 // сброс рассматривания автоматизма
 		mentalInfoStruct.noStaffAtmzmID = false
-		automatizmStatus = 0
+		automatismStatus = 0
 		// если было размышление, то оно не прерывается в своем рекурсивном проходе
 		conscienceStatus += "Запущен альтернативный штатному автоматизм, найденный в Правилах.<br>"
 		atmtzmActualTreeNode = atmzm
@@ -364,7 +364,7 @@ func makeActionFromRooles(rules Rule) bool {
 Работает с произвольным branchID, а не только при активации дерева,
 так что функцию можно испольавтоматизмы на "привет"зовать для мыслительной произвольности
 */
-func tryCreateAnswerForPhrese(limitActions int, branchID int) (int, *Automatizm) {
+func tryCreateAnswerForPhrese(limitActions int, branchID int) (int, *Automatism) {
 	wIDarr := wordSensor.CurretWordsIDarr // // массив wordID слов, вместо нераспознанных -1
 	if wIDarr == nil {
 		return 0, nil
@@ -408,7 +408,7 @@ func tryCreateAnswerForPhrese(limitActions int, branchID int) (int, *Automatizm)
 		Если в проходе есть автоматизм, то он учитывается.
 		*/
 		var aArr []int // для каждого известного слова выбрать ID действий
-		var atmtzmFirst *Automatizm
+		var atmtzmFirst *Automatism
 		for i := 0; i < len(phraseArr); i++ {
 			atmtzm := getAtmtzmFromNodesFrase(emotionNode, phraseArr[i])
 			if atmtzm != nil {
@@ -424,16 +424,16 @@ func tryCreateAnswerForPhrese(limitActions int, branchID int) (int, *Automatizm)
 		if aArr != nil && atmtzmFirst != nil {
 			// для случая, когда во фразе нашелся фрагмент, на который есть автоматизм
 			if len(aArr) == 1 {
-				if isUnrecognizedPhraseFromAtmtzmTreeActivation { // просто выдаем автоматизм потому, что AutomatizmTreeFromID[branchID].PhraseID==0 - создаст кривой автоматизм без действий и фразы
+				if isUnrecognizedPhraseFromAtmtzmTreeActivation { // просто выдаем автоматизм потому, что AutomatismTreeFromID[branchID].PhraseID==0 - создаст кривой автоматизм без действий и фразы
 					return atmtzmFirst.ID, atmtzmFirst
 				}
-				aID, atzm := createNewAutomatizmID(0, branchID, atmtzmFirst.ActionsImageID, true)
+				aID, atzm := createNewAutomatismID(0, branchID, atmtzmFirst.ActionsImageID, true)
 				if atzm != nil {
 					return aID, atzm
 				}
 			} else {
 				//создать автоматизм из цепочки действий, если действий >1, то - c atzm.NextID
-				aID, atzm := createAutomatizmFromNextString(aArr, branchID)
+				aID, atzm := createAutomatismFromNextString(aArr, branchID)
 				if atzm != nil {
 					return aID, atzm
 				}
@@ -488,7 +488,7 @@ func tryCreateAnswerForPhrese(limitActions int, branchID int) (int, *Automatizm)
 	//id,_:=createAmtzmNextStringID(0,aArr,true)// создать образ цепочки типа AmtzmNextString
 
 	//создать автоматизм из цепочки действий
-	aID, atzm := createAutomatizmFromNextString(aArr, branchID)
+	aID, atzm := createAutomatismFromNextString(aArr, branchID)
 	if atzm != nil {
 		return aID, atzm
 	}
@@ -522,7 +522,7 @@ Beast: «да»
 Так что пока нет необходимости собирать все групповые правила с заданным диалогом и выбирать наиболее подходящее.
 Но это еще не точно, в каких-то случаях такое может приводить к неточности, это нужно проверить TODO
 */
-func getPrognoze(atmtzm *Automatizm) (int, int) {
+func getPrognoze(atmtzm *Automatism) (int, int) {
 	if atmtzm == nil {
 		lib.TodoPanic("Нулевое значение параметра в func getPrognoze")
 	}
@@ -572,7 +572,7 @@ func getPrognoze(atmtzm *Automatizm) (int, int) {
 }
 
 /* СТАРАЯ ВЕРСИЯ
-func getPrognoze(atmtzm *Automatizm) (int, int) {
+func getPrognoze(atmtzm *Automatism) (int, int) {
 	if atmtzm == nil {
 		lib.TodoPanic("Нулевое значение параметра в func getPrognoze")
 	}

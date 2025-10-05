@@ -20,9 +20,9 @@ package psychic
 curActiveActions - структура действий при активации дерева автоматизмов
 savePurposeGenetic
 saveSituationImageID
-currentMentalAutomatizmID
-LastRunAutomatizmPulsCount - идет период ожидания ответа
-LastAutomatizmWeiting - ожидается результат запущенного MotAutomatizm
+currentMentalAutomatismID
+LastRunAutomatismPulsCount - идет период ожидания ответа
+LastAutomatismWeiting - ожидается результат запущенного MotAutomatism
 
 // нераспознанный остаток - НОВИЗНА: var CurrentUnderstandingTreeEnd []int
 

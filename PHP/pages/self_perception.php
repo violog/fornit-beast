@@ -185,7 +185,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/spoiler.php");
 	;
 
 // ждем пока не включат бестию
-check_Beast_activnost(6);// после 4-го пульса И запускается get_info()
+check_activity(6);// после 4-го пульса И запускается get_info()
 
 function get_info()
 {
@@ -206,13 +206,13 @@ setTimeout("chech_new_info()",2000);
 /*
 function get_autimat_table()
 {
-open_anotjer_win("/pages/mental_automatizm_table.php");
+open_anotjer_win("/pages/mental_automatism_table.php");
 }*/
 
 function get_tree1()
 {
 //alert("Дерево автоматизмов");
-open_anotjer_win("/pages/mental_automatizm_tree.php");
+open_anotjer_win("/pages/mental_automatism_tree.php");
 }
 function get_tree_problem()
 {
@@ -323,7 +323,7 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 function get_nexts()
 {
 //список цепочек действий AmtzmNextString
-open_anotjer_win("/pages/automatizm_next_actions_table.php");
+open_anotjer_win("/pages/automatism_next_actions_table.php");
 }
 function show_next_actions(nextID)//func GetNextActionsInfo(nextID int)string{
 {
@@ -349,7 +349,7 @@ if (clian_episodic_3)
 show_dlg_alert("Уже запущено.",1000);
 }
 clian_episodic_3=setTimeout("clian_episodic3()",2000);
-var AJAX = new ajax_support(linking_address + "?clian_episodic_memory=1", sent_clian_episodic);
+var AJAX = new ajax_support(linking_address + "?clear_episodic_memory=1", sent_clian_episodic);
 AJAX.send_reqest();
 function sent_clian_episodic(res) {
 clearTimeout(clian_episodic_3);
@@ -407,10 +407,10 @@ show_dlg_confirm("Точно очистить все файлы памфти в 
 }
 function clian_memory_psy2()
 {
-	var AJAX = new ajax_support("/tools/cliner_mempry.php", sent_cliner_p_info);
+	var AJAX = new ajax_support("/tools/clear_mempry.php", sent_clear_p_info);
 		AJAX.send_reqest();
 
-		function sent_cliner_p_info(res) {
+		function sent_clear_p_info(res) {
 			//alert(res);
 			if (res[0] != "!") {
 				show_dlg_alert(res.substr(1), 0);

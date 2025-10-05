@@ -1,6 +1,6 @@
 <?
 /*  Удалить всю память, зависимую от рефлексов. (AJAX)
-/lib/cliner_reflex_memory.php
+/lib/clear_reflex_memory.php
 
 */
 header("Expires: Tue, 1 Jul 2003 05:00:00 GMT");
@@ -14,15 +14,15 @@ mb_http_output('UTF-8');
 mb_internal_encoding("UTF-8");
 
 
-cliner_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/reflex_tree.txt");
-cliner_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/condition_reflexes.txt");
-cliner_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/trigger_stimuls_images.txt");
-cliner_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/base_style_images.txt");
+clear_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/reflex_tree.txt");
+clear_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/condition_reflexes.txt");
+clear_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/trigger_stimuls_images.txt");
+clear_file($_SERVER["DOCUMENT_ROOT"] . "/memory_reflex/base_style_images.txt");
 
 
 
 ///////////////////////////////////////////////////
-function cliner_file($file)
+function clear_file($file)
 {
 	$hf = fopen($file, "wb+");
 	if ($hf) {

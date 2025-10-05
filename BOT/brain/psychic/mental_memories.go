@@ -142,10 +142,10 @@ var SynthesizeImportanceMemory []*SynthesizeImportanceImage
 	Был запущен штатный автоматизм после Стимула. Выясняется на 1-м и 2-м уровне осмысления.
 
 Если был запущен автоматизм, то блокировать запуски последующих, кроме ментального запуска wasRunPurposeActionFunc.
-Если вдруг нужно будет, подумав, запустить ментально автоматизм, то нужно wasRunTreeStandardAutomatizm=false.
-wasRunTreeStandardAutomatizm=true устанавливается при любом запуске автоматизма в func RumAutomatizm
+Если вдруг нужно будет, подумав, запустить ментально автоматизм, то нужно wasRunTreeStandardAutomatism=false.
+wasRunTreeStandardAutomatism=true устанавливается при любом запуске автоматизма в func RumAutomatism
 
-var wasRunTreeStandardAutomatizm = false  ТЕПЕРЬ всегда после запуска автоматизма LastRunAutomatizmPulsCount >0
+var wasRunTreeStandardAutomatism = false  ТЕПЕРЬ всегда после запуска автоматизма LastRunAutomatismPulsCount >0
 */
 
 /*
@@ -155,14 +155,14 @@ infoFuncSequence=append(infoFuncSequence,infofID) - в
 Когда сработал автоматизм и после периода ожидания возник Стимул,
 то происходит запись м.Правил func afterWaitingPeriod(effect int) в understanding_process.go
 с детектором достижения Цели getMentalEffect(effect0 int)
-После этого или после завершения периода ожидания (clinerAutomatizmRunning()) infoFuncSequence очищается.
+После этого или после завершения периода ожидания (clearAutomatismRunning()) infoFuncSequence очищается.
 
 TODO м.б. не самая последняя функция, а ряд последних дает эффект мент.Правила!...
 */
 var infoFuncSequence []int
 
 var wasRunPurposeActionFunc = false //true - сработала func infoFunc17, 14 и 26 - прекратилась запись в infoFuncSequence[]
-func clinerFuncSequence() {
+func clearFuncSequence() {
 	infoFuncSequence = nil
 	wasRunPurposeActionFunc = false
 	//curFunc13ID = 0

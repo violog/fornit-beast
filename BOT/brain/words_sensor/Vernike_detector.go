@@ -1,7 +1,7 @@
 /*  распознаватель слов и фраз по типу зоны Вернике в мозге.
 Память о воспринятых фразах в текущем активном контексте (Vernike_detector.go): var MemoryDetectedArr []MemoryDetected
 
-Распознавание фраз начинается в main.go с word_sensor.VerbalDetection(text_dlg, is_input_rejim, moodID)
+Распознавание фраз начинается в main.go с word_sensor.VerbalDetection(text_split, is_forced_mode, moodID)
 С ПУльта приходит текст, который в VerbalDetection() разбирается на фрзацы (\r\n):
 
 абзацы в PhraseSeparator() разбираются на фразы по разделителям (знаки препинания)
@@ -106,7 +106,7 @@ var MemoryDetectedArr []MemoryDetected
 var wlev = 0
 
 // // если обычный режим диалога (на ПУльте не стоит галка "набивка рабочих фраз без отсеивания мусорных слов ")
-var NoCheckWordCount = false // is_input_rejim - набивка рабочих фраз с отсеиванием мусорных слов
+var NoCheckWordCount = false // is_forced_mode - набивка рабочих фраз с отсеиванием мусорных слов
 
 /*
 	вызывается фразой с Пульта

@@ -5,7 +5,7 @@
 2. Оценки текщего состояния Плохо - Норма - хорошо.
 
 1-я ЗАДАЧА
-Улучшение или уходшение состояния - сигналы для оценки результата действия для automatizm_result.go,
+Улучшение или уходшение состояния - сигналы для оценки результата действия для automatism_result.go,
 которые передаются в психику через func BetterOrWorseNow при каждой стимуляции после действий Бота.
 Для этого тслеживается ОДИН приоритетный гомео-параметр: PrioritetGomeoParID (func compareWithOld())
 это соотвествует тому, что в каждый момент времени есть одна самая главная проблема (высшая значимость).
@@ -519,11 +519,11 @@ func GetCurGomeoStatus() string {
 Вызывается из психики res:=gomeostas.BetterOrWorseNow()
 
 BetterOrWorseNow вызывается в случаях:
-1. При стимуле в период ожидания LastRunAutomatizmPulsCount (automatism_tree.go func afterTreeActivation())
+1. При стимуле в период ожидания LastRunAutomatismPulsCount (automatism_tree.go func afterTreeActivation())
 2. Процесс сновидения или мечтаний (understanding_problem_tree.go func ProblemTreeActivation())
 
-LastRunAutomatizmPulsCount устанавливается в 2-ч случаях:
-1. когда было действие бота и он ждет ответ для оценки эффекта (после func RumAutomatizm )
+LastRunAutomatismPulsCount устанавливается в 2-ч случаях:
+1. когда было действие бота и он ждет ответ для оценки эффекта (после func RumAutomatism )
 2. Совершение произвольного действия (после func showVolutionAction)
 
 
@@ -541,7 +541,7 @@ func BetterOrWorseNow() (int, []int) { // только для func BetterOrWorse
 	*/
 	//	time.Sleep(1500 * time.Microsecond) нормально успевают измениться параметры гомеостаза, так что не нужно
 
-	// какие id парамектров улучшились - для Automatizm.GomeoIdSuccesArr (какие ID гомео-параметров улучшает это действие)
+	// какие id парамектров улучшились - для Automatism.GomeoIdSuccesArr (какие ID гомео-параметров улучшает это действие)
 	var GomeoParIdSuccesArr []int // спиоск ж.параметров с улучшением
 	for id := 1; id < 9; id++ {
 		if saveDinamicParams[id] > 0 {

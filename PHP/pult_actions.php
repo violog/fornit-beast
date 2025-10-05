@@ -102,7 +102,7 @@ $trigg = $actionsFromPultArr;
 	<div id="act_16" class='actions actions_blue action_poz1' onClick="to_action(16)" title="<?= $trigg[16][1] ?>"><?= $trigg[16][0] ?><?= setGo(16) ?></div>
 	<div id="act_17" class='actions actions_blue action_poz1' onClick="to_action(17)" title="<?= $trigg[17][1] ?>"><?= $trigg[17][0] ?><?= setGo(17) ?></div>
 
-<div id="cliner_trigger_stimuls_id" class='actions' style="position:absolute;bottom:25px;right:0px;background-color:#eeeeee;color:grey;text-align:center;" onClick="desactivationAll()" title="Отменить выбранные сочетания пусковых стимулов.">Отменить выборку</div>
+<div id="clear_trigger_stimuls_id" class='actions' style="position:absolute;bottom:25px;right:0px;background-color:#eeeeee;color:grey;text-align:center;" onClick="desactivationAll()" title="Отменить выбранные сочетания пусковых стимулов.">Отменить выборку</div>
 
 
 	<div id="sent_trigger_stimuls_id" class='actions' style="position:absolute;bottom:0px;right:0px;background-color:#eeeeee;color:grey;text-align:center;" onClick="sent_trigger_stimuls()" title="Послать выбранные сочетания пусковых стимулов.">Послать&nbsp;для&nbsp;Beast</div>
@@ -196,16 +196,16 @@ trigBtn.className=trigBtn.className.substr(0,trigBtn.className.indexOf(' selButt
 allow_sent_to_beast=1;
 document.getElementById("sent_trigger_stimuls_id").style.outline="solid 1px #000000";
 document.getElementById("sent_trigger_stimuls_id").style.color="#000000";
-document.getElementById("cliner_trigger_stimuls_id").style.outline="solid 1px #000000";
-document.getElementById("cliner_trigger_stimuls_id").style.color="#000000";
+document.getElementById("clear_trigger_stimuls_id").style.outline="solid 1px #000000";
+document.getElementById("clear_trigger_stimuls_id").style.color="#000000";
 	}
 	else
 	{
 allow_sent_to_beast=0;
 document.getElementById("sent_trigger_stimuls_id").style.outline="solid 0px #000000";
 document.getElementById("sent_trigger_stimuls_id").style.color="grey";
-document.getElementById("cliner_trigger_stimuls_id").style.outline="solid 0px #000000";
-document.getElementById("cliner_trigger_stimuls_id").style.color="grey";
+document.getElementById("clear_trigger_stimuls_id").style.outline="solid 0px #000000";
+document.getElementById("clear_trigger_stimuls_id").style.color="grey";
 	}
 
 }
@@ -276,8 +276,8 @@ function desactivationAll() {
 allow_sent_to_beast=0;
 document.getElementById("sent_trigger_stimuls_id").style.outline="solid 0px #000000";
 document.getElementById("sent_trigger_stimuls_id").style.color="grey";
-document.getElementById("cliner_trigger_stimuls_id").style.outline="solid 0px #000000";
-document.getElementById("cliner_trigger_stimuls_id").style.color="grey";
+document.getElementById("clear_trigger_stimuls_id").style.outline="solid 0px #000000";
+document.getElementById("clear_trigger_stimuls_id").style.color="grey";
 // убрать фон действий с пульта
 document.getElementById("action_block_id").style.backgroundColor = "#ffffff";
 }

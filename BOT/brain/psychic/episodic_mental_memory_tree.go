@@ -8,7 +8,7 @@
 В файл пишется:
 ID|ParentID|NodePID|ThemeID|PurposeID|info1,info2#Effect|Count
 
-Для каждой новой цели должен начинаться свой кадр ментальной эпиз.памяти: clinerFuncSequence()
+Для каждой новой цели должен начинаться свой кадр ментальной эпиз.памяти: clearFuncSequence()
 это делается в func infoFunc8
 
 После отработки wasRunPurposeActionFunc нужно прекратить набор кадров и ждать ответа: func setCurIfoFuncID
@@ -16,7 +16,7 @@ ID|ParentID|NodePID|ThemeID|PurposeID|info1,info2#Effect|Count
 Вроде логично, что если не запускалась функция с wasRunPurposeActionFunc=true (id==14,17,26)
 - значит не цикл мышления привел к ответу и он не должен учитываться как источник эффекта.
 Но даже при запуске автоматизма продолжается осмысление, в том числе и в фоновых циклах и еще есть доминанта.
-Есть CurrentInformationEnvironment.needThinkingAboutAutomatizm - думать о создании автоматизма.
+Есть CurrentInformationEnvironment.needThinkingAboutAutomatism - думать о создании автоматизма.
 Так что пусть пишутся любые цепочки, даже если не было вызова func infoFunc17.
 Вообще TODO нужно продолжить поиск более адаптиной реализации ментальных правил...
 
@@ -151,8 +151,8 @@ func averageMentalEffect(node *EpisodicMentalTreeNode, effect int) {
 	ЗАПИСАТЬ В ДЕРЕВО НОВЫЙ ЭПИЗОД
 
 По каждому срабатыванию инфо-фукнций заполняется буфер infoFuncSequence для набора инфоID
-Буфер очищается clinerFuncSequence() и в конце func saveNewMentalEpisodic
-сбрасывает буфер в func clinerAutomatizmRunning()
+Буфер очищается clearFuncSequence() и в конце func saveNewMentalEpisodic
+сбрасывает буфер в func clearAutomatismRunning()
 
 Если при осмыслении проходились только уровни до 3-го,
 то и нет обработки, нет записи в Эпизод.память ментальных кадров (определяет ощущение субъективного времени).
@@ -204,7 +204,7 @@ func saveNewMentalEpisodic(effect int) {
 		EpisodicMentalHistoryArr = append(EpisodicMentalHistoryArr, HistoryMental{lastNodeID, LifeTime, lastEpisodicMemID})
 	}
 
-	clinerFuncSequence() // сброс infoFuncSequence
+	clearFuncSequence() // сброс infoFuncSequence
 }
 
 ////////////////////////////////////////////////////////////

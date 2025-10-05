@@ -1,9 +1,9 @@
 <?
 /* набивальщик базы зеркальных автоматизмов 
 
-Сохранение - в /pages/mirrors_automatizm_saver.php
+Сохранение - в /pages/mirrors_automatism_saver.php
 
-http://go/pages/mirrors_automatizm.php
+http://go/pages/mirrors_automatism.php
 
 */
 $page_id = -1;
@@ -36,7 +36,7 @@ if (isset($_GET['id_list'])) {
 function get_table(kind)
 {
 wait_show();
-var link="/pages/mirrors_automatizm_table.php?"+cur_condition_choose+"&kind="+kind;
+var link="/pages/mirrors_automatism_table.php?"+cur_condition_choose+"&kind="+kind;
 //alert(link);
 var AJAX = new ajax_support(link, sent_table_info);
 AJAX.send_reqest();
@@ -253,7 +253,7 @@ document.getElementById('base_context_name').innerHTML=cur_bcontex_choose;
 get_table(0);
 
 
-//location.href='/pages/mirrors_automatizm.php?bsID='+bsID+'&id_list='+id_list;
+//location.href='/pages/mirrors_automatism.php?bsID='+bsID+'&id_list='+id_list;
 }
 //////////////////////////////////////////////
 
@@ -284,7 +284,7 @@ return;
 //alert(saveStr); // return;
 /////////////////////////
 saveStr=cur_condition_choose+"&saveStr="+saveStr;  // alert(saveStr);return;
-var link="/pages/mirrors_automatizm_saver.php";
+var link="/pages/mirrors_automatism_saver.php";
 //alert(link);
 var AJAX = new ajax_post_support(link,saveStr, sent_table_save,1);
 AJAX.send_reqest();

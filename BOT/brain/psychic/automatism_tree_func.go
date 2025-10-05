@@ -19,10 +19,10 @@ import (
 Формат записи:
 ID|ParentNode|BaseID|EmotionID|ActivityID|ToneMoodID|SimbolID|PhraseID
 */
-var lastAutomatizmNodeID = 0
+var lastAutomatismNodeID = 0
 var noRunThisOperation = false // не проверять на дубли
-func createNewAutomatizmNode(parent *AutomatizmNode, id int, baseID int, EmotionID int,
-	ActivityID int, ToneMoodID int, SimbolID int, VerbalID int, CheckUnicum bool) (int, *AutomatizmNode) {
+func createNewAutomatismNode(parent *AutomatismNode, id int, baseID int, EmotionID int,
+	ActivityID int, ToneMoodID int, SimbolID int, VerbalID int, CheckUnicum bool) (int, *AutomatismNode) {
 
 	if parent == nil {
 		return 0, nil
@@ -31,23 +31,23 @@ func createNewAutomatizmNode(parent *AutomatizmNode, id int, baseID int, Emotion
 	//if !noRunThisOperation { НЕЛЬЗЯ ИГНОРИРОВАТЬ ИНАЧЕ СОЗДАЕТ ЛИШНЕЕ
 	// если есть такой узел, то не создавать
 	if CheckUnicum {
-		idOld, nodeOld := FindAutomatizmTreeNodeFromCondition(baseID, EmotionID, ActivityID, ToneMoodID, SimbolID, VerbalID)
+		idOld, nodeOld := FindAutomatismTreeNodeFromCondition(baseID, EmotionID, ActivityID, ToneMoodID, SimbolID, VerbalID)
 		if idOld > 0 {
 			return idOld, nodeOld
 		}
 	}
 
 	if id == 0 {
-		lastAutomatizmNodeID++
-		id = lastAutomatizmNodeID
+		lastAutomatismNodeID++
+		id = lastAutomatismNodeID
 	} else {
 		//		newW.ID=id
-		if lastAutomatizmNodeID < id {
-			lastAutomatizmNodeID = id
+		if lastAutomatismNodeID < id {
+			lastAutomatismNodeID = id
 		}
 	}
 
-	var node AutomatizmNode
+	var node AutomatismNode
 	node.ID = id
 	node.ParentNode = parent
 	node.ParentID = parent.ID
@@ -63,38 +63,38 @@ func createNewAutomatizmNode(parent *AutomatizmNode, id int, baseID int, Emotion
 
 	parent.Children = append(parent.Children, node)
 	// четко находим новый вставленный член (а не &parent.Children[count-1])
-	var newN *AutomatizmNode
+	var newN *AutomatismNode
 	for i := 0; i < len(parent.Children); i++ {
 		if parent.Children[i].ID == node.ID {
 			newN = &parent.Children[i]
 		}
 	}
 
-	//AutomatizmTreeFromID[node.ID]=&node
-	WriteAutomatizmTreeFromID(node.ID, &node)
+	//AutomatismTreeFromID[node.ID]=&node
+	WriteAutomatismTreeFromID(node.ID, &node)
 
-	// т.к. append меняет длину массива, перетусовывая адреса, то нужно обновить адреса в AutomatizmTreeFromID:
-	updateAutomatizmTreeFromID(parent) // здесь потому, что при загрузке из файла нужно на лету получать адреса
+	// т.к. append меняет длину массива, перетусовывая адреса, то нужно обновить адреса в AutomatismTreeFromID:
+	updateAutomatismTreeFromID(parent) // здесь потому, что при загрузке из файла нужно на лету получать адреса
 
 	return id, newN
 }
 
 // корректируем адреса всех узлов
-func updateAutomatizmTreeFromID(parent *AutomatizmNode) {
+func updateAutomatismTreeFromID(parent *AutomatismNode) {
 	//updatingPhraseTreeFromID(&VernikePhraseTree)
 	updatingPhraseTreeFromID(parent)
 }
 
 // проход всего дерева
-func updatingPhraseTreeFromID(rt *AutomatizmNode) {
+func updatingPhraseTreeFromID(rt *AutomatismNode) {
 	if rt.ID > 0 {
-		//rt.ParentNode=AutomatizmTreeFromID[rt.ParentID] // wr.ParentNode адрес меняется из=за corretsParent(,
-		node, ok := ReadeAutomatizmTreeFromID(rt.ParentID)
+		//rt.ParentNode=AutomatismTreeFromID[rt.ParentID] // wr.ParentNode адрес меняется из=за corretsParent(,
+		node, ok := ReadeAutomatismTreeFromID(rt.ParentID)
 		if ok {
 			rt.ParentNode = node
 		}
-		//AutomatizmTreeFromID[rt.ID] = rt
-		WriteAutomatizmTreeFromID(rt.ID, rt)
+		//AutomatismTreeFromID[rt.ID] = rt
+		WriteAutomatismTreeFromID(rt.ID, rt)
 	}
 	if rt.Children == nil { // конец ветки
 		return
@@ -109,15 +109,15 @@ func updatingPhraseTreeFromID(rt *AutomatizmNode) {
 Формат записи:
 ID|ParentNode|BaseID|EmotionID|ActivityID|ToneMoodID|SimbolID|PhraseID
 */
-func loadAutomatizmTree() {
-	//	createNulLevelAutomatizmTree(&AutomatizmTree)
-	strArr, _ := lib.ReadLines(lib.GetMainPathExeFile() + "/memory_psy/automatizm_tree.txt")
+func loadAutomatismTree() {
+	//	createNulLevelAutomatismTree(&AutomatismTree)
+	strArr, _ := lib.ReadLines(lib.GetMainPathExeFile() + "/memory_psy/automatism_tree.txt")
 	cunt := len(strArr)
-	AutomatizmTreeFromID = make([]*AutomatizmNode, cunt) //задать сразу имеющиеся в файле число
+	AutomatismTreeFromID = make([]*AutomatismNode, cunt) //задать сразу имеющиеся в файле число
 
 	//нулевой узел
-	//AutomatizmTreeFromID[0]=&AutomatizmTree // все по нулям по умолчанию
-	WriteAutomatizmTreeFromID(0, &AutomatizmTree)
+	//AutomatismTreeFromID[0]=&AutomatismTree // все по нулям по умолчанию
+	WriteAutomatismTreeFromID(0, &AutomatismTree)
 
 	//просто проход по всем строкам файла подряд так что сначала идут дочки, потом - их родители
 	for n := 0; n < cunt; n++ {
@@ -142,15 +142,15 @@ func loadAutomatizmTree() {
 		var saveDoWritingFile = doWritingFile
 		doWritingFile = false
 
-		node, ok := ReadeAutomatizmTreeFromID(parentID)
+		node, ok := ReadeAutomatismTreeFromID(parentID)
 		if ok {
-			createNewAutomatizmNode(node, id, baseID, EmotionID,
+			createNewAutomatismNode(node, id, baseID, EmotionID,
 				ActivityID, ToneMoodID, SimbolID, VerbalID, false)
 		}
 		doWritingFile = saveDoWritingFile
 	}
 
-	// вытащить конечные узлы веток дерева, заполнить var lastnodsTreeArr =make(map[int]*AutomatizmNode)
+	// вытащить конечные узлы веток дерева, заполнить var lastnodsTreeArr =make(map[int]*AutomatismNode)
 	//finishScanAllTree()
 
 	return
@@ -158,25 +158,25 @@ func loadAutomatizmTree() {
 
 /*
 // создать первый, нулевой уровень дерева
-func createNulLevelAutomatizmTree(rt *AutomatizmNode){
+func createNulLevelAutomatismTree(rt *AutomatismNode){
 	rt.ID=0
-	AutomatizmTreeFromID[rt.ID]=rt
+	AutomatismTreeFromID[rt.ID]=rt
 	return
 }
 */
 /////////////////////////////////////
-func SaveAutomatizmTree() {
+func SaveAutomatismTree() {
 	notAllowScanInTreeThisTime = true
 	var out = ""
-	cnt := len(AutomatizmTree.Children)
+	cnt := len(AutomatismTree.Children)
 	for n := 0; n < cnt; n++ { // чтобы записывалось по порядку родителей
-		out += getAutomatizmNode(&AutomatizmTree.Children[n])
+		out += getAutomatismNode(&AutomatismTree.Children[n])
 	}
-	lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_psy/automatizm_tree.txt", out)
+	lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_psy/automatism_tree.txt", out)
 	notAllowScanInTreeThisTime = false
 	return
 }
-func getAutomatizmNode(wt *AutomatizmNode) string {
+func getAutomatismNode(wt *AutomatismNode) string {
 	var out = ""
 	//	if wt.ParentID>0 {
 	out += strconv.Itoa(wt.ID) + "|"
@@ -193,7 +193,7 @@ func getAutomatizmNode(wt *AutomatizmNode) string {
 		return out
 	}
 	for n := 0; n < len(wt.Children); n++ {
-		out += getAutomatizmNode(&wt.Children[n])
+		out += getAutomatismNode(&wt.Children[n])
 	}
 	return out
 }
@@ -201,17 +201,17 @@ func getAutomatizmNode(wt *AutomatizmNode) string {
 /////////////////////////////////////
 
 // создать первые три ветки базовых состояний
-func createBasicAutomatizmTree() {
+func createBasicAutomatismTree() {
 	notAllowScanInTreeThisTime = true // запрет показа карты при обновлении
 
-	createNewAutomatizmNode(&AutomatizmTree, 0, 1, 0, 0, 0, 0, 0, false)
-	createNewAutomatizmNode(&AutomatizmTree, 0, 2, 0, 0, 0, 0, 0, false)
-	createNewAutomatizmNode(&AutomatizmTree, 0, 3, 0, 0, 0, 0, 0, false)
+	createNewAutomatismNode(&AutomatismTree, 0, 1, 0, 0, 0, 0, 0, false)
+	createNewAutomatismNode(&AutomatismTree, 0, 2, 0, 0, 0, 0, 0, false)
+	createNewAutomatismNode(&AutomatismTree, 0, 3, 0, 0, 0, 0, 0, false)
 
 	if doWritingFile {
-		SaveAutomatizmTree()
+		SaveAutomatismTree()
 	}
-	//SaveAutomatizmTree()
+	//SaveAutomatismTree()
 	notAllowScanInTreeThisTime = false // запрет показа карты при обновлении
 	return
 }
@@ -219,11 +219,11 @@ func createBasicAutomatizmTree() {
 /////////////////////////////////////////////////////
 
 // найти КОНЕЧНЫЙ узел по условиям
-func FindAutomatizmTreeNodeFromCondition(baseID int, EmotionID int,
-	ActivityID int, ToneMoodID int, SimbolID int, VerbalID int) (int, *AutomatizmNode) {
+func FindAutomatismTreeNodeFromCondition(baseID int, EmotionID int,
+	ActivityID int, ToneMoodID int, SimbolID int, VerbalID int) (int, *AutomatismNode) {
 	/*
 		//	 поиск по дереву, что и эффективнее.
-			for k, v := range AutomatizmTreeFromID {
+			for k, v := range AutomatismTreeFromID {
 			if v==nil{continue}
 				if v.BaseID==baseID && v.EmotionID==EmotionID &&
 					v.ActivityID==ActivityID && ToneMoodID==v.ToneMoodID && v.SimbolID==SimbolID && v.PhraseID==PhraseID{
@@ -233,10 +233,10 @@ func FindAutomatizmTreeNodeFromCondition(baseID int, EmotionID int,
 			return 0,nil
 	*/
 	var id = 0
-	var aut *AutomatizmNode
-	cnt := len(AutomatizmTree.Children)
+	var aut *AutomatismNode
+	cnt := len(AutomatismTree.Children)
 	for n := 0; n < cnt; n++ {
-		id, aut = checkAutomatizmTree(&AutomatizmTree.Children[n], baseID, EmotionID, ActivityID, ToneMoodID, SimbolID, VerbalID)
+		id, aut = checkAutomatismTree(&AutomatismTree.Children[n], baseID, EmotionID, ActivityID, ToneMoodID, SimbolID, VerbalID)
 		if id > 0 {
 			return id, aut
 		}
@@ -245,8 +245,8 @@ func FindAutomatizmTreeNodeFromCondition(baseID int, EmotionID int,
 }
 
 // //////////////
-func checkAutomatizmTree(v *AutomatizmNode, baseID int, EmotionID int,
-	ActivityID int, ToneMoodID int, SimbolID int, VerbalID int) (int, *AutomatizmNode) {
+func checkAutomatismTree(v *AutomatismNode, baseID int, EmotionID int,
+	ActivityID int, ToneMoodID int, SimbolID int, VerbalID int) (int, *AutomatismNode) {
 	var id = v.ID
 	var aut = v
 
@@ -263,7 +263,7 @@ func checkAutomatizmTree(v *AutomatizmNode, baseID int, EmotionID int,
 		return 0, nil
 	}
 	for n := 0; n < len(v.Children); n++ {
-		id, aut = checkAutomatizmTree(&v.Children[n], baseID, EmotionID, ActivityID, ToneMoodID, SimbolID, VerbalID)
+		id, aut = checkAutomatismTree(&v.Children[n], baseID, EmotionID, ActivityID, ToneMoodID, SimbolID, VerbalID)
 		if id > 0 {
 			return id, aut
 		}
@@ -302,11 +302,11 @@ func getConditionsCount(condArr []int) int {
 
 // выдать массив узлов ветки по заданному ID узла
 /*
-func getBrangeNodeArr(lastNodeId int)([]*AutomatizmNode){
-	var nArr []*AutomatizmNode
+func getBrangeNodeArr(lastNodeId int)([]*AutomatismNode){
+	var nArr []*AutomatismNode
 
-//	node:=AutomatizmTreeFromID[lastNodeId]
-	node,ok:=ReadeAutomatizmTreeFromID(lastNodeId)
+//	node:=AutomatismTreeFromID[lastNodeId]
+	node,ok:=ReadeAutomatismTreeFromID(lastNodeId)
 	if !ok {
 		return nil
 	}
@@ -323,7 +323,7 @@ func getBrangeNodeArr(lastNodeId int)([]*AutomatizmNode){
 //////////////////////////////////////
 
 //////////////////////////////////////////////
-/* поиск узла дерева автоматизмов по условиям у.рефлекса для automatizms_from_reflexes.go
+/* поиск узла дерева автоматизмов по условиям у.рефлекса для automatisms_from_reflexes.go
 Если нет такого узла - дорастить ветку.
 Выдать  ID узла
 
@@ -345,9 +345,9 @@ func FindConditionsNode(lev1 int, lev2 []int, actArr []int, tonMood int, fistSym
 		//	verbalID=15
 	}
 	// основа дерева
-	cnt := len(AutomatizmTree.Children)
+	cnt := len(AutomatismTree.Children)
 	for n := 0; n < cnt; n++ {
-		node := AutomatizmTree.Children[n]
+		node := AutomatismTree.Children[n]
 		lev1 := node.BaseID
 		if condArr[0] == lev1 {
 			detectedActiveLastNodID = node.ID
@@ -355,8 +355,8 @@ func FindConditionsNode(lev1 int, lev2 []int, actArr []int, tonMood int, fistSym
 			if len(ost) == 0 {
 
 			}
-			//conditionAutomatizmFound2(1,ost, &node)
-			conditionAutomatizmFound(1, ost, &node)
+			//conditionAutomatismFound2(1,ost, &node)
+			conditionAutomatismFound(1, ost, &node)
 			break // другие ветки не смотреть
 		}
 	}
@@ -382,7 +382,7 @@ func FindConditionsNode(lev1 int, lev2 []int, actArr []int, tonMood int, fistSym
 
 	/*
 		// проверка
-		n:=AutomatizmTreeFromID[lastNodeID];
+		n:=AutomatismTreeFromID[lastNodeID];
 		if n.PhraseID == 0{
 			return 0
 		}
@@ -392,7 +392,7 @@ func FindConditionsNode(lev1 int, lev2 []int, actArr []int, tonMood int, fistSym
 
 //.......
 /*
-func conditionAutomatizmFound2(level int,cond []int,node *AutomatizmNode){
+func conditionAutomatismFound2(level int,cond []int,node *AutomatismNode){
 	if cond==nil || len(cond)==0{
 		return
 	}
@@ -438,7 +438,7 @@ func conditionAutomatizmFound2(level int,cond []int,node *AutomatizmNode){
 
 		level++
 		currentStepCount=level
-		conditionAutomatizmFound2(level,ost, &node.Children[n])
+		conditionAutomatismFound2(level,ost, &node.Children[n])
 		return // раз совпало, то другие ветки не смотреть
 	}
 
@@ -451,8 +451,8 @@ func conditionAutomatizmFound2(level int,cond []int,node *AutomatizmNode){
 func formingBranch(fromID int, lastLevel int, condArr []int) int {
 	// нарастить ветку недостающим
 
-	//	lastNode:=AutomatizmTreeFromID[fromID]
-	lastNode, ok := ReadeAutomatizmTreeFromID(fromID)
+	//	lastNode:=AutomatismTreeFromID[fromID]
+	lastNode, ok := ReadeAutomatismTreeFromID(fromID)
 	if !ok {
 		return 0
 	}
@@ -461,7 +461,7 @@ func formingBranch(fromID int, lastLevel int, condArr []int) int {
 	if lastNodeID > 0 {
 		if !noRunThisOperation {
 			if doWritingFile {
-				SaveAutomatizmTree()
+				SaveAutomatismTree()
 			}
 		}
 	}
@@ -470,7 +470,7 @@ func formingBranch(fromID int, lastLevel int, condArr []int) int {
 
 // ///////////////////////////////////////////////////
 // создание новой ветки с новым автоматизмом, начиная с заданного узла при проходе дерева
-func addNewBranchFromNodes(level int, cond []int, node *AutomatizmNode) int {
+func addNewBranchFromNodes(level int, cond []int, node *AutomatismNode) int {
 	if node == nil {
 		return 0
 	}
@@ -480,22 +480,22 @@ func addNewBranchFromNodes(level int, cond []int, node *AutomatizmNode) int {
 	var id = 0
 	switch level {
 	case 0:
-		id, _ = createNewAutomatizmNode(node, 0, cond[0], 0, 0, 0, 0, 0, true)
+		id, _ = createNewAutomatismNode(node, 0, cond[0], 0, 0, 0, 0, 0, true)
 	case 1:
-		id, _ = createNewAutomatizmNode(node, 0, cond[0], cond[1], 0, 0, 0, 0, true)
+		id, _ = createNewAutomatismNode(node, 0, cond[0], cond[1], 0, 0, 0, 0, true)
 	case 2:
-		id, _ = createNewAutomatizmNode(node, 0, cond[0], cond[1], cond[2], 0, 0, 0, true)
+		id, _ = createNewAutomatismNode(node, 0, cond[0], cond[1], cond[2], 0, 0, 0, true)
 	case 3:
-		id, _ = createNewAutomatizmNode(node, 0, cond[0], cond[1], cond[2], cond[3], 0, 0, true)
+		id, _ = createNewAutomatismNode(node, 0, cond[0], cond[1], cond[2], cond[3], 0, 0, true)
 	case 4:
-		id, _ = createNewAutomatizmNode(node, 0, cond[0], cond[1], cond[2], cond[3], cond[4], 0, true)
+		id, _ = createNewAutomatismNode(node, 0, cond[0], cond[1], cond[2], cond[3], cond[4], 0, true)
 	case 5:
 		// нельзя отдельно указывать символ фразы и фразу - они всегда в паре - однако тогда не будет корректно работать категоризация по дереву getStimulCategoryChildrens()
-		id, _ = createNewAutomatizmNode(node, 0, cond[0], cond[1], cond[2], cond[3], cond[4], cond[5], true)
+		id, _ = createNewAutomatismNode(node, 0, cond[0], cond[1], cond[2], cond[3], cond[4], cond[5], true)
 	}
 	level++
 
-	node, ok := ReadeAutomatizmTreeFromID(id)
+	node, ok := ReadeAutomatismTreeFromID(id)
 	if !ok {
 		return 0
 	}
@@ -509,12 +509,12 @@ func addNewBranchFromNodes(level int, cond []int, node *AutomatizmNode) int {
 // список конечных узлов лерева
 /*
 func finishScanAllTree(){
-	lastnodsTreeArr =make(map[int]*AutomatizmNode)
-	curScanAllTree(&AutomatizmTree)
+	lastnodsTreeArr =make(map[int]*AutomatismNode)
+	curScanAllTree(&AutomatismTree)
 }
-func curScanAllTree(wt *AutomatizmNode) {
+func curScanAllTree(wt *AutomatismNode) {
 	if wt.ID > 0 {
-		wt.ParentNode = AutomatizmTreeFromID[wt.ParentID] // wt.ParentNode адрес меняется из=за corretsParent(,
+		wt.ParentNode = AutomatismTreeFromID[wt.ParentID] // wt.ParentNode адрес меняется из=за corretsParent(,
 	}
 	if wt.Children == nil {	// конец ветки
 		lastnodsTreeArr[wt.ID]=wt
@@ -527,10 +527,10 @@ func curScanAllTree(wt *AutomatizmNode) {
 ////////////////////////////////////////////////////////////
 
 // вытащить образ Стимула ActiveActions из ID узла дерева автоматизмов
-func getActiveActionsFromAutomatizmTreeNode(automatizmTreeNodeID int) (int, *ActionsImage) {
+func getActiveActionsFromAutomatismTreeNode(automatismTreeNodeID int) (int, *ActionsImage) {
 
-	//	at,ok:=AutomatizmTreeFromID[automatizmTreeNodeID]
-	at, ok := ReadeAutomatizmTreeFromID(automatizmTreeNodeID)
+	//	at,ok:=AutomatismTreeFromID[automatismTreeNodeID]
+	at, ok := ReadeAutomatismTreeFromID(automatismTreeNodeID)
 	if !ok {
 		return 0, nil
 	}

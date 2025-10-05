@@ -1,4 +1,4 @@
-/* Automatizm.NextID - поддержка вторичных автоматизмов цепочки, запускаемой от первого автоматизма.
+/* Automatism.NextID - поддержка вторичных автоматизмов цепочки, запускаемой от первого автоматизма.
 Это - аналог природных программ действия, запускаетмых по пусковому стимулу.
 Next - следующий автоматизм в цепочке исполнения.
 Цепь запускается автоматически при запуске первого автоматизма из func GetAutomotizmActionsString()
@@ -40,8 +40,8 @@ type AmtzmNextString struct {
 	next []int // цепочка ID ActionsImage
 }
 
-var AutomatizmNextStringFromID = make(map[int]*AmtzmNextString)
-var MapGwardAutomatizmNextStringFromID = lib.RegNewMapGuard()
+var AutomatismNextStringFromID = make(map[int]*AmtzmNextString)
+var MapGwardAutomatismNextStringFromID = lib.RegNewMapGuard()
 
 ///////////////////////////////////////
 
@@ -76,9 +76,9 @@ func createAmtzmNextStringID(id int, ActionsImageIDArr []int, CheckUnicum bool) 
 	node.ID = id
 	node.next = ActionsImageIDArr
 
-	lib.MapCheckWrite(MapGwardAutomatizmNextStringFromID)
-	AutomatizmNextStringFromID[id] = &node
-	lib.MapFree(MapGwardAutomatizmNextStringFromID)
+	lib.MapCheckWrite(MapGwardAutomatismNextStringFromID)
+	AutomatismNextStringFromID[id] = &node
+	lib.MapFree(MapGwardAutomatismNextStringFromID)
 
 	return id, &node
 }
@@ -88,13 +88,13 @@ func createAmtzmNextStringID(id int, ActionsImageIDArr []int, CheckUnicum bool) 
 Вернет оригинал из всех найденных клонов, т.к. у клона всегда ID больше оригинала.
 */
 func checkUnicumAmtzmNextString(ActionsImageIDArr []int) (int, *AmtzmNextString) {
-	if AutomatizmFromId == nil {
+	if AutomatismFromId == nil {
 		return 0, nil
 	}
 	minID := 1000000000
 	var nS *AmtzmNextString
-	lib.MapCheckBlock(MapGwardAutomatizmNextStringFromID)
-	for _, v := range AutomatizmNextStringFromID {
+	lib.MapCheckBlock(MapGwardAutomatismNextStringFromID)
+	for _, v := range AutomatismNextStringFromID {
 		if v == nil {
 			continue
 		}
@@ -107,7 +107,7 @@ func checkUnicumAmtzmNextString(ActionsImageIDArr []int) (int, *AmtzmNextString)
 			nS = v
 		}
 	}
-	lib.MapFree(MapGwardAutomatizmNextStringFromID)
+	lib.MapFree(MapGwardAutomatismNextStringFromID)
 	if nS != nil {
 		return nS.ID, nS
 	}
@@ -123,8 +123,8 @@ func checkUnicumAmtzmNextString(ActionsImageIDArr []int) (int, *AmtzmNextString)
 но некоторое время они тождестенны по next
 */
 func createCloneNextStringFromID(id int) (int, *AmtzmNextString) {
-	lib.MapCheck(MapGwardAutomatizmNextStringFromID)
-	nS, ok := AutomatizmNextStringFromID[id]
+	lib.MapCheck(MapGwardAutomatismNextStringFromID)
+	nS, ok := AutomatismNextStringFromID[id]
 	if !ok {
 		return 0, nil
 	}
@@ -139,9 +139,9 @@ func createCloneNextString(nstr *AmtzmNextString) (int, *AmtzmNextString) {
 	node.ID = id
 	node.next = nstr.next
 
-	lib.MapCheckWrite(MapGwardAutomatizmNextStringFromID)
-	AutomatizmNextStringFromID[id] = &node
-	lib.MapFree(MapGwardAutomatizmNextStringFromID)
+	lib.MapCheckWrite(MapGwardAutomatismNextStringFromID)
+	AutomatismNextStringFromID[id] = &node
+	lib.MapFree(MapGwardAutomatismNextStringFromID)
 
 	return id, &node
 }
@@ -164,23 +164,23 @@ func createClonForActins(act []int) int {
 // СОХРАНИТЬ структура записи: id|ActionsImage[]
 func SaveAmtzmNextString() {
 	var out = ""
-	lib.MapCheckBlock(MapGwardAutomatizmNextStringFromID)
-	for k, v := range AutomatizmNextStringFromID {
+	lib.MapCheckBlock(MapGwardAutomatismNextStringFromID)
+	for k, v := range AutomatismNextStringFromID {
 		out += strconv.Itoa(k) + "|"
 		for i := 0; i < len(v.next); i++ {
 			out += strconv.Itoa(v.next[i]) + ","
 		}
 		out += "\r\n"
 	}
-	lib.MapFree(MapGwardAutomatizmNextStringFromID)
-	lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_psy/automatizm_next.txt", out)
+	lib.MapFree(MapGwardAutomatismNextStringFromID)
+	lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_psy/automatism_next.txt", out)
 }
 
 // ЗАГРУЗИТЬ структура записи: id|ActionsImage[]
 func loadAmtzmNextString() {
-	AutomatizmNextStringFromID = make(map[int]*AmtzmNextString)
+	AutomatismNextStringFromID = make(map[int]*AmtzmNextString)
 
-	strArr, _ := lib.ReadLines(lib.GetMainPathExeFile() + "/memory_psy/automatizm_next.txt")
+	strArr, _ := lib.ReadLines(lib.GetMainPathExeFile() + "/memory_psy/automatism_next.txt")
 	if strArr == nil {
 		return
 	}
@@ -206,12 +206,12 @@ func loadAmtzmNextString() {
 
 /////////////////////////////////////////////////////////////
 
-/* Создать новую цепочку AmtzmNextString с привязкой к Automatizm.NextID
+/* Создать новую цепочку AmtzmNextString с привязкой к Automatism.NextID
  */
-func createNextAutomatizm(NextID int, ActionsImageID []int, CheckUnicum bool) (int, *AmtzmNextString) {
+func createNextAutomatism(NextID int, ActionsImageID []int, CheckUnicum bool) (int, *AmtzmNextString) {
 
-	//parent,ok:=AutomatizmFromId[NextID]
-	parent, ok := ReadeAutomatizmFromId(NextID)
+	//parent,ok:=AutomatismFromId[NextID]
+	parent, ok := ReadeAutomatismFromId(NextID)
 	if !ok {
 		lib.TodoPanic("Родитель для создания вторичного автоматизма с ID=" + strconv.Itoa(NextID) + " не существует!")
 	}
@@ -229,12 +229,12 @@ func createNextAutomatizm(NextID int, ActionsImageID []int, CheckUnicum bool) (i
 
 ////////////////////////////////////////////////////////////
 
-/* Добавить к цепочке AmtzmNextString автоматизма Automatizm.NextID новое звено образа действия
+/* Добавить к цепочке AmtzmNextString автоматизма Automatism.NextID новое звено образа действия
  */
-func addNextAutomatizm(atmztmID int, ActionsImageID []int, CheckUnicum bool) (int, *AmtzmNextString) {
+func addNextAutomatism(atmztmID int, ActionsImageID []int, CheckUnicum bool) (int, *AmtzmNextString) {
 
-	//parent,ok:=AutomatizmFromId[atmztmID]
-	parent, ok := ReadeAutomatizmFromId(atmztmID)
+	//parent,ok:=AutomatismFromId[atmztmID]
+	parent, ok := ReadeAutomatismFromId(atmztmID)
 	if !ok {
 		lib.TodoPanic("Родитель для создания вторичного автоматизма с ID=" + strconv.Itoa(atmztmID) + " не существует!")
 	}
@@ -262,8 +262,8 @@ func addAmtzmNextString(AmtzmNextStringID int, ActionsImageID []int) (int, *Amtz
 		sN, am := createAmtzmNextStringID(0, ActionsImageID, true)
 		return sN, am
 	}
-	lib.MapCheck(MapGwardAutomatizmNextStringFromID)
-	sN, ok := AutomatizmNextStringFromID[AmtzmNextStringID]
+	lib.MapCheck(MapGwardAutomatismNextStringFromID)
+	sN, ok := AutomatismNextStringFromID[AmtzmNextStringID]
 	if !ok {
 		sN, am := createAmtzmNextStringID(0, ActionsImageID, true)
 		return sN, am
@@ -280,14 +280,14 @@ func addAmtzmNextString(AmtzmNextStringID int, ActionsImageID []int) (int, *Amtz
 ////////////////////////////////////////////////////////////
 
 /*
-	Вставить в цепочку Automatizm.NextID новой образ действия, - в любую часть цепочки.
+	Вставить в цепочку Automatism.NextID новой образ действия, - в любую часть цепочки.
 
 При pos==-1 вставляется в конец. При pos==0 - в начало.
 */
 func insertImageActionToAmtzmNextID(atmztmID int, pos int, imgActID int) {
 
-	//	parent,ok:=AutomatizmFromId[atmztmID]
-	parent, ok := ReadeAutomatizmFromId(atmztmID)
+	//	parent,ok:=AutomatismFromId[atmztmID]
+	parent, ok := ReadeAutomatismFromId(atmztmID)
 	if !ok {
 		lib.TodoPanic("Родитель для создания вторичного автоматизма с ID=" + strconv.Itoa(atmztmID) + " не существует!")
 	}
@@ -295,12 +295,12 @@ func insertImageActionToAmtzmNextID(atmztmID int, pos int, imgActID int) {
 		return
 	}
 	if parent.NextID == 0 { // еще нет, создать next и првязать есдинственное звено (любая позиция pos)
-		createNextAutomatizm(parent.ID, []int{imgActID}, true)
+		createNextAutomatism(parent.ID, []int{imgActID}, true)
 		return
 	}
 
-	lib.MapCheck(MapGwardAutomatizmNextStringFromID)
-	nArr, ok := AutomatizmNextStringFromID[parent.NextID]
+	lib.MapCheck(MapGwardAutomatismNextStringFromID)
+	nArr, ok := AutomatismNextStringFromID[parent.NextID]
 	if !ok {
 		return
 	}
@@ -330,8 +330,8 @@ func insertImageActionToAmtzmNext(next *AmtzmNextString, pos int, imgActID int) 
 При pos==-1 - последний. При pos==0 - первый.
 */
 func deleteImageActionToAmtzmNextID(nextID int, pos int) {
-	lib.MapCheck(MapGwardAutomatizmNextStringFromID)
-	nArr, ok := AutomatizmNextStringFromID[nextID]
+	lib.MapCheck(MapGwardAutomatismNextStringFromID)
+	nArr, ok := AutomatismNextStringFromID[nextID]
 	if !ok {
 		return
 	}
@@ -364,12 +364,12 @@ func deleteImageActionToAmtzmNext(next *AmtzmNextString, pos int) {
 
 м.б., что в этой ветке уже есть автоматизм с действием, не даполненный NextID... он дополнится.
 */
-func createAutomatizmFromNextString(next []int, branchID int) (int, *Automatizm) {
+func createAutomatismFromNextString(next []int, branchID int) (int, *Automatism) {
 	if len(next) < 2 { // только одно действие
 		return 0, nil
 	}
 	// создать автоматизм из первой акции
-	id, atmtzm := createNewAutomatizmID(0, branchID, next[0], true)
+	id, atmtzm := createNewAutomatismID(0, branchID, next[0], true)
 	if len(next) > 1 {
 		// создать AmtzmNextString из остальной части действий
 		nOstID, _ := createAmtzmNextStringID(0, next[1:], true)
@@ -384,12 +384,12 @@ func createAutomatizmFromNextString(next []int, branchID int) (int, *Automatizm)
 
 /* создать AmtzmNextString из всех действий автоматизма
  */
-func createNextStringFromAutomatizm(atmtzm *Automatizm) (int, *AmtzmNextString) {
+func createNextStringFromAutomatism(atmtzm *Automatism) (int, *AmtzmNextString) {
 	var n []int
 	n = append(n, atmtzm.ActionsImageID)
 	if atmtzm.NextID > 0 {
-		lib.MapCheck(MapGwardAutomatizmNextStringFromID)
-		nArr := AutomatizmNextStringFromID[atmtzm.NextID]
+		lib.MapCheck(MapGwardAutomatismNextStringFromID)
+		nArr := AutomatismNextStringFromID[atmtzm.NextID]
 		for i := 0; i < len(nArr.next); i++ {
 			n = append(n, nArr.next[i])
 		}
@@ -403,8 +403,8 @@ func createNextStringFromAutomatizm(atmtzm *Automatizm) (int, *AmtzmNextString) 
 /////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////
-/* Запуск действия Automatizm.NextID в цепочке,
-для func RumAutomatizm()
+/* Запуск действия Automatism.NextID в цепочке,
+для func RumAutomatism()
 */
 
 func showNextAtmtzmAction(atmzmID int, NextID int, Energy int) string {
@@ -417,7 +417,7 @@ func showNextAtmtzmAction(atmzmID int, NextID int, Energy int) string {
 
 ////////////
 /* произвольный запуск действий
-приводит к периоду ожидания LastRunAutomatizmPulsCount и оценке результата.
+приводит к периоду ожидания LastRunAutomatismPulsCount и оценке результата.
 */
 //lastRunVolutionAction очищается после периода ожидания:
 var lastRunVolutionAction *AmtzmNextString // последняя запущенная цепочка на исполнение.
@@ -434,11 +434,11 @@ var prevLastRunVolutionPulsCount = 0
 */
 func showVolutionAction(NextID int, Energy int) string {
 	// Не запускать в период ожидания ответа оператора. Такое же при запуске автоматизма.
-	if LastRunAutomatizmPulsCount > 0 {
+	if LastRunAutomatismPulsCount > 0 {
 		return ""
 	}
-	lib.MapCheck(MapGwardAutomatizmNextStringFromID)
-	as, ok := AutomatizmNextStringFromID[NextID]
+	lib.MapCheck(MapGwardAutomatismNextStringFromID)
+	as, ok := AutomatismNextStringFromID[NextID]
 	if !ok {
 		return ""
 	}
@@ -455,10 +455,10 @@ func showVolutionAction(NextID int, Energy int) string {
 		}
 		// каждый образ - в одну строку
 		if ai.ActID != nil {
-			out += TerminateMotorAutomatizmActions(0, ai.ActID, Energy, true) + " "
+			out += TerminateMotorAutomatismActions(0, ai.ActID, Energy, true) + " "
 		}
 		if ai.PhraseID != nil {
-			out += TerminatePraseAutomatizmActions(ai.PhraseID, Energy) + " "
+			out += TerminatePraseAutomatismActions(ai.PhraseID, Energy) + " "
 		}
 
 		if ai.ToneID != 0 {
@@ -476,7 +476,7 @@ func showVolutionAction(NextID int, Energy int) string {
 	lastRunVolutionAction = as
 	lastRunVolutionPulsCount = PulsCount
 
-	LastRunAutomatizmPulsCount = PulsCount // активность произвольного действия в чисде пульсов
+	LastRunAutomatismPulsCount = PulsCount // активность произвольного действия в чисде пульсов
 	LastDetectedActiveLastNodID = detectedActiveLastNodID
 
 	return out
@@ -492,23 +492,23 @@ func showVolutionAction(NextID int, Energy int) string {
 Пока что создать дубль автоматизма из первого в цепочке, но с NextID=0 и сделать его штатным с полезностью 0.
 Полезность и коунтер - начальные (==0).
 
-Результат оценивается в func calcAutomatizmResult() с записью 2 видов Правил.
+Результат оценивается в func calcAutomatismResult() с записью 2 видов Правил.
 */
 var wasCreateNextAtmtztID = 0
 
-func badEffectChainAtmtzm(am *Automatizm) {
+func badEffectChainAtmtzm(am *Automatism) {
 
 	/* если стало плохо после добавления нового звена, то
 	 */
 	if wasCreateNextAtmtztID == am.ID {
 		//сделать дубликат для штатного
-		_, dAm := createDuplicateAutomatizm(am.BranchID, am)
+		_, dAm := createDuplicateAutomatism(am.BranchID, am)
 		// в дубликате привязкать цепочку Neat
 		dAm.NextID = am.NextID
 		// в дубликате  удалить последнее звено Next
 		deleteImageActionToAmtzmNextID(dAm.NextID, -1)
 		// сделать автоматизм штатным
-		SetAutomatizmBelief(dAm, 2)
+		SetAutomatismBelief(dAm, 2)
 	}
 
 	// TODO - пока больше ничего
@@ -518,18 +518,18 @@ func badEffectChainAtmtzm(am *Automatizm) {
 
 // /////////////////////////////////////////////////
 // найти готовый или создать новый автоматизм из AmtzmNextString.ID
-func createAndRunAutomatizmFromAmtzmNextString(actionID int) *Automatizm {
+func createAndRunAutomatismFromAmtzmNextString(actionID int) *Automatism {
 	// на всякий случай убережемся, что акция - именно типа AmtzmNextString
 	if actionID < prefixActionIdValue { // НЕ последовательность образов действий AmtzmNextString.ID
 		return nil
 	}
 	nID := actionID - prefixActionIdValue // чистый ID без префикса
-	lib.MapCheck(MapGwardAutomatizmNextStringFromID)
-	nextString, ok := AutomatizmNextStringFromID[nID]
+	lib.MapCheck(MapGwardAutomatismNextStringFromID)
+	nextString, ok := AutomatismNextStringFromID[nID]
 	if !ok { // такого не должно быть, НО...
 		return nil
 	}
-	_, atmtzm := createAutomatizmFromNextString(nextString.next, detectedActiveLastNodID)
+	_, atmtzm := createAutomatismFromNextString(nextString.next, detectedActiveLastNodID)
 	return atmtzm
 }
 
@@ -542,8 +542,8 @@ func GetNextActionsInfo(nextID int) string {
 		return "Отсутствует цепочка действий."
 	}
 
-	lib.MapCheck(MapGwardAutomatizmNextStringFromID)
-	as, ok := AutomatizmNextStringFromID[nextID]
+	lib.MapCheck(MapGwardAutomatismNextStringFromID)
+	as, ok := AutomatismNextStringFromID[nextID]
 	if !ok {
 		return ""
 	}
@@ -561,8 +561,8 @@ func GetNextActionsInfo(nextID int) string {
 
 func GetNextActionsInfoList() string {
 	var out = ""
-	lib.MapCheckBlock(MapGwardAutomatizmNextStringFromID)
-	for k, v := range AutomatizmNextStringFromID {
+	lib.MapCheckBlock(MapGwardAutomatismNextStringFromID)
+	for k, v := range AutomatismNextStringFromID {
 		if v == nil {
 			continue
 		}
@@ -572,7 +572,7 @@ func GetNextActionsInfoList() string {
 		}
 		out += "<br>\r\n"
 	}
-	lib.MapFree(MapGwardAutomatizmNextStringFromID)
+	lib.MapFree(MapGwardAutomatismNextStringFromID)
 	return out
 }
 

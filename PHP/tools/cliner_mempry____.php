@@ -1,6 +1,6 @@
 <?
 /* сбросить память до младенческого состяония, т.е. до безусловных рефлексов.
-/tools/cliner_mempry.php
+/tools/clear_mempry.php
 */
 
 header("Expires: Tue, 1 Jul 2003 05:00:00 GMT");

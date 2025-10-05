@@ -21,7 +21,7 @@ import (
  образ действий оператора Стимул:	curStimulImageID и есть Ответ: curActiveActions
 */
 func fixEpizMemoryRules(lastCommonDiffValue int) {
-	if LastAutomatizmWeiting == nil {
+	if LastAutomatismWeiting == nil {
 		return
 	}
 
@@ -45,8 +45,8 @@ func fixEpizMemoryRules(lastCommonDiffValue int) {
 	}
 
 	answerID := 0 // ответ Beast
-	if LastAutomatizmWeiting != nil {
-		answerID = LastAutomatizmWeiting.ActionsImageID // ответный образ действий Beast
+	if LastAutomatismWeiting != nil {
+		answerID = LastAutomatismWeiting.ActionsImageID // ответный образ действий Beast
 		_, ok := ReadeActionsImageArr(answerID)
 		if !ok {
 			return
@@ -60,8 +60,8 @@ func fixEpizMemoryRules(lastCommonDiffValue int) {
 	}
 	if lastRunVolutionAction != nil {
 		answerID = lastRunVolutionAction.ID // ответный образ действий Beast
-		lib.MapFree(MapGwardAutomatizmNextStringFromID)
-		if AutomatizmNextStringFromID[answerID] == nil {
+		lib.MapFree(MapGwardAutomatismNextStringFromID)
+		if AutomatismNextStringFromID[answerID] == nil {
 			return
 		}
 	}
@@ -70,9 +70,9 @@ func fixEpizMemoryRules(lastCommonDiffValue int) {
 		return
 	}
 
-	if LastAutomatizmWeiting.NextID > 0 { // автоматизм с довеском акций типа AmtzmNextString
+	if LastAutomatismWeiting.NextID > 0 { // автоматизм с довеском акций типа AmtzmNextString
 		// создать AmtzmNextString из всех действий автоматизма
-		asID, _ := createNextStringFromAutomatizm(LastAutomatizmWeiting)
+		asID, _ := createNextStringFromAutomatism(LastAutomatismWeiting)
 		answerID = prefixActionIdValue + asID // увеличить ID на метку AmtzmNextString
 	}
 	if lastRunVolutionAction != nil { // было произвольное действие
@@ -155,29 +155,29 @@ func fixEpizMemoryTeachRules(lastCommonDiffValue int) {
 	Так же нельзя разблокировать, если только что было применено наказание кнопками действий, иначе оно нивелируется
 	*/
 	answerID := 0 // // образ действий Beast перел ответом Оператора
-	if prevLastAutomatizmWeiting != nil {
+	if prevLastAutomatismWeiting != nil {
 		// предыдущий момент запуска автоматизма был задолго от последующего действия оператора
 		if (PulsCount - prevLastDetectedActiveLastPulsCount) > 25 {
 			return
 		}
 		if curFunc13ID == 0 && lastCommonDiffValue >= 0 {
-			checkForUnbolokingAutomatizm(curActiveActionsID)
+			checkForUnbolokingAutomatism(curActiveActionsID)
 		}
-		answerID = prevLastAutomatizmWeiting.ActionsImageID // ответный образ действий Beast
+		answerID = prevLastAutomatismWeiting.ActionsImageID // ответный образ действий Beast
 		_, ok := ReadeActionsImageArr(answerID)
 		if !ok {
 			return
 		}
-		if prevLastAutomatizmWeiting.NextID > 0 {
-			asID, _ := createNextStringFromAutomatizm(prevLastAutomatizmWeiting)
+		if prevLastAutomatismWeiting.NextID > 0 {
+			asID, _ := createNextStringFromAutomatism(prevLastAutomatismWeiting)
 			answerID = prefixActionIdValue + asID
 		}
 	}
 
 	if prevLastRunVolutionAction != nil {
 		answerID = prevLastRunVolutionAction.ID // ответный образ действий Beast
-		lib.MapFree(MapGwardAutomatizmNextStringFromID)
-		if AutomatizmNextStringFromID[answerID] == nil {
+		lib.MapFree(MapGwardAutomatismNextStringFromID)
+		if AutomatismNextStringFromID[answerID] == nil {
 			return
 		}
 	}
@@ -195,7 +195,7 @@ func fixEpizMemoryTeachRules(lastCommonDiffValue int) {
 		// уже есть стимул от оператора curActiveActionsID незачем получать новый из базовых сенсоров
 		//curAct, _ := CreateNewlastActionsImageID(0, 0, action_sensor.CheckCurActions(), wordSensor.CurrentPhrasesIDarr, wordSensor.DetectedTone, wordSensor.CurPultMood, true)
 
-		// в стадиях до 4 обнуляется в automatizmTreeActivation()
+		// в стадиях до 4 обнуляется в automatismTreeActivation()
 		// очистить фразу после использования, чтобы не влияла на следующую активность
 		wordSensor.CurrentPhrasesIDarr = nil // остается еще wordSensor.CurretWordsIDarr
 

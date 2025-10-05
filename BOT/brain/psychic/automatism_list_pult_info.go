@@ -1,5 +1,5 @@
 /* список моторных автоматизмов для Пульта
-для http://go/pages/automatizm_table.php
+для http://go/pages/automatism_table.php
 */
 
 package psychic
@@ -16,10 +16,10 @@ import (
 //////////////////////////////////////////
 
 // //////////////////////////////////////////
-func GetAutomatizmInfo(limitBasicID int) string {
+func GetAutomatismInfo(limitBasicID int) string {
 	var out = ""
 	// сколько рефлексов есть
-	uAutomatizmCount := len(AutomatizmFromId)
+	uAutomatismCount := len(AutomatismFromId)
 	// переключатель диапазона вывода
 	out += "<br>Показывать: "
 
@@ -75,13 +75,13 @@ func GetAutomatizmInfo(limitBasicID int) string {
 	out += "<table class='main_table'  cellpadding=0 cellspacing=0 border=1 width='1000px' style='font-size:14px;'>" +
 		header
 
-	if len(AutomatizmFromId) == 0 {
-		return out + "</table><br>Подождите пока не активируется психика (не более 4 секунд) и нажмите <a href='/pages/automatizm_table.php'>Обновить</a>"
+	if len(AutomatismFromId) == 0 {
+		return out + "</table><br>Подождите пока не активируется психика (не более 4 секунд) и нажмите <a href='/pages/automatism_table.php'>Обновить</a>"
 	}
 
-	keys := make([]int, 0, uAutomatizmCount)
+	keys := make([]int, 0, uAutomatismCount)
 
-	for k, v := range AutomatizmFromId {
+	for k, v := range AutomatismFromId {
 		if v != nil {
 			keys = append(keys, k)
 		}
@@ -98,8 +98,8 @@ func GetAutomatizmInfo(limitBasicID int) string {
 
 	var count = 0
 	for _, k := range keys {
-		//v:= AutomatizmFromId[k]
-		v, ok := ReadeAutomatizmFromId(k)
+		//v:= AutomatismFromId[k]
+		v, ok := ReadeAutomatismFromId(k)
 		if !ok {
 			count++
 			continue
@@ -128,8 +128,8 @@ func GetAutomatizmInfo(limitBasicID int) string {
 		// узел дерева, к которому прикреплен автоматизм   && limitBasicID<4
 		if v.BranchID < 1000000 {
 
-			//	nodeA:=AutomatizmTreeFromID[v.BranchID]
-			nodeA, ok := ReadeAutomatizmTreeFromID(v.BranchID)
+			//	nodeA:=AutomatismTreeFromID[v.BranchID]
+			nodeA, ok := ReadeAutomatismTreeFromID(v.BranchID)
 			if ok {
 				nodeID = strconv.Itoa(nodeA.ID)
 				if limitBasicID > 0 && limitBasicID < 5 {
@@ -197,7 +197,7 @@ func GetAutomatizmInfo(limitBasicID int) string {
 		var usefulness = strconv.Itoa(v.Usefulness)
 		//if limitBasicID==5{
 		if v.Usefulness < 0 {
-			usefulness = "<span " + sStyle + " onClick='cliner_block(" + strconv.Itoa(v.ID) + ")' title='разблокировать (установить Полезность в 1)'><b>" + usefulness + "</b></span>"
+			usefulness = "<span " + sStyle + " onClick='clear_block(" + strconv.Itoa(v.ID) + ")' title='разблокировать (установить Полезность в 1)'><b>" + usefulness + "</b></span>"
 		}
 		out += "<td class='table_cell' >" + usefulness + "</td>"
 		out += "<td class='table_cell' >" + strconv.Itoa(v.Belief) + "</td>"
@@ -245,7 +245,7 @@ func GetStrnameFromobjectID(objectID int) string {
 
 Для иконки http://go/img/words.png нал полем ввода.
 */
-func GetAutomatizmPraseList(basicID int, contexts string) string {
+func GetAutomatismPraseList(basicID int, contexts string) string {
 	out := ""
 	nCol := 0
 	// образ эмоции
@@ -258,9 +258,9 @@ func GetAutomatizmPraseList(basicID int, contexts string) string {
 	emID, _ := createNewBaseStyle(0, contextsArr, true)
 	// ШТАТНЫЕ автоматизмы, прикрепленные к ID узла Дерева
 	var outArr []string
-	for _, v := range AutomatizmBelief2FromTreeNodeId {
-		//		brnch:=AutomatizmTreeFromID[v.BranchID]
-		brnch, ok := ReadeAutomatizmTreeFromID(v.BranchID)
+	for _, v := range AutomatismBelief2FromTreeNodeId {
+		//		brnch:=AutomatismTreeFromID[v.BranchID]
+		brnch, ok := ReadeAutomatismTreeFromID(v.BranchID)
 		if !ok {
 			continue
 		}
@@ -299,7 +299,7 @@ func GetAutomatizmPraseList(basicID int, contexts string) string {
 	//автоматизмы, привязанные к ID фразе PhraseID и тогда их branchID начинается с 2000000
 	outArr = nil
 	out2 := ""
-	for praaseID := range AutomatizmIdFromPhraseId {
+	for praaseID := range AutomatismIdFromPhraseId {
 		prase := GetPraseStringsFromVerbalID(praaseID)
 		if len(prase) > 1 {
 			if !lib.ExistsValInStringArr(outArr, prase) {

@@ -48,7 +48,7 @@ type InformationEnvironment struct {
 	// текущий образ сочетания ОТВЕТНОГО действия мот.автоматизма
 	AnswerImageID int // акция типа ActionsImage
 	// текущий образ ментального автоматизма
-	//MentalAutomatizmID int    //  типа MentalAutomatizm
+	//MentalAutomatismID int    //  типа MentalAutomatism
 
 	/*Это - период ожидания ответа с пульта на действие
 	чтобы инфо-функции знали, работают ли они на Стимул или произвольно.
@@ -66,7 +66,7 @@ type InformationEnvironment struct {
 	DominantaID int
 
 	//Нужно подумать о проблеме автоматизма или проявить инициативу, в общем, запустить func infoFunc25()
-	needThinkingAboutAutomatizm bool
+	needThinkingAboutAutomatism bool
 
 	// true - текущий стмул навязывает то, что не соотвествует текущей Теме и Цели
 	isStimulToForce bool
@@ -137,8 +137,8 @@ func GetCurrentInformationEnvironment() {
 	//ActID:=action_sensor.CheckCurActionsContext()  модификация - только в automatism_tree.go при акции с пульта!
 	//CurrentInformationEnvironment.ActionsImageID,_=createNewlastActivityID(0,ActID,true)// текущий образ сочетания действий с Пульта Activity
 
-	if lastAutomatizmRun != nil {
-		CurrentInformationEnvironment.AnswerImageID = lastAutomatizmRun.ActionsImageID
+	if lastAutomatismRun != nil {
+		CurrentInformationEnvironment.AnswerImageID = lastAutomatismRun.ActionsImageID
 	}
 
 	CurrentInformationEnvironment.danger = GetAttentionDanger()

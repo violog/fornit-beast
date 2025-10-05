@@ -11,7 +11,7 @@ import (
 
 // Формирование зеркальных автоматизмов на основе списка ответов lib/mirror_reflexes_basic_phrases/...
 // тестирование - запуск из psychic.go
-func FormingMirrorAutomatizmFromList(file string) string {
+func FormingMirrorAutomatismFromList(file string) string {
 	path := lib.GetMainPathExeFile()
 	strArr, _ := lib.ReadLines(path + file)
 	// triggPhrase|baseID|ContID_list|answerPhrase|Ton,Mood|actions1,...
@@ -64,7 +64,7 @@ func FormingMirrorAutomatizmFromList(file string) string {
 		nodeID := FindConditionsNode(baseID, lev2, nil, FirstSimbolID, tm, verbal.ID)
 		/* если есть привязанный к узлу автоматизм, то он просто перестанет быть штатным,
 		т.к. авторитерный (зеркальный) автоматизм важнее
-		exists:=ExistsAutomatizmForThisNodeID(nodeID)
+		exists:=ExistsAutomatismForThisNodeID(nodeID)
 		if exists {
 			continue
 		}	*/
@@ -94,7 +94,7 @@ func FormingMirrorAutomatizmFromList(file string) string {
 			NoWarningCreateShow = false
 			if autmzm != nil {
 				autmzm.Usefulness = 1          //авторитарный
-				SetAutomatizmBelief(autmzm, 2) // сделать автоматизм штатным
+				SetAutomatismBelief(autmzm, 2) // сделать автоматизм штатным
 				// ?? autmzm.GomeoIdSuccesArr какие ID гомео-параметров улучшает это действие
 			}
 		}
@@ -108,10 +108,10 @@ func FormingMirrorAutomatizmFromList(file string) string {
 
 Создаются автоматизмы, привязанные к пусковой фразе, а не к узлу дерева,
 с BranchID > 2000000.
-var AutomatizmIdFromPhraseId=make(map[int] []*Automatizm)
+var AutomatismIdFromPhraseId=make(map[int] []*Automatism)
 // тестирование - запуск из psychic.go
 */
-func FormingMirrorAutomatizmFromTempList(file string) string {
+func FormingMirrorAutomatismFromTempList(file string) string {
 	path := lib.GetMainPathExeFile()
 	strArr, _ := lib.ReadLines(path + file)
 	// triggPhrase|baseID|ContID_list|answerPhrase|Ton,Mood|actions1,...
@@ -161,7 +161,7 @@ func FormingMirrorAutomatizmFromTempList(file string) string {
 		NoWarningCreateShow = false
 		if autmzm != nil {
 			autmzm.Usefulness = 1          //авторитарный
-			SetAutomatizmBelief(autmzm, 2) // сделать автоматизм штатным
+			SetAutomatismBelief(autmzm, 2) // сделать автоматизм штатным
 			// ?? autmzm.GomeoIdSuccesArr какие ID гомео-параметров улучшает это действие
 		}
 	}
@@ -178,7 +178,7 @@ func FormingMirrorAutomatizmFromTempList(file string) string {
 Автоматизм прикрепляется к ветке предыдущей активации дерева LastDetectedActiveLastNodID (причине) -
 которая становится пусковым стимулом отзеркаливания.
 */
-func createNewMirrorAutomatizm(sourceAtmzm *Automatizm) {
+func createNewMirrorAutomatism(sourceAtmzm *Automatism) {
 	if sourceAtmzm == nil || curActiveActions == nil {
 		return
 	}
@@ -192,16 +192,16 @@ func createNewMirrorAutomatizm(sourceAtmzm *Automatizm) {
 	   и существубшими BaseID и EmotionID
 	*/
 
-	//	curNode:=AutomatizmTreeFromID[detectedActiveLastNodID]
-	curNode, ok := ReadeAutomatizmTreeFromID(detectedActiveLastNodID)
+	//	curNode:=AutomatismTreeFromID[detectedActiveLastNodID]
+	curNode, ok := ReadeAutomatismTreeFromID(detectedActiveLastNodID)
 	if !ok {
 		return
 	}
-	targetNodeID := findTreeNodeFromAutomatizmActionsImage(curNode.BaseID, curNode.EmotionID, sourceAtmzm)
+	targetNodeID := findTreeNodeFromAutomatismActionsImage(curNode.BaseID, curNode.EmotionID, sourceAtmzm)
 	if targetNodeID == 0 {
 		return
 	}
-	//	SaveAutomatizmTree()
+	//	SaveAutomatismTree()
 	// найти узел, который может реагировать на данные действия и если нет - создать его чтобы привязать зеркальный автоматизм
 
 	// создать автоматизм и привязать его к объекту
@@ -213,10 +213,10 @@ func createNewMirrorAutomatizm(sourceAtmzm *Automatizm) {
 		detectedActiveLastNodID = targetNodeID
 		// сделать автоматизм штатным, т.к. действия авторитарно верные
 		autmzm.Usefulness = 1 //авторитарный
-		SetAutomatizmBelief(autmzm, 2)
+		SetAutomatismBelief(autmzm, 2)
 		autmzm.Count = EvolushnStageAtmzCount(true) // накручиваем счетчик успешных повторов в зависимости от стадии развития
 		if doWritingFile {
-			SaveAutomatizm()
+			SaveAutomatism()
 		}
 	}
 }
@@ -226,7 +226,7 @@ func createNewMirrorAutomatizm(sourceAtmzm *Automatizm) {
 
 и существубшими BaseID и EmotionID
 */
-func findTreeNodeFromAutomatizmActionsImage(baseID int, EmotionID int, atmz *Automatizm) int {
+func findTreeNodeFromAutomatismActionsImage(baseID int, EmotionID int, atmz *Automatism) int {
 	lev2 := EmotionFromIdArr[EmotionID].BaseIDarr
 
 	actImage := atmz.ActionsImageID
@@ -254,8 +254,8 @@ func findTreeNodeFromAutomatizmActionsImage(baseID int, EmotionID int, atmz *Aut
 		actSum = append(actSum, ai.ActID...)
 	} else {
 		var praseSum []int
-		lib.MapFree(MapGwardAutomatizmNextStringFromID)
-		arr := AutomatizmNextStringFromID[atmz.NextID].next
+		lib.MapFree(MapGwardAutomatismNextStringFromID)
+		arr := AutomatismNextStringFromID[atmz.NextID].next
 		praseSum = append(praseSum, prase)
 		actSum = append(actSum, ai.ActID...)
 		for i := 0; i < len(arr); i++ {
@@ -295,14 +295,14 @@ func findTreeNodeFromAutomatizmActionsImage(baseID int, EmotionID int, atmz *Aut
 ////////////////////////////////////////////////////////
 
 // чтобы не повторять ответ еще раз после каждого игнорирования
-var oldProvokatorAutomatizm *Automatizm
+var oldProvokatorAutomatism *Automatism
 
 /*
 	в случае отсуствия автоматизма в данных условиях - послать оператору те же стимулы, чтобы посмотреть его реакцию.
 
 Создание автоматизма, повторяющего действия оператора в данных условиях
 */
-func provokatorMirrorAutomatizm(sourceAtmzm *Automatizm, purposeGenetic *PurposeGenetic) {
+func provokatorMirrorAutomatism(sourceAtmzm *Automatism, purposeGenetic *PurposeGenetic) {
 	if sourceAtmzm == nil || purposeGenetic == nil {
 		return
 	}
@@ -313,14 +313,14 @@ func provokatorMirrorAutomatizm(sourceAtmzm *Automatizm, purposeGenetic *Purpose
 	_, autmzm := CreateAtutomatizmNoSaveFile(detectedActiveLastNodID, ActionsImageID)
 	// NoWarningCreateShow=false
 	if autmzm != nil {
-		oldProvokatorAutomatizm = autmzm
+		oldProvokatorAutomatism = autmzm
 		//autmzm.BranchID += linkID // не привязывать к узлу
 		autmzm.Usefulness = 1          // авторитарная полезность
-		SetAutomatizmBelief(autmzm, 2) // сделать автоматизм штатным, т.к. действия авторитарно верные (копируем действия оператора)
+		SetAutomatismBelief(autmzm, 2) // сделать автоматизм штатным, т.к. действия авторитарно верные (копируем действия оператора)
 
 	}
 	// и тут же запустить реакцию с ожиданием ответа
-	setAutomatizmRunning(autmzm, purposeGenetic)
+	setAutomatismRunning(autmzm, purposeGenetic)
 }
 
 //////////////////////////////////

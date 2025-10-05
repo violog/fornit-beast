@@ -122,7 +122,7 @@ echo "</div>";
 
 		if (new_gomeo_par_id > 0) {
 			//	alert(new_gomeo_par_id);
-			bot_params = "set_params=" + new_gomeo_par_id + "&params_val=" + cur_gomeo_val;
+			bot_params = "set_params=" + new_gomeo_par_id + "&params_list=" + cur_gomeo_val;
 			new_gomeo_par_id = 0;
 			req_bot_answer = 1;
 			bot_contact(bot_params, bot_answer);
@@ -198,7 +198,7 @@ echo "</div>";
 		if (IsBeastDeath) {
 			cn = "puls_death";
 			document.getElementById('puls_id').className = cn;
-			bot_closing(); //bot_switcher();// выключить 
+			bot_shutdown(); //bot_switcher();// выключить
 			return;
 		}
 		// show_dlg_alert(cn,500);
@@ -235,7 +235,7 @@ echo "</div>";
 			function sent_info_1(res) {
 				if (res != "yes") {
 					show_dlg_alert("Не удалось сохранить память Beast. Выключение отменено.", 0);
-					bot_closing();
+					bot_shutdown();
 					return;
 				}
 				var server = "/kill.php";

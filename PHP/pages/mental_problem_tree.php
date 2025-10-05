@@ -20,7 +20,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/show_waiting.php");
 var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>';
 
 // ждем пока не включат бестию
-check_Beast_activnost(6);// после 6-го пульса И запускается get_info()
+check_activity(6);// после 6-го пульса И запускается get_info()
 ////////////////////////////////////////////////////////////////////////
 
 //show_dlg_alert("Ожидаем 4 секунды...",0);
@@ -28,7 +28,7 @@ check_Beast_activnost(6);// после 6-го пульса И запускает
 var limit=0;//>0 - лимитировать показ только одним из базовых состояний Плохо,Норма,Хорошо
 function get_info() { //alert("!!!!");
 		wait_begin();
-var AJAX = new ajax_support(linking_address + "?limit="+limit+"&get_mental_priblem_tree=1", sent_info);
+var AJAX = new ajax_support(linking_address + "?limit="+limit+"&get_mental_problem_tree=1", sent_info);
 AJAX.send_reqest();
 function sent_info(res) {
 			//alert(res);
@@ -67,21 +67,21 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 }
 
 
-function show_automatizms(id)
+function show_automatisms(id)
 {
-var AJAX = new ajax_support(linking_address + "?autNodeID="+id+"&get_node_automatizms=1", sent_automatizms_info);
+var AJAX = new ajax_support(linking_address + "?autNodeID="+id+"&get_node_automatisms=1", sent_automatisms_info);
 AJAX.send_reqest();
-function sent_automatizms_info(res) {
+function sent_automatisms_info(res) {
 			//alert(res);
 res=res.replace(/\<\/b\>/g,'</b><br>');
 show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",0);
 }
 }
-function show_node_automatizms(id)
+function show_node_automatisms(id)
 {
-var AJAX = new ajax_support(linking_address + "?autNodeID="+id+"&get_node_aut_tree_node=1", sent_automatizms_info);
+var AJAX = new ajax_support(linking_address + "?autNodeID="+id+"&get_node_aut_tree_node=1", sent_automatisms_info);
 AJAX.send_reqest();
-function sent_automatizms_info(res) {
+function sent_automatisms_info(res) {
 			//alert(res);
 res=res.replace(/\<\/b\>/g,'</b><br>');
 show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",0);
@@ -100,9 +100,9 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 }
 }
 
-function get_ment_automatizm(id) // psychic.GetMentalAutomatizmForPult(tID)
+function get_ment_automatism(id) // psychic.GetMentalAutomatismForPult(tID)
 {
-var AJAX = new ajax_support(linking_address + "?autNodeID="+id+"&get_node_mental_automatizm=1", sent_purpose_info);
+var AJAX = new ajax_support(linking_address + "?autNodeID="+id+"&get_node_mental_automatism=1", sent_purpose_info);
 AJAX.send_reqest();
 function sent_purpose_info(res) {
 			//alert(res);

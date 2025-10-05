@@ -106,7 +106,7 @@ func createNodeTree(parent *sampleNode, id int, levVal1 int, levVal2 int, levVal
 	sampleTreeFromID[node.ID] = &node
 	sampleTreeMapFlag = false
 
-	// т.к. append меняет длину массива, перетусовывая адреса, то нужно обновить адреса в AutomatizmTreeFromID:
+	// т.к. append меняет длину массива, перетусовывая адреса, то нужно обновить адреса в AutomatismTreeFromID:
 	// ЭТО НУЖНО ДЕЛАТЬ ТОЛЬКО ДЛЯ ДЕРЕВЬЕВ!
 	updatingSampleTreeFromID(parent) // здесь потому, что при загрузке из файла нужно на лету получать адреса
 
@@ -322,7 +322,7 @@ func addNodesToBrange(fromNode *sampleNode, level int, condArr []int) (int, *sam
 /* загрузить записанное дерево
  */
 func loadSampleTree() {
-	//	strArr,_:=lib.ReadLines(lib.GetMainPathExeFile()+"/memory_psy/automatizm_tree.txt")
+	//	strArr,_:=lib.ReadLines(lib.GetMainPathExeFile()+"/memory_psy/automatism_tree.txt")
 	//	initSampleTree(strArr)
 }
 func initSampleTree(strArr []string) {
@@ -370,7 +370,7 @@ func SaveSampleTree() {
 	for n := 0; n < cnt; n++ { // чтобы записывалось по порядку родителей
 		out += getSampleNode(&sampleTree.Children[n])
 	}
-	//lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_psy/automatizm_tree.txt",out)
+	//lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_psy/automatism_tree.txt",out)
 	return
 }
 func getSampleNode(wt *sampleNode) string {

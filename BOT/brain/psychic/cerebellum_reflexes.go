@@ -46,10 +46,10 @@ import (
 type cerebellumReflex struct {
 	id                 int
 	typeAut            int // тип корректруемого автоматизма: 0 - это ID моторного, 1 - ID ментального
-	sourceAutomatizmID int // корректируемый моторный или ментальный автоматизм
+	sourceAutomatismID int // корректируемый моторный или ментальный автоматизм
 	addEnergy          int // добавление (-убавление) силы действия Energy. Может быть отрицательное число, чтобы уменьшить энергию автоматизма
 	// кроме корректирования самого автоматизма по силе действия, могут быть запущены дополнительные автоматизмы:
-	additionalAutomatizmID []int // массив ID дополнительных моторных автоматизмов
+	additionalAutomatismID []int // массив ID дополнительных моторных автоматизмов
 	additionalMentalAutID  []int // массив ID дополнительных ментальных автоматизмов
 }
 
@@ -71,9 +71,9 @@ var lastCRid = 0
 
 // создать новый автоматизм
 // В случае отсуствия автоматизма создается ID такого отсутсвия, пример такой записи: 2|||0|0| - ID=2
-func createNewCerebellumReflex(id int, typeAut int, sourceAutomatizmID int, CheckUnicum bool) (int, *cerebellumReflex) {
+func createNewCerebellumReflex(id int, typeAut int, sourceAutomatismID int, CheckUnicum bool) (int, *cerebellumReflex) {
 	if CheckUnicum {
-		oldID, oldVal := checkUnicumCerebellumReflex(typeAut, sourceAutomatizmID)
+		oldID, oldVal := checkUnicumCerebellumReflex(typeAut, sourceAutomatismID)
 		if oldVal != nil {
 			return oldID, oldVal
 		}
@@ -91,14 +91,14 @@ func createNewCerebellumReflex(id int, typeAut int, sourceAutomatizmID int, Chec
 	var node cerebellumReflex
 	node.id = id
 	node.typeAut = typeAut
-	node.sourceAutomatizmID = sourceAutomatizmID
+	node.sourceAutomatismID = sourceAutomatismID
 	node.addEnergy = 5 // сразу придаст максимум, сложившись с энергией автоматизма :)
-	// node.additionalAutomatizmID = additionalAutomatizmID
+	// node.additionalAutomatismID = additionalAutomatismID
 	cerebellumReflexFromID[id] = &node
 	if typeAut == 0 {
-		cerebellumReflexFromMotorsID[sourceAutomatizmID] = &node
+		cerebellumReflexFromMotorsID[sourceAutomatismID] = &node
 	} else {
-		cerebellumReflexFromMentalsID[sourceAutomatizmID] = &node
+		cerebellumReflexFromMentalsID[sourceAutomatismID] = &node
 	}
 	if doWritingFile {
 		SaveCerebellumReflex()
@@ -107,12 +107,12 @@ func createNewCerebellumReflex(id int, typeAut int, sourceAutomatizmID int, Chec
 }
 
 // поиск рефлекса мозжечка
-func checkUnicumCerebellumReflex(typeAut int, sourceAutomatizmID int) (int, *cerebellumReflex) {
+func checkUnicumCerebellumReflex(typeAut int, sourceAutomatismID int) (int, *cerebellumReflex) {
 	for id, v := range cerebellumReflexFromID {
 		if v == nil {
 			continue
 		}
-		if typeAut == v.typeAut && sourceAutomatizmID == v.sourceAutomatizmID {
+		if typeAut == v.typeAut && sourceAutomatismID == v.sourceAutomatismID {
 			return id, v
 		}
 	}
@@ -120,7 +120,7 @@ func checkUnicumCerebellumReflex(typeAut int, sourceAutomatizmID int) (int, *cer
 }
 
 // Сохранить рефлексы мозжечка
-// структура записи: id|typeAut|sourceAutomatizmID||addEnergy|additionalAutomatizmID|additionalMentalAutID
+// структура записи: id|typeAut|sourceAutomatismID||addEnergy|additionalAutomatismID|additionalMentalAutID
 // В случае отсуствия пусковых стимулов создается ID такого отсутсвия, пример такой записи: 2|||0|0|
 func SaveCerebellumReflex() {
 	var out = ""
@@ -130,10 +130,10 @@ func SaveCerebellumReflex() {
 		}
 		out += strconv.Itoa(k) + "|"
 		out += strconv.Itoa(v.typeAut) + "|"
-		out += strconv.Itoa(v.sourceAutomatizmID) + "|"
+		out += strconv.Itoa(v.sourceAutomatismID) + "|"
 		out += strconv.Itoa(v.addEnergy) + "|"
-		for i := 0; i < len(v.additionalAutomatizmID); i++ {
-			out += strconv.Itoa(v.additionalAutomatizmID[i]) + ","
+		for i := 0; i < len(v.additionalAutomatismID); i++ {
+			out += strconv.Itoa(v.additionalAutomatismID[i]) + ","
 		}
 		out += "|"
 		for i := 0; i < len(v.additionalMentalAutID); i++ {
@@ -145,7 +145,7 @@ func SaveCerebellumReflex() {
 }
 
 // Загрузить рефлексы мозжечка
-// структура записи: id|typeAut|sourceAutomatizmID||addEnergy|additionalAutomatizmID|additionalMentalAutID
+// структура записи: id|typeAut|sourceAutomatismID||addEnergy|additionalAutomatismID|additionalMentalAutID
 func loadCerebellumReflex() {
 	cerebellumReflexFromID = make(map[int]*cerebellumReflex)
 	strArr, _ := lib.ReadLines(lib.GetMainPathExeFile() + "/memory_psy/cerebellum_reflex.txt")
@@ -156,13 +156,13 @@ func loadCerebellumReflex() {
 		}
 		id, _ := strconv.Atoi(p[0])
 		typeAut, _ := strconv.Atoi(p[1])
-		sourceAutomatizmID, _ := strconv.Atoi(p[2])
+		sourceAutomatismID, _ := strconv.Atoi(p[2])
 		addEnergy, _ := strconv.Atoi(p[3])
 		a := strings.Split(p[4], "|")
-		var additionalAutomatizmID []int
+		var additionalAutomatismID []int
 		for i := 0; i < len(a); i++ {
 			aid, _ := strconv.Atoi(a[i])
-			additionalAutomatizmID = append(additionalAutomatizmID, aid)
+			additionalAutomatismID = append(additionalAutomatismID, aid)
 		}
 		a = strings.Split(p[5], "|")
 		var additionalMentalAutID []int
@@ -172,26 +172,26 @@ func loadCerebellumReflex() {
 		}
 		var saveDoWritingFile = doWritingFile
 		doWritingFile = false
-		_, ca := createNewCerebellumReflex(id, typeAut, sourceAutomatizmID, false)
+		_, ca := createNewCerebellumReflex(id, typeAut, sourceAutomatismID, false)
 		doWritingFile = saveDoWritingFile
 		ca.addEnergy = addEnergy
-		ca.additionalAutomatizmID = additionalAutomatizmID
+		ca.additionalAutomatismID = additionalAutomatismID
 		ca.additionalMentalAutID = additionalMentalAutID
 	}
 	return
 }
 
 // вернуть скорректированную силу действия
-func getCerebellumReflexAddEnergy(kind int, automatizmID int) int {
+func getCerebellumReflexAddEnergy(kind int, automatismID int) int {
 	var e *cerebellumReflex
 
 	if transfer.IsPsychicGameMode {
 		return 0
 	} // в игровом режиме не должно быть коррекций, иначе обучающие действия кнопок начнут неадекватно прогрессировать
 	if kind == 0 {
-		e = cerebellumReflexFromMotorsID[automatizmID]
+		e = cerebellumReflexFromMotorsID[automatismID]
 	} else {
-		e = cerebellumReflexFromMentalsID[automatizmID]
+		e = cerebellumReflexFromMentalsID[automatismID]
 	}
 
 	if e == nil {
@@ -201,40 +201,40 @@ func getCerebellumReflexAddEnergy(kind int, automatizmID int) int {
 }
 
 // выполнить дополнительные мозжечковые автоматизмы сразу после выполняющегося автоматизма
-var wasRunAutmzmID = 0 // защелка от бесконечного цикла RumAutomatizm() - runCerebellumAdditionalAutomatizm() - RumAutomatizmID() - RumAutomatizm()
+var wasRunAutmzmID = 0 // защелка от бесконечного цикла RumAutomatism() - runCerebellumAdditionalAutomatism() - RumAutomatismID() - RumAutomatism()
 var wasRunMentalAutmzmID = 0
 
-func runCerebellumAdditionalAutomatizm(kind int, automatizmID int) {
-	if wasRunAutmzmID > 0 { // только один вызов runCerebellumAdditionalAutomatizm для данного автоматизма
+func runCerebellumAdditionalAutomatism(kind int, automatismID int) {
+	if wasRunAutmzmID > 0 { // только один вызов runCerebellumAdditionalAutomatism для данного автоматизма
 		wasRunAutmzmID = 0
 		return
 	}
-	if wasRunMentalAutmzmID > 0 { // только один вызов runCerebellumAdditionalAutomatizm для данного автоматизма
+	if wasRunMentalAutmzmID > 0 { // только один вызов runCerebellumAdditionalAutomatism для данного автоматизма
 		wasRunMentalAutmzmID = 0
 		return
 	}
 	var cr *cerebellumReflex
 
 	if kind == 0 {
-		cr = cerebellumReflexFromMotorsID[automatizmID]
+		cr = cerebellumReflexFromMotorsID[automatismID]
 	} else {
-		cr = cerebellumReflexFromMentalsID[automatizmID]
+		cr = cerebellumReflexFromMentalsID[automatismID]
 	}
 	if cr == nil {
 		return
 	}
 	if kind == 0 {
-		aArr := cr.additionalAutomatizmID
+		aArr := cr.additionalAutomatismID
 		for i := 0; i < len(aArr); i++ {
 			wasRunAutmzmID = aArr[i]
-			RumAutomatizmID(aArr[i])
+			RumAutomatismID(aArr[i])
 		}
 	} else {
 		aArr := cr.additionalMentalAutID
 		for i := 0; i < len(aArr); i++ {
 			// TODO это старый вариант мент.автоматизмов, который нужно просто заменить на моторные автоматизмы, копровождаюзие мозжечковый рефлекс.
 			wasRunMentalAutmzmID = aArr[i] //???????
-			//RunMentalAutomatizmsID(aArr[i])
+			//RunMentalAutomatismsID(aArr[i])
 		}
 	}
 }

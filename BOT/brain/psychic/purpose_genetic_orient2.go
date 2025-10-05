@@ -21,11 +21,11 @@ import (
 Из-за столь скудных возможностей и разросся функционал мыслительных автоматизмов
 с их произвольностью (- перекрытием имеющихся автоматизмов новыми).
 */
-var oldNodeAutomatizm = 0 // прошлы раз запускался такой штатный автоматизм
-func getPurposeGenetic2AndRunAutomatizm(atmtzmID int) *Automatizm {
+var oldNodeAutomatism = 0 // прошлы раз запускался такой штатный автоматизм
+func getPurposeGenetic2AndRunAutomatism(atmtzmID int) *Automatism {
 
-	//atmzm:= AutomatizmFromId[atmtzmID]
-	atmzm, ok := ReadeAutomatizmFromId(atmtzmID)
+	//atmzm:= AutomatismFromId[atmtzmID]
+	atmzm, ok := ReadeAutomatismFromId(atmtzmID)
 	if !ok {
 		return nil
 	}
@@ -38,7 +38,7 @@ func getPurposeGenetic2AndRunAutomatizm(atmtzmID int) *Automatizm {
 	newsRes := getImportantSigns()
 	if newsRes { // повышенная опасность от оператора
 		// срочность и важность ситуации: если очень срочно и важно - просто оставить имеющийся автоматизм
-		runAutomatizmFromPurpose(atmzm, purpose)
+		runAutomatismFromPurpose(atmzm, purpose)
 		return atmzm
 	}
 
@@ -46,20 +46,20 @@ func getPurposeGenetic2AndRunAutomatizm(atmtzmID int) *Automatizm {
 		// высокий purpose.veryActual, 	нужно выполнить штатный автоматизм, а не придуманный
 
 		// если в прошлый раз уже был такой автоматизм, то ничего не делать, иначе начинает повторять одно и то же
-		if oldNodeAutomatizm != atmzm.ID {
-			runAutomatizmFromPurpose(atmzm, purpose)
-			oldNodeAutomatizm = atmzm.ID
+		if oldNodeAutomatism != atmzm.ID {
+			runAutomatismFromPurpose(atmzm, purpose)
+			oldNodeAutomatism = atmzm.ID
 			return atmzm
 		}
 
 		// список всех автоматизмов для ID узла Дерева
-		//aArr:=GetMotorsAutomatizmListFromTreeId(detectedActiveLastNodID)
+		//aArr:=GetMotorsAutomatismListFromTreeId(detectedActiveLastNodID)
 
-		/*aID := getAutomatizmFromNodeID(detectedActiveLastNodID)
-		AutomatizmFromIdMapCheck()
-		atmzm=AutomatizmFromId[aID]
+		/*aID := getAutomatismFromNodeID(detectedActiveLastNodID)
+		AutomatismFromIdMapCheck()
+		atmzm=AutomatismFromId[aID]
 		purpose.actionID=ActionsImageArr[atmzm.ActionsImageID]
-		runAutomatizmFromPurpose(atmzm, purpose)*/
+		runAutomatismFromPurpose(atmzm, purpose)*/
 		return nil
 
 		//if purpose.veryActual
@@ -70,14 +70,14 @@ func getPurposeGenetic2AndRunAutomatizm(atmtzmID int) *Automatizm {
 			// была ли уже оптимизация?
 			if cerebellumCoordination(atmzm, 0) {
 				atmzm.Usefulness=0 // чтобы не блокировался
-				runAutomatizmFromPurpose(atmzm, purpose)
+				runAutomatismFromPurpose(atmzm, purpose)
 				return atmzm
 			} else {
 				if gomeostas.BaseContextActive[2] || gomeostas.BaseContextActive[3] { // активен Поиск или Игра
 					// тупо метод тыка
 					// Тупо поэкспериментировать для пополнения опыта (не)удачных автоматизмов
 					// TODO !не проверено!
-					// в отличии от createAndRunAutomatizmFromPurpose(purpose) не использовать текущие рефлексы, а пробовать всякое
+					// в отличии от createAndRunAutomatismFromPurpose(purpose) не использовать текущие рефлексы, а пробовать всякое
 					// Выдавая это на стадии 3, тварь получает реакцию оператора, которую отзеркаливает
 					atmzm := findAnySympleRandActions()
 					return atmzm
@@ -94,7 +94,7 @@ func getPurposeGenetic2AndRunAutomatizm(atmtzmID int) *Automatizm {
 		}
 
 		//все нормально, просто выполнить автоматизм и отслеживать последствия
-		runAutomatizmFromPurpose(atmzm, purpose)
+		runAutomatismFromPurpose(atmzm, purpose)
 		return atmzm
 	}
 

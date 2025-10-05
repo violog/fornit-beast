@@ -1,7 +1,7 @@
 /* Ожидание результата запущенного автоматизма и его обработка
 
 В BAD_detector.go в самом низу есть func BetterOrWorseNow() с комментариями по делу. Я ее отрабатывал как раз для того, чтобы фиксировать любые улучшения или ухудшения для определения эффекта автоматизма.
-Она вызывается (через трансформатор против цицличности wasChangingMoodCondition()) 2 раза: в момент запуска автоматизма и как только совершится любое действие оператора на пульте. Таким образом в automatizm_result.go получается дифферент:
+Она вызывается (через трансформатор против цицличности wasChangingMoodCondition()) 2 раза: в момент запуска автоматизма и как только совершится любое действие оператора на пульте. Таким образом в automatism_result.go получается дифферент:
 oldlastBetterOrWorse,oldBetterOrWorse,oldParIdSuccesArr = wasChangingMoodCondition()
 Т.е. если ты поставишь точку прерывания на
 oldlastBetterOrWorse,oldBetterOrWorse,oldParIdSuccesArr = wasChangingMoodCondition()
@@ -18,7 +18,7 @@ import (
 
 //////////////////////////////////////////////////////////////////
 /* Длина группового правила.
-Накручивается при каждом стимуле в activeGameMode(), сбрасывается в automatizmActionsPuls() и StopWaitingWeriodFromOperator() - принудительно по пашке на пульте или по истечении периода ожидания.
+Накручивается при каждом стимуле в activeGameMode(), сбрасывается в automatismActionsPuls() и StopWaitingWeriodFromOperator() - принудительно по пашке на пульте или по истечении периода ожидания.
 то есть глубина группового правила зависит от времени удержания образа. Это позволяет записывать в группу только события, которые были в периоде удержания, а не все подряд.
 В функциях GPT лимит устанавливается отдельно.
 
@@ -50,19 +50,19 @@ var savePurposeGenetic *PurposeGenetic
 
 /* При запуске автоматизма определяются:
 // момент запуска автоматизма в числе пульсов
-var LastRunAutomatizmPulsCount =0 //сбрасывать ожидание результата автоматизма если прошло 20 пульсов
-// ожидается результат запущенного MotAutomatizm
-var LastAutomatizmWeiting *Automatizm //сбрасывается указатель автоматизма
+var LastRunAutomatismPulsCount =0 //сбрасывать ожидание результата автоматизма если прошло 20 пульсов
+// ожидается результат запущенного MotAutomatism
+var LastAutomatismWeiting *Automatism //сбрасывается указатель автоматизма
 */
 
-func setAutomatizmRunning(am *Automatizm, ps *PurposeGenetic) {
+func setAutomatismRunning(am *Automatism, ps *PurposeGenetic) {
 	lib.WritePultConsol("<span style='color:blue'>Ожидание ответа оператора.</span>")
 
 	// при срабатывании автоматизма - блокируются все рефлексторные действия
 	//MotorTerminalBlocking=true
 	notAllowReflexRuning = true //уже есть, но на всякий случай :)
 
-	LastAutomatizmWeiting = am                            // уже есть, но для надежности :)
+	LastAutomatismWeiting = am                            // уже есть, но для надежности :)
 	LastDetectedActiveLastNodID = detectedActiveLastNodID // уже есть, но для надежности :)
 
 	savePsyBaseMood = PsyBaseMood
@@ -80,14 +80,14 @@ func setAutomatizmRunning(am *Automatizm, ps *PurposeGenetic) {
 	notAllowReflexRuning = false
 }
 
-func clinerAutomatizmRunning() {
+func clearAutomatismRunning() {
 	//MotorTerminalBlocking=false
 	notAllowReflexRuning = false
 
-	LastAutomatizmWeiting = nil // func RumAutomatizm()
+	LastAutomatismWeiting = nil // func RumAutomatism()
 	lastRunVolutionAction = nil // func showVolutionAction
 
-	LastRunAutomatizmPulsCount = 0
+	LastRunAutomatismPulsCount = 0
 	WasOperatorActiveted = false
 	onliOnceWasConditionsActiveted = false
 	// !!!! НЕ СБРАСЫВАТЬ savePurposeGenetic=nil - он может определяться независимо от запуска автоматизма
@@ -96,12 +96,12 @@ func clinerAutomatizmRunning() {
 
 	wasRunProvocationFunc = false
 
-	// только в func saveNewMentalEpisodic очищать!   clinerFuncSequence()
+	// только в func saveNewMentalEpisodic очищать!   clearFuncSequence()
 }
 
 func StopWaitingWeriodFromOperator() {
 	setInterruptionEpisosde() //вставить пустой кадр эпиз.памяти - прервать тему
-	clinerAutomatizmRunning()
+	clearAutomatismRunning()
 	/*
 		if !IsArbitraryGameMode {
 			transfer.IsPsychicGameMode = false
@@ -114,13 +114,13 @@ func StopWaitingWeriodFromOperator() {
 var oldBetterOrWorse = 0     //- стали лучше или хуже: величина измнения от -10 через 0 до 10
 var oldParIdSuccesArr []int  //стали лучше следующие г.параметры []int гоменостаза
 var oldlastBetterOrWorse = 0 // насколько изменилось общее состояние, значение от  -10(максимально Плохо) через 0 до 10(максимально Хорошо)
-func automatizmActionsPuls() {
+func automatismActionsPuls() {
 
-	if LastRunAutomatizmPulsCount == 0 {
+	if LastRunAutomatismPulsCount == 0 {
 		return
 	}
 	// вышло время ожидания реакции
-	if (LastRunAutomatizmPulsCount + WaitingPeriodForActionsVal) < PulsCount {
+	if (LastRunAutomatismPulsCount + WaitingPeriodForActionsVal) < PulsCount {
 		/*
 			if !IsArbitraryGameMode {
 				transfer.IsPsychicGameMode = false
@@ -135,12 +135,12 @@ func automatizmActionsPuls() {
 			// отреагировать на отсуствие реакции - повторить автоматизм с большей силой Energy
 			// Из МОЗЖУЧКА как-то отреагировать на отсуствие реакции - повторить автоматизм с большей силой Energy
 			if noAutovatizmResult() { // была попытка отреагировать сильнее - в cerebellum.go
-				return // чтобы не сбрасывать clinerAutomatizmRunning()
+				return // чтобы не сбрасывать clearAutomatismRunning()
 			}
 		}
 
 		//сбрасывать ожидание результата автоматизма если прошло WaitingPeriodForActionsVal пульсов
-		clinerAutomatizmRunning()
+		clearAutomatismRunning()
 		//вставить пустой кадр эпиз.памяти - прервать тему
 		setInterruptionEpisosde()
 
@@ -157,7 +157,7 @@ func noAutovatizmResult() bool {
 	if EvolushnStage > 3 {
 		// осмыслить ситуацию - Активировать Дерево Понимания
 		understandingSituation(1)
-		clinerAutomatizmRunning()
+		clearAutomatismRunning()
 		return true
 	}
 
@@ -165,25 +165,25 @@ func noAutovatizmResult() bool {
 	if EvolushnStage == 3 && !CurrentPurposeGenetic.veryActual {
 		/* в случае отсуствия автоматизма в данных условиях - послать оператору те же стимулы, чтобы посмотреть его реакцию.
 		   Создание автоматизма, повторяющего действия оператора в данных условиях
-		НО если уже помылался provokatorMirrorAutomatizm то больше не делать этого (бесконечный цикл)
+		НО если уже помылался provokatorMirrorAutomatism то больше не делать этого (бесконечный цикл)
 		*/
-		if oldProvokatorAutomatizm != LastAutomatizmWeiting { // не повторять, если только что был такой ответ
-			provokatorMirrorAutomatizm(LastAutomatizmWeiting, &CurrentPurposeGenetic)
-			clinerAutomatizmRunning()
+		if oldProvokatorAutomatism != LastAutomatismWeiting { // не повторять, если только что был такой ответ
+			provokatorMirrorAutomatism(LastAutomatismWeiting, &CurrentPurposeGenetic)
+			clearAutomatismRunning()
 			return true
 		}
 	}
 
 	// реакция была, но оператор не обратил на нее внимания, нужно усилить силу действия мозжечковым рефлексом
-	if cerebellumCoordination(LastAutomatizmWeiting, 1) {
+	if cerebellumCoordination(LastAutomatismWeiting, 1) {
 		// и тут же снова запустить реакцию!
-		if oldProvokatorAutomatizm != LastAutomatizmWeiting { // не повторять, если только что был такой ответ
-			setAutomatizmRunning(LastAutomatizmWeiting, &CurrentPurposeGenetic)
-			clinerAutomatizmRunning()
+		if oldProvokatorAutomatism != LastAutomatismWeiting { // не повторять, если только что был такой ответ
+			setAutomatismRunning(LastAutomatismWeiting, &CurrentPurposeGenetic)
+			clearAutomatismRunning()
 			return true
 		}
 	}
-	clinerAutomatizmRunning()
+	clearAutomatismRunning()
 	return false
 }
 
@@ -203,20 +203,20 @@ var IsEndWaitPeriodFunc13 = false
 
 lastBetterOrWorse НЕ ИСПОЛЬЗУЕТСЯ т.к. lastCommonDiffValue более точен и информативен
 */
-func calcAutomatizmResult(lastCommonDiffValue int, wellIDarr []int) {
+func calcAutomatismResult(lastCommonDiffValue int, wellIDarr []int) {
 
-	lib.WritePultConsol("<span style='color:blue;background-color:#FFD0FF;'>Был ОТВЕТ ОПЕРАТОРА (func calcAutomatizmResult). Мотивационный эффект: <b>" + strconv.Itoa(lastCommonDiffValue) + "</b></span>")
+	lib.WritePultConsol("<span style='color:blue;background-color:#FFD0FF;'>Был ОТВЕТ ОПЕРАТОРА (func calcAutomatismResult). Мотивационный эффект: <b>" + strconv.Itoa(lastCommonDiffValue) + "</b></span>")
 
-	/*	полезность автоматизма в третьей стадии при отзеркаливании на втором шаге ставится в createNewMirrorAutomatizm()
-		при этом нельзя менять полезность автоматизма созданного в цикле отзеркаливания на первом шаге, иначе в getAutomatizmFromNodeID()
-		будет выдавать как наилучший автоматизм первого шага. То есть для отзеркаливания в 3 стадии должно быть строго из за getAutomatizmFromNodeID():
+	/*	полезность автоматизма в третьей стадии при отзеркаливании на втором шаге ставится в createNewMirrorAutomatism()
+		при этом нельзя менять полезность автоматизма созданного в цикле отзеркаливания на первом шаге, иначе в getAutomatismFromNodeID()
+		будет выдавать как наилучший автоматизм первого шага. То есть для отзеркаливания в 3 стадии должно быть строго из за getAutomatismFromNodeID():
 		1. автоматизм, созаднный на 1 шаге - Usefulness==0
-		2. автоматизм, созаднный на 2 шаге - Usefulness==1 (устанавливается currentAutomatizmAfterTreeActivatedIDв createNewMirrorAutomatizm())
+		2. автоматизм, созаднный на 2 шаге - Usefulness==1 (устанавливается currentAutomatismAfterTreeActivatedIDв createNewMirrorAutomatism())
 		И то же самое для отработки infoFunc13()
 	*/
 	if EvolushnStage != 3 && curFunc13ID == 0 {
 		if lastRunVolutionAction == nil { // было НЕ произвольное действие
-			automatizmCorrection(LastAutomatizmWeiting, lastCommonDiffValue, wellIDarr)
+			automatismCorrection(LastAutomatismWeiting, lastCommonDiffValue, wellIDarr)
 		}
 	}
 	if lastCommonDiffValue < 0 {
@@ -226,22 +226,22 @@ func calcAutomatizmResult(lastCommonDiffValue int, wellIDarr []int) {
 	// в третьей стадии по умолчанию, в более высоких по факту срабатывания func13()
 	// для этого в ней используется маркер curFunc13ID >0
 	if EvolushnStage == 3 || curFunc13ID > 0 {
-		if GetMotorsAutomatizmListFromTreeId(detectedActiveLastNodID) != nil { // если есть список всех автоматизмов для ID узла Дерева
+		if GetMotorsAutomatismListFromTreeId(detectedActiveLastNodID) != nil { // если есть список всех автоматизмов для ID узла Дерева
 			// сохраняем активировавшийся на стимул автоматизм
 			// для случая, когда оператор дал ответ, как отвечать - а на ответ уже есть автоматизм. В этом случае бот ответит - и его ответ пойдет в запись зеркального автоматизма
 			// вместо того, что указал оператор. Чтобы этого не было, надо сохранить ответ оператора.
-			oldAtmzAfterTreeActivatedID = getAutomatizmFromNodeID(detectedActiveLastNodID)
+			oldAtmzAfterTreeActivatedID = getAutomatismFromNodeID(detectedActiveLastNodID)
 		}
 
 		/* отзеркаливание ответа оператора не зависимо от того, стало хуже или лучше
 		потому, что это был ответ оператора на действия автоматизма, значит - авторитетный ответ
 		Создание автоматизма, повторяющего действия оператора в данных условиях
 		*/
-		createNewMirrorAutomatizm(LastAutomatizmWeiting)
+		createNewMirrorAutomatism(LastAutomatismWeiting)
 		/*		if curFunc13ID > 0 {
-				//clinerAutomatizmRunning() // нельзя, иначе fixEpizMemoryRules() не отработает, только fixEpizMemoryTeachRules()
+				//clearAutomatismRunning() // нельзя, иначе fixEpizMemoryRules() не отработает, только fixEpizMemoryTeachRules()
 				endBaseIdCycle(curFunc13ID) // подвисает
-				clinerFunctionsInAllCickles(13)
+				clearFunctionsInAllCickles(13)
 				IsEndWaitPeriodFunc13 = true
 				curFunc13ID = 0 // закрываем маркер цикла func13
 			}*/
@@ -259,8 +259,8 @@ func calcAutomatizmResult(lastCommonDiffValue int, wellIDarr []int) {
 			// был запуск автоматизма или произвольной цепочки действий - записать 2 вида Правил
 			if lastRunVolutionAction != nil { // было произвольное действие
 				// создать автоматизм из lastRunVolutionAction
-				_, azm := createAutomatizmFromNextString(lastRunVolutionAction.next, LastDetectedActiveLastNodID)
-				automatizmCorrection(azm, lastCommonDiffValue, wellIDarr)
+				_, azm := createAutomatismFromNextString(lastRunVolutionAction.next, LastDetectedActiveLastNodID)
+				automatismCorrection(azm, lastCommonDiffValue, wellIDarr)
 			}
 			// записать 2 вида Правил для автоматизма или произвольной цепочки действий
 			//		stimul, _ := CreateNewlastActionsImageID(0, curActiveActions.ActID, curActiveActions.PhraseID, curActiveActions.ToneID, curActiveActions.MoodID,true)
@@ -272,7 +272,7 @@ func calcAutomatizmResult(lastCommonDiffValue int, wellIDarr []int) {
 				// не включаем в условие curActiveActionsID > 0 т.к. ID стимула будет определен в func fixEpizMemoryTeachRules
 				if ActivationTypeSensor > 1 { // только стимул оператора, а не гомео
 					//если оператор ответил только во время периода ожидания
-					if (LastRunAutomatizmPulsCount + WaitingPeriodForActionsVal) > PulsCount {
+					if (LastRunAutomatismPulsCount + WaitingPeriodForActionsVal) > PulsCount {
 						fixEpizMemoryTeachRules(lastCommonDiffValue)
 					}
 				}
@@ -295,9 +295,9 @@ func calcAutomatizmResult(lastCommonDiffValue int, wellIDarr []int) {
 Индикация включается после появления диалога ответа на Пульте (pult_gomeo.php: var allowShowWaightStr=0;).
 */
 func WaitingPeriodForActions() (bool, int) {
-	//if LastRunAutomatizmPulsCount > 0 && ActivationTypeSensor > 1 {
-	if LastRunAutomatizmPulsCount > 0 {
-		time := WaitingPeriodForActionsVal - (PulsCount - LastRunAutomatizmPulsCount)
+	//if LastRunAutomatismPulsCount > 0 && ActivationTypeSensor > 1 {
+	if LastRunAutomatismPulsCount > 0 {
+		time := WaitingPeriodForActionsVal - (PulsCount - LastRunAutomatismPulsCount)
 		return true, time
 	}
 	return false, 0
@@ -399,16 +399,16 @@ func wasChangingMoodCondition() (int, []int) {
 
 только при активации действием кнопок 	в игровом режиме при воздействии кнопками Наказать, Поощрить - записывать Usefulness ранее выполненного автоматизма
 Вызывается только из perception.go
-Не забыть потом в afterTreeActivation() поставить заглушку для calcAutomatizmResult() - иначе будет двойной вызов calcAutomatizmResult()
+Не забыть потом в afterTreeActivation() поставить заглушку для calcAutomatismResult() - иначе будет двойной вызов calcAutomatismResult()
 wasChangingMoodCondition() не подходит для
 
 func LastAutomatipmCorrection() {
-	if LastAutomatizmWeiting == nil {
+	if LastAutomatismWeiting == nil {
 		return
 	}
 
-	// LastRunAutomatizmPulsCount - время начала периода ожидания
-	if (PulsCount - LastRunAutomatizmPulsCount) > (limitOfActionsAfterStimul + 10) { // прошло более limitOfActionsAfterStimul секунд
+	// LastRunAutomatismPulsCount - время начала периода ожидания
+	if (PulsCount - LastRunAutomatismPulsCount) > (limitOfActionsAfterStimul + 10) { // прошло более limitOfActionsAfterStimul секунд
 		return
 	}
 
@@ -426,12 +426,12 @@ func LastAutomatipmCorrection() {
 	}
 	if effect != 0 {
 		var gomeoParIdSuccesArr []int
-		// так как обработка действий учительских кнопок происходит ДО automatizmTreeActivation() нужно здесь задать образы активностей,
+		// так как обработка действий учительских кнопок происходит ДО automatismTreeActivation() нужно здесь задать образы активностей,
 		// иначе правило не запишется. См fixEpizMemoryRules() стр. 36
 		curStimulImage = curActiveActions
 		curStimulImageID = curActiveActionsID
 		// обработать изменение состояния фиксация ПРАВИЛА, Стимул - ОТ ОПЕРАТОРА
-		calcAutomatizmResult(effect, gomeoParIdSuccesArr)
+		calcAutomatismResult(effect, gomeoParIdSuccesArr)
 		effectPress3or4button = effect
 	}
 }

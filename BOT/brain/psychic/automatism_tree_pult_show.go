@@ -15,7 +15,7 @@ import (
 ////////////////////////////////////////////
 
 /*
-запрет показа карты на пульте (func GetAutomatizmTreeForPult()) при обновлении
+запрет показа карты на пульте (func GetAutomatismTreeForPult()) при обновлении
 против паники типа "одновременная запись и считывание карты"
 Использовать для всех операций записи узлов дерева
 */
@@ -25,22 +25,22 @@ var notAllowScanInTreeThisTime = false
 var baseConditionIdOnly = 0 // 1- только Плохо, ...
 
 // образ дерева автоматизмов для вывода
-var automatizmTreeModel = ""
+var automatismTreeModel = ""
 
 // ///////////////////////////////////////////////
-func GetAutomatizmTreeForPult(limitBasicID int) string {
+func GetAutomatismTreeForPult(limitBasicID int) string {
 
-	automatizmTreeModel = "" // иначе дублирует блоки дерева при каждом выводе страницы
+	automatismTreeModel = "" // иначе дублирует блоки дерева при каждом выводе страницы
 	// против паники типа "одновременная запись и считывание карты"
 	if notAllowScanInTreeThisTime {
-		return "!Временно запрещена работа func GetAutomatizmTreeForPult() т.к. идет параллельная обработка."
+		return "!Временно запрещена работа func GetAutomatismTreeForPult() т.к. идет параллельная обработка."
 	}
-	if len(AutomatizmTree.Children) == 0 { // еще нет никаких веток
+	if len(AutomatismTree.Children) == 0 { // еще нет никаких веток
 		return "Еще нет Дерева автоматизмов"
 	}
 
 	//посмотреть число имеющихся узлов дерева
-	strArr, _ := lib.ReadLines(lib.GetMainPathExeFile() + "/memory_psy/automatizm_tree.txt")
+	strArr, _ := lib.ReadLines(lib.GetMainPathExeFile() + "/memory_psy/automatism_tree.txt")
 	cunt := len(strArr)
 	// если больше 1000 то выдавать только по одному из 3-х базовыз состояний, иначе сильно тормозит
 	if cunt > 1000 {
@@ -72,56 +72,56 @@ func GetAutomatizmTreeForPult(limitBasicID int) string {
 
 		out += "<span style='padding-left:100px'></span>Автоматизмы узлов показываются по клику на АВТОМАТИЗМЫ<hr>"
 
-		automatizmTreeModel = out
+		automatismTreeModel = out
 		baseConditionIdOnly = limitBasicID
 	}
-	//	automatizmTreeModel="" // иначе дублирует блоки дерева при каждом выводе страницы
-	scanAutomatizmNodes(-1, &AutomatizmTree)
+	//	automatismTreeModel="" // иначе дублирует блоки дерева при каждом выводе страницы
+	scanAutomatismNodes(-1, &AutomatismTree)
 
-	if len(automatizmTreeModel) < 10 {
+	if len(automatismTreeModel) < 10 {
 		return "Еще нет информационных веток дерева"
 	}
 
-	return automatizmTreeModel
+	return automatismTreeModel
 
 }
 
 //////////////////////
 
-func scanAutomatizmNodes(level int, node *AutomatizmNode) {
+func scanAutomatismNodes(level int, node *AutomatismNode) {
 
 	if node.ID == 69 {
 		node.ID = 69
 	}
 	if node.ID > 0 {
-		automatizmTreeModel += setShift(level)
+		automatismTreeModel += setShift(level)
 		switch level {
 		case 0:
-			automatizmTreeModel += getStrFromCond(level, node.BaseID) + "(nodeID=" + strconv.Itoa(node.ID) + ")"
+			automatismTreeModel += getStrFromCond(level, node.BaseID) + "(nodeID=" + strconv.Itoa(node.ID) + ")"
 		case 1:
-			automatizmTreeModel += getStrFromCond(level, node.EmotionID) + "(nodeID=" + strconv.Itoa(node.ID) + ")"
+			automatismTreeModel += getStrFromCond(level, node.EmotionID) + "(nodeID=" + strconv.Itoa(node.ID) + ")"
 		case 2:
-			automatizmTreeModel += getStrFromCond(level, node.ActivityID) + "(nodeID=" + strconv.Itoa(node.ID) + ")"
+			automatismTreeModel += getStrFromCond(level, node.ActivityID) + "(nodeID=" + strconv.Itoa(node.ID) + ")"
 		case 3:
-			automatizmTreeModel += getStrFromCond(level, node.ToneMoodID) + "(nodeID=" + strconv.Itoa(node.ID) + ")"
+			automatismTreeModel += getStrFromCond(level, node.ToneMoodID) + "(nodeID=" + strconv.Itoa(node.ID) + ")"
 		case 4:
-			automatizmTreeModel += getStrFromCond(level, node.SimbolID) + "(nodeID=" + strconv.Itoa(node.ID) + ")"
+			automatismTreeModel += getStrFromCond(level, node.SimbolID) + "(nodeID=" + strconv.Itoa(node.ID) + ")"
 		case 5:
-			automatizmTreeModel += getStrFromCond(level, node.PhraseID) + "(nodeID=" + strconv.Itoa(node.ID) + ")"
+			automatismTreeModel += getStrFromCond(level, node.PhraseID) + "(nodeID=" + strconv.Itoa(node.ID) + ")"
 
 		}
 
 		// если есть штатный автоматизм - показать действия
 		/*
-			atmzm:=AutomatizmBelief2FromTreeNodeId[node.ID]
+			atmzm:=AutomatismBelief2FromTreeNodeId[node.ID]
 			if atmzm!=nil{
-				automatizmTreeModel += " <span style='color:blue'>АВТОМАТИЗМ(" + strconv.Itoa(atmzm.ID) + "): "+
-					TranslateAutomatizmSequence(atmzm) + "</span>"
+				automatismTreeModel += " <span style='color:blue'>АВТОМАТИЗМ(" + strconv.Itoa(atmzm.ID) + "): "+
+					TranslateAutomatismSequence(atmzm) + "</span>"
 			}
 		*/
 		//автоматизмы, прикрепленные к ID узла Дерева
 
-		atmzm := GetMotorsAutomatizmListFromTreeId(node.ID)
+		atmzm := GetMotorsAutomatismListFromTreeId(node.ID)
 
 		if atmzm != nil {
 			var autStr = "ID: "
@@ -131,9 +131,9 @@ func scanAutomatizmNodes(level int, node *AutomatizmNode) {
 				}
 				autStr += "" + strconv.Itoa(atmzm[i].ID)
 			}
-			automatizmTreeModel += " <span style='cursor:pointer;color:blue' onClick='show_automatizms(" + strconv.Itoa(node.ID) + ")'>АВТОМАТИЗМЫ(" + autStr + "): " + "</span>"
+			automatismTreeModel += " <span style='cursor:pointer;color:blue' onClick='show_automatisms(" + strconv.Itoa(node.ID) + ")'>АВТОМАТИЗМЫ(" + autStr + "): " + "</span>"
 		}
-		automatizmTreeModel += "<br>\n"
+		automatismTreeModel += "<br>\n"
 	}
 	level++
 	for n := 0; n < len(node.Children); n++ {
@@ -142,7 +142,7 @@ func scanAutomatizmNodes(level int, node *AutomatizmNode) {
 				continue
 			}
 		}
-		scanAutomatizmNodes(level, &node.Children[n])
+		scanAutomatismNodes(level, &node.Children[n])
 	}
 }
 
@@ -250,9 +250,9 @@ func getStrnameFromStyleImageID(id int) string {
 
 /////////////////////////////////////////////
 /*расшифровать действия автоматизма для инфы пульта: Snn:21812,27777,0,1478,13388,0,27303,24882Dnn:4
-Сделано на основе запуска автоматизма на выполнение: func RumAutomatizmID(id int) из automatizm_actions.go
+Сделано на основе запуска автоматизма на выполнение: func RumAutomatismID(id int) из automatism_actions.go
 */
-func TranslateAutomatizmSequence(am *Automatizm) string {
+func TranslateAutomatismSequence(am *Automatism) string {
 	if am == nil {
 		return ""
 	}
@@ -260,7 +260,7 @@ func TranslateAutomatizmSequence(am *Automatizm) string {
 		return ""
 	}
 
-	out := GetAutomatizmSequenceInfo(am.ID, true)
+	out := GetAutomatismSequenceInfo(am.ID, true)
 
 	return out
 }
@@ -268,9 +268,9 @@ func TranslateAutomatizmSequence(am *Automatizm) string {
 ////////////////////////////////////////
 
 // действия - в виде строки
-func GetAutomatizmSequenceInfo(idA int, writeLog bool) string {
-	//am:= AutomatizmFromId[idA]
-	am, ok := ReadeAutomatizmFromId(idA)
+func GetAutomatismSequenceInfo(idA int, writeLog bool) string {
+	//am:= AutomatismFromId[idA]
+	am, ok := ReadeAutomatismFromId(idA)
 	if !ok {
 		return ""
 	}
@@ -281,17 +281,17 @@ func GetAutomatizmSequenceInfo(idA int, writeLog bool) string {
 ///////////////////////////////////////////////////
 
 // автоматизмы, привязанные к данному узлу дерева
-func GetAutomatizmForNodeInfo(nodeID int) string {
+func GetAutomatismForNodeInfo(nodeID int) string {
 	var out = ""
 
-	atmzm := GetMotorsAutomatizmListFromTreeId(nodeID)
+	atmzm := GetMotorsAutomatismListFromTreeId(nodeID)
 
 	if atmzm != nil {
 		for i := 0; i < len(atmzm); i++ {
 			if i > 0 {
 				out += "<hr>"
 			}
-			out += "Автоматизм ID=" + strconv.Itoa(atmzm[i].ID) + ":<br>" + TranslateAutomatizmSequence(atmzm[i])
+			out += "Автоматизм ID=" + strconv.Itoa(atmzm[i].ID) + ":<br>" + TranslateAutomatismSequence(atmzm[i])
 		}
 	} else {
 		out += "Нет автоматизмов, привязанных к узлу с ID=" + strconv.Itoa(nodeID)
@@ -302,7 +302,7 @@ func GetAutomatizmForNodeInfo(nodeID int) string {
 func GetNodesAutomatismsInfo(nodeID int) string {
 	var out = ""
 
-	atmzm := GetMotorsAutomatizmListFromTreeId(nodeID)
+	atmzm := GetMotorsAutomatismListFromTreeId(nodeID)
 
 	if atmzm != nil {
 		for i := 0; i < len(atmzm); i++ {
@@ -319,9 +319,9 @@ func GetNodesAutomatismsInfo(nodeID int) string {
 }
 
 // короткая инфа об узле дерева автоматизмов
-func GetAutomatizmNodeTreeForPult(id int) string {
+func GetAutomatismNodeTreeForPult(id int) string {
 
-	node := AutomatizmTreeFromID[id]
+	node := AutomatismTreeFromID[id]
 	out := ""
 	if node == nil {
 		out += "<span style='color:red'>Нет узла дерева авт-м с ID=" + strconv.Itoa(id) + "</span>"
@@ -346,7 +346,7 @@ func GetAutomatizmNodeTreeForPult(id int) string {
 
 		out += "<hr>"
 		//автоматизмы, прикрепленные к ID узла Дерева
-		atmzm := GetMotorsAutomatizmListFromTreeId(id)
+		atmzm := GetMotorsAutomatismListFromTreeId(id)
 		if atmzm != nil {
 			var autStr = "ID: "
 			for i := 0; i < len(atmzm); i++ {
@@ -355,7 +355,7 @@ func GetAutomatizmNodeTreeForPult(id int) string {
 				}
 				autStr += "" + strconv.Itoa(atmzm[i].ID)
 			}
-			out += " <span style='cursor:pointer;color:blue' onClick='show_automatizms(" + strconv.Itoa(node.ID) + ")'>АВТОМАТИЗМЫ(" + autStr + "): " + "</span>"
+			out += " <span style='cursor:pointer;color:blue' onClick='show_automatisms(" + strconv.Itoa(node.ID) + ")'>АВТОМАТИЗМЫ(" + autStr + "): " + "</span>"
 		}
 	}
 	return out

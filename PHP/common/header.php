@@ -62,7 +62,7 @@ if(parseInt(document.getElementById("block_id").style.height)!=0)
 // ждем пока не включат бестию
 // !!!! ЕСЛИ ГДЕ-ТО БЕСКОНЕЧНЫЙ ЦИКЛ, ТО brain.PulsCount остановится !!!!
 var begin_activnost_after=1; // после какого пульса запускать функцию get_info()
-function check_Beast_activnost(begin)
+function check_activity(begin)
 {
 if(typeof(get_info)!="function")
 {
@@ -77,7 +77,7 @@ var check_info_timer_cheker=0
 function get_Beast_connection()
 {	
 check_info_timer_cheker=setTimeout("get_Beast_connection_checker()",1000);
-var AJAX = new ajax_support(linking_address + "?check_Beast_activnost=1", check_info);
+var AJAX = new ajax_support(linking_address + "?check_activity=1", check_info);
 AJAX.send_reqest();
 function check_info(res) 
 { 
@@ -102,7 +102,7 @@ get_info();
 function exists_connection()
 {
 check_info_timer_cheker=setTimeout("get_Beast_connection_checker()",2000);
-var AJAX = new ajax_support(linking_address + "?check_Beast_activnost=1", check_go_connction);
+var AJAX = new ajax_support(linking_address + "?check_activity=1", check_go_connction);
 AJAX.send_reqest();
 function check_go_connction(res) {
 //	alert(res);

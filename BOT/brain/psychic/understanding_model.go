@@ -1,5 +1,5 @@
 /* Модель понимания объектов внимания (типа ActionsImage), имеющих значимость в правилах эпиз.памяти.
-Показ на пульте - в episodic_memory_pult.go - func Get_undestand_model_from_object
+Показ на пульте - в episodic_memory_pult.go - func Get_understand_model_from_object
 
 Модель понимани для данного объекта - это все кадры эпизодической памяти EpisodicTreeNode, где он участвует.
 В каждом кадре есть связь с тем, к чему привели недавние действия (следующие эпизоды памяти после ObjModel.ID)

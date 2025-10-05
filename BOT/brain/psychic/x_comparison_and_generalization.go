@@ -30,7 +30,7 @@ var SynthesizeImportanceMemory []*SynthesizeImportanceImage
 
 В принципе вся информация для обобщений есть в эпиз.памяти. НО
 В структуре автоматизма возможно ветвление цепочки действий:
-Automatizm.ActionsImageID -> Automatizm.NextID
+Automatism.ActionsImageID -> Automatism.NextID
 В структуре самого действия тоже есть ветвление:
 ActionsImage.ActID []int если член ActID имеет ID>prefixActionIdValue
 */

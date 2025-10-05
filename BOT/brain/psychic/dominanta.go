@@ -260,12 +260,12 @@ func solutionDominanta(dID int, isSuccess int) {
 		return
 	}
 	node.isSuccess = isSuccess
-	clinerProblemDominenta(dID) // удаление массива пробных действий
+	clearProblemDominenta(dID) // удаление массива пробных действий
 }
 
 // ///////////////////////////////////////////
 // удаление доминанты, проставив isSuccess=true
-func clinerProblemDominenta(dID int) {
+func clearProblemDominenta(dID int) {
 
 	// удаление массива пробных действий
 	removeTryActionArr(dID)

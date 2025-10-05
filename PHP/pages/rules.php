@@ -1,6 +1,6 @@
 <?
 /*   последние 10 Правил
-http://go/pages/rulles.php  
+http://go/pages/rules.php
 
 
 */
@@ -60,7 +60,7 @@ background-color:#33ccff;
 var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>';
 
 // ждем пока не включат бестию
-check_Beast_activnost(6);// после 6-го пульса И запускается get_info()
+check_activity(6);// после 6-го пульса И запускается get_info()
 //get_info();
 
 var old_size = 0;
@@ -68,7 +68,7 @@ var limitBasicID=0;//>0 - лимитировать показ только од�
 
 
 function get_info() {  
-var AJAX = new ajax_support(linking_address + "?get_rulles_list_info=1", sent_get_info);
+var AJAX = new ajax_support(linking_address + "?get_rules_list_info=1", sent_get_info);
 AJAX.send_reqest();
 function sent_get_info(res) {
 if(res.length<10)
@@ -123,7 +123,7 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 }
 }
 
-function get_undestand_model(id)
+function get_understanding_model(id)
 { //alert(id);
 /* Чтобы открыть в отдельной вкладке браузера нужно просто открыть 
 страницу http://go/pages/rules_model.php?id=525
@@ -131,9 +131,9 @@ function get_undestand_model(id)
 open_anotjer_win("/pages/rules_model.php?id="+id);
 
 /*
-var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_undestand_model=1", sent_undestand_model_info);
+var AJAX = new ajax_support(linking_address + "?objID="+id+"&get_understanding_model=1", sent_understand_model_info);
 AJAX.send_reqest();
-function sent_undestand_model_info(res) {
+function sent_understand_model_info(res) {
 	
 			//alert(res);
 res=res.replace(/\<\/b\>/g,'</b><br>');

@@ -56,33 +56,33 @@ func DeleteActualRelextActon() {
 func orientarionPuls() {
 
 	/*  если еще не запущен автоматизм  НЕ НУЖНО ВЫЗЫВАТЬ ВСЕ ВРЕМЯ!!!
-	if LastRunAutomatizmPulsCount==0{//20 сек ожидания (if LastRunAutomatizmPulsCount+20 < PulsCount {)
-		orientation(saveAutomatizmID)
-		saveAutomatizmID=0
+	if LastRunAutomatismPulsCount==0{//20 сек ожидания (if LastRunAutomatismPulsCount+20 < PulsCount {)
+		orientation(saveAutomatismID)
+		saveAutomatismID=0
 	}
 	*/
 }
 
 /*  Выполнение ориентировочного рефлекса из активной ветки Дерева автоматизмов.
-automatizmID: 0 - в активной ветке нет автоматзма, >0 - есть автоматизм
+automatismID: 0 - в активной ветке нет автоматзма, >0 - есть автоматизм
 */
-//var saveAutomatizmID=0
+//var saveAutomatismID=0
 
 // вызывается из func afterTreeActivation()
-func orientation(automatizmID int) int {
+func orientation(automatismID int) int {
 
 	lib.WritePultConsol("Ориентировчный рефлекс Дерева моторных автоматизмов.")
 
 	notAllowScanInTreeThisTime = true
-	//	saveAutomatizmID=automatizmID
-	var atmtzm *Automatizm
-	if automatizmID == 0 {
+	//	saveAutomatismID=automatismID
+	var atmtzm *Automatism
+	if automatismID == 0 {
 		//автоматизма нет, если нужно действовать, то какой-то предположить и сразу проверить
 		atmtzm = orientation_1()
 	}
-	if automatizmID > 0 {
-		//проверить подходит ли автоматизм defAutomatizmID к текущим условиям
-		atmtzm = orientation_2(automatizmID)
+	if automatismID > 0 {
+		//проверить подходит ли автоматизм defAutomatismID к текущим условиям
+		atmtzm = orientation_2(automatismID)
 	}
 	if atmtzm != nil {
 		if atmtzm.BranchID == 0 {
@@ -100,7 +100,7 @@ func orientation(automatizmID int) int {
 
 Стадия отсуствия опыта в данных условиях.
 */
-func orientation_1() *Automatizm {
+func orientation_1() *Automatism {
 
 	lib.WritePultConsol("Простейший ориентировочный рефлекс полного непонимания (1 типа)")
 
@@ -120,7 +120,7 @@ func orientation_1() *Automatizm {
 		Здесь выбирается действие пробного автоматизма из выполнившегося рефлекса actualRelextActon
 		и запускается автоматизм
 		*/
-		atmzm := getPurposeGeneticAndRunAutomatizm() // в purpose_genetic.go
+		atmzm := getPurposeGeneticAndRunAutomatism() // в purpose_genetic.go
 		return atmzm
 	}
 
@@ -136,9 +136,9 @@ func orientation_1() *Automatizm {
 			purpose := getPurposeGenetic()
 			// повторить действия оператора
 			purpose.actionID = curActiveActions
-			atmzm := createAndRunAutomatizmFromPurpose(purpose)
+			atmzm := createAndRunAutomatismFromPurpose(purpose)
 			if doWritingFile {
-				SaveAutomatizm()
+				SaveAutomatism()
 			}
 			return atmzm
 		}
@@ -148,13 +148,13 @@ func orientation_1() *Automatizm {
 }
 
 ////////////////// ОРИЕНТИРОВОКА, если есть автоматизм - ВЫЗЫВАТЕСЯ ВСЕГДА, не только при новых условиях
-/*проверить подходит ли автоматизм defAutomatizmID к текущим условиям, если нет,
+/*проверить подходит ли автоматизм defAutomatismID к текущим условиям, если нет,
 - по опыту того, к чему приводят новые условия - режим нахождения альтернативы
 Или если автоматизма пока не имеет Belief==2, т.е. еще непроверненный
 
 ! важно: если вернуло автоматизм, значит хочет попробовать
 */
-func orientation_2(nodeAutomatizmID int) *Automatizm {
+func orientation_2(nodeAutomatismID int) *Automatism {
 	lib.WritePultConsol("Простейший ориентировочный рефлекс частичного непонимания (2 типа)")
 
 	//  получение текущего состояния информационной среды: отражение Базового состояния и Активных Базовых контекстов
@@ -166,7 +166,7 @@ func orientation_2(nodeAutomatizmID int) *Automatizm {
 	curTargetArrID = CurrentInformationEnvironment.curTargetArrID
 
 	// обработка автоматизма, рвущегося на выполнение. Есть ли опасная новизна?
-	atmzm := getPurposeGenetic2AndRunAutomatizm(nodeAutomatizmID) // в purpose_genetic.go
+	atmzm := getPurposeGenetic2AndRunAutomatism(nodeAutomatismID) // в purpose_genetic.go
 	if atmzm != nil {
 		return atmzm
 	}

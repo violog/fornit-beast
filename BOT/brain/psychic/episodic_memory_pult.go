@@ -105,9 +105,9 @@ func GetCur100lastRules(objID int) string {
 				"<td " + style + ">" + strconv.Itoa(effect) + "</td>" +
 				"<td " + style + ">" + strconv.Itoa(pars[1]) + "</td>"
 			if effect == 100 { // для учительского правила
-				out += "<td style='font-size:19px;font-weight:bold;cursor:pointer;color:blue' onClick='get_undestand_model(" + strconv.Itoa(node.Action) + ")' title='Значимость node.Action'>" + strconv.Itoa(pars[2]) + "</td>"
+				out += "<td style='font-size:19px;font-weight:bold;cursor:pointer;color:blue' onClick='get_understanding_model(" + strconv.Itoa(node.Action) + ")' title='Значимость node.Action'>" + strconv.Itoa(pars[2]) + "</td>"
 			} else {
-				out += "<td style='font-size:19px;font-weight:bold;cursor:pointer;color:blue' onClick='get_undestand_model(" + strconv.Itoa(node.Trigger) + ")'  title='Значимость node.Trigger'>" + strconv.Itoa(pars[2]) + "</td>"
+				out += "<td style='font-size:19px;font-weight:bold;cursor:pointer;color:blue' onClick='get_understanding_model(" + strconv.Itoa(node.Trigger) + ")'  title='Значимость node.Trigger'>" + strconv.Itoa(pars[2]) + "</td>"
 			}
 			out += "</tr>"
 		}
@@ -134,7 +134,7 @@ func frameStr(id int, kind int) string {
 Найти все вхождения объекта в эпиз.память и выдать таблицу как для func GetCur100lastRules()
 но только для данного объекта
 */
-func Get_undestand_model_from_object(objID int) string {
+func Get_understand_model_from_object(objID int) string {
 
 	return GetCur100lastRules(objID)
 }

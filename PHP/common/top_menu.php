@@ -28,7 +28,7 @@ if (isset($page_id)) {
 		3 => array("Действия", "/pages/terminal_actions.php", "Редактор возможных Действий"),
 		4 => array("Рефлексы", "/pages/reflexes.php", "Редактор безусловных рефлексов"),
 		5 => array("Ус. рефлексы", "/pages/condition_reflexes.php", "Условные рефлексы Beast"),
-		6 => array("Автоматизмы", "/pages/automatizm.php", "Автоматизмы Beast"),
+		6 => array("Автоматизмы", "/pages/automatism.php", "Автоматизмы Beast"),
 		7 => array("Психика", "/pages/self_perception.php", "Страница текущего состояния психики Beast"),
 		8 => array("Сознание", "/pages/conscience.php", "Страница текущего состояния функции осознавания Beast"),
 
@@ -47,7 +47,7 @@ if (isset($page_id)) {
 			// обновить без закрытия го-сервера
 			function page_refresh()
 			{
-			var AJAX = new ajax_support(linking_address+'?no_close_weght=1',sent_no_close);
+			var AJAX = new ajax_support(linking_address+'?do_not_close_on_restart=1',sent_no_close);
 			AJAX.send_reqest();
 			function sent_no_close(res)
 			{

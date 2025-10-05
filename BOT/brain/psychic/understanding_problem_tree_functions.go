@@ -74,7 +74,7 @@ func createNewProblemTreeNode(parent *ProblemTreeNode, id int, autTreeID int, si
 
 	/*	var flgNoAtmzAdt=false
 		// пока закоментим - может и не надо это отсекать
-		if atmz,ok:=AutomatizmTreeFromID[autTreeID];ok{
+		if atmz,ok:=AutomatismTreeFromID[autTreeID];ok{
 			if atmz.PhraseID==0 && atmz.SimbolID==0{
 				if atmzAct,ok:=ActivityFromIdArr[atmz.ActivityID];ok{
 					if atmzAct.ActID==nil{

@@ -161,8 +161,8 @@ func GetGoNextInfo(id int)(string){
 func GetAtmzmTreeInfo(id int) string {
 	out := ""
 
-	//node:=AutomatizmTreeFromID[id]
-	node, ok := ReadeAutomatizmTreeFromID(id)
+	//node:=AutomatismTreeFromID[id]
+	node, ok := ReadeAutomatismTreeFromID(id)
 	if !ok {
 		return "Нет такого узла дерева автоматизмов."
 	}
@@ -195,7 +195,7 @@ func GetUndstgTreeInfo(id int) string {
 // для GetCicklesToPult() инфа о ментальном автоматизме
 func GetMentAtmzmInfo(id int) string {
 	/*out:=""
-	//	atmz:=MentalAutomatizmsFromID[id]
+	//	atmz:=MentalAutomatismsFromID[id]
 		atmz,ok:=ReadeAFromID(id)
 		if !ok{
 			return "Нет такого узла дерева понимания."
@@ -207,7 +207,7 @@ func GetMentAtmzmInfo(id int) string {
 		}
 		out += "Число шагов в цикле goNext: "+strconv.Itoa(len(atmz.funcArr))+"<br>"
 		out += "(Бес)Полезность: "+strconv.Itoa(atmz.Usefulness)+"<br>"
-		out += "ID запущенного моторного автоматизма: <span onClick='show_automatizms("+strconv.Itoa(atmz.motAutmtzmID)+")' style='cursor:pointer;color:blue'>"+strconv.Itoa(atmz.motAutmtzmID)+"</span><br>"
+		out += "ID запущенного моторного автоматизма: <span onClick='show_automatisms("+strconv.Itoa(atmz.motAutmtzmID)+")' style='cursor:pointer;color:blue'>"+strconv.Itoa(atmz.motAutmtzmID)+"</span><br>"
 	*/
 	return "Мент.Автоматизм - наиболее привычная цепь инфо-фукций - специфична к кокретным условиям."
 }
@@ -277,7 +277,7 @@ func GetImportanceObjectInfo(objID int) string {
 	out := ""
 
 	out = GetActionsString(objID) +
-		"<br><br><span style='cursor:pointer;color:blue' onClick='get_undestand_model(" + strconv.Itoa(objID) + ")'>Модель понимания объекта ID=" + strconv.Itoa(objID) + "</span>"
+		"<br><br><span style='cursor:pointer;color:blue' onClick='get_understanding_model(" + strconv.Itoa(objID) + ")'>Модель понимания объекта ID=" + strconv.Itoa(objID) + "</span>"
 
 	return out
 }
@@ -376,7 +376,7 @@ func GetConscienceInfo() string {
 
 	// текущий актуальный, главный, последний цикл при создании
 	if activedCyckleID > 0 {
-		out += "<br>Главный цикл мышления  с начальным ID=: " + onClickStr(activedCyckleID, "show_cyckle", "") + "<br>"
+		out += "<br>Главный цикл мышления  с начальным ID=: " + onClickStr(activedCyckleID, "show_cycle", "") + "<br>"
 		out += GetCycleLocInfo0(activedCyckleID)
 	} else {
 		out += "<br>Нет главного цикла мышления.<br>"
@@ -424,7 +424,7 @@ func updateCycleLogsFiles(c *cycleInfo) {
 }
 
 // //////////////////////////////////////////////////////////////
-func clinerCycleLogsFiles() {
+func clearCycleLogsFiles() {
 	dir := lib.GetMainPathExeFile() + "/cycle_logs/"
 	lib.ClinerAllFromDir(dir)
 }

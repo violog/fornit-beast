@@ -577,7 +577,7 @@ func GetCycleLocInfo(cID int) string {
 }
 
 // ///////////////////////////////////////
-// инфа для пульта по function show_cyckle(id)
+// инфа для пульта по function show_cycle(id)
 func GetCycleInfo(id int) string {
 	out := ""
 	cInfo := ""

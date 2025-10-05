@@ -79,40 +79,40 @@ func getPurposeGenetic() *PurposeGenetic {
 
 /////////////////////////////////////////////////////////
 
-// atmzm :=createAndRunAutomatizmFromPurpose(purpose)
+// atmzm :=createAndRunAutomatismFromPurpose(purpose)
 
-func createAndRunAutomatizmFromPurpose(purpose *PurposeGenetic) *Automatizm {
-	atmzm := createAutomatizm(purpose)
+func createAndRunAutomatismFromPurpose(purpose *PurposeGenetic) *Automatism {
+	atmzm := createAutomatism(purpose)
 	// запустить автоматизм
 
-	// в automatizm_result.go после оценки результата будет осмысление с активацией Дерева Понимания
-	return runAutomatizmFromPurpose(atmzm, purpose)
+	// в automatism_result.go после оценки результата будет осмысление с активацией Дерева Понимания
+	return runAutomatismFromPurpose(atmzm, purpose)
 }
 
 // ////////////////////////////////////////////////////////
 // запуск автоматизма на выполнение с сохранением текущего состоняия гомеостатической цели в savePurposeGenetic
 var curPurposeGeneticAutmtzm *PurposeGenetic
 
-func runAutomatizmFromPurpose(atmzm *Automatizm, purpose *PurposeGenetic) *Automatizm {
+func runAutomatismFromPurpose(atmzm *Automatism, purpose *PurposeGenetic) *Automatism {
 	// запустить автоматизм
 	curPurposeGeneticAutmtzm = purpose
-	if RumAutomatizm(atmzm) {
-		// отслеживать последствия в automatizm_result.go
-		// setAutomatizmRunning(atmzm, purpose)
-		// в func RumAutomatizm   setAutomatizmRunning(am, curPurposeGeneticAutmtzm)
+	if RumAutomatism(atmzm) {
+		// отслеживать последствия в automatism_result.go
+		// setAutomatismRunning(atmzm, purpose)
+		// в func RumAutomatism   setAutomatismRunning(am, curPurposeGeneticAutmtzm)
 	}
 	curPurposeGeneticAutmtzm = nil
-	// в automatizm_result.go после оценки результата будет осмысление с активацией Дерева Понимания
+	// в automatism_result.go после оценки результата будет осмысление с активацией Дерева Понимания
 	return atmzm
 }
 
 //////////////////////////////////////////////////////////
 
 // выбрать из ранее удачного автоматизма, перекрыть цель новой и запустить новый автоматизм
-func chooseAutomatizmSuccessAndRun(purpose *PurposeGenetic) *Automatizm {
+func chooseAutomatismSuccessAndRun(purpose *PurposeGenetic) *Automatism {
 	// ранее найденные удачные автоматизмы
-	//  AutomatizmSuccessFromIdArr[n].GomeoIdSuccesArr[] - какие ID гомео-параметров улучшает это действие
-	for _, v := range AutomatizmSuccessFromIdArr {
+	//  AutomatismSuccessFromIdArr[n].GomeoIdSuccesArr[] - какие ID гомео-параметров улучшает это действие
+	for _, v := range AutomatismSuccessFromIdArr {
 		if v == nil {
 			continue
 		}
@@ -129,7 +129,7 @@ func chooseAutomatizmSuccessAndRun(purpose *PurposeGenetic) *Automatizm {
 				trigID, ok := ReadeActionsImageArr(v.ActionsImageID)
 				if ok {
 					purpose.actionID = trigID
-					atmzm := createAndRunAutomatizmFromPurpose(purpose)
+					atmzm := createAndRunAutomatismFromPurpose(purpose)
 					return atmzm
 				}
 			}
@@ -147,7 +147,7 @@ func chooseAutomatizmSuccessAndRun(purpose *PurposeGenetic) *Automatizm {
 */
 var usedActIdArr []int   // какие деййствия уже были испробованы, погасить во сне wakingUp()
 var UsedPraseIdArr []int // буфер уже опробованных фраз, чтобы не повторяться.
-func findAnySympleRandActions() *Automatizm {
+func findAnySympleRandActions() *Automatism {
 
 	// выдать массив возможных действий по ID парамктров гомеостаза как цели для улучшения в данных условиях
 	targID, actID := TerminalActions.GetSimpleActionForCurContitions()
@@ -182,7 +182,7 @@ func findAnySympleRandActions() *Automatizm {
 		purpose.targetID = targID
 		_, trig := CreateNewlastActionsImageID(0, 0, actArrId, nil, 0, 0, true)
 		purpose.actionID = trig
-		atmzm := createAndRunAutomatizmFromPurpose(&purpose)
+		atmzm := createAndRunAutomatismFromPurpose(&purpose)
 		return atmzm
 	}
 
@@ -217,11 +217,11 @@ func findAnySympleRandActions() *Automatizm {
 		}*/
 		/*[В игровом режиме не давать нижнему коду создавать автоматизмы, получается мусор]
 		это не совсем верно: нужно дать возможность на действие кнопки создать автоматизм по рефлексу, тогда и не будет "мусора" - не адекватной привязки действий в автоматизме
-		Это и сделано в getPurposeGeneticAndRunAutomatizm() - добавлено условие для IsGameMode не вербальных действий Оператора*/
+		Это и сделано в getPurposeGeneticAndRunAutomatism() - добавлено условие для IsGameMode не вербальных действий Оператора*/
 		actReflex := actualRelextActon
 		_, trig := CreateNewlastActionsImageID(0, 0, actReflex, val.PhraseID, val.ToneID, val.MoodID, true)
 		purpose.actionID = trig
-		atmzm := createAndRunAutomatizmFromPurpose(&purpose)
+		atmzm := createAndRunAutomatismFromPurpose(&purpose)
 		if atmzm.Usefulness < 0 { // при попытке создать - вернул старый плохой автоматизм
 			continue // продолжить поиск в VerbalFromIdArr
 		}

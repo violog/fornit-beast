@@ -10,61 +10,61 @@ import (
 
 ////////////////////////////////////////////
 
-/*запрет показа карты на пульте (func GetAutomatizmTreeForPult()) при обновлении
+/*запрет показа карты на пульте (func GetAutomatismTreeForPult()) при обновлении
 против паники типа "одновременная запись и считывание карты"
 Использовать для всех операций записи узлов дерева
 */
 
 // образ дерева автоматизмов для вывода
-var automatizmMentalTreeModel = ""
+var automatismMentalTreeModel = ""
 
 // ///////////////////////////////////////////////
-func GetMentalAutomatizmTreeForPult(limit int) string {
+func GetMentalAutomatismTreeForPult(limit int) string {
 	// против паники типа "одновременная запись и считывание карты"
 	if notAllowScanInTreeThisTime {
-		return "!Временно запрещена работа func GetAutomatizmTreeForPult() т.к. идет параллельная обработка."
+		return "!Временно запрещена работа func GetAutomatismTreeForPult() т.к. идет параллельная обработка."
 	}
 	if len(UnderstandingTree.Children) == 0 { // еще нет никаких веток
 		return "Еще нет Дерева ситуации"
 	}
 
 	//посмотреть число имеющихся узлов дерева
-	//strArr,_:=lib.ReadLines(lib.GetMainPathExeFile()+"/memory_psy/automatizm_tree.txt")
-	automatizmMentalTreeModel = "" // иначе дублирует блоки дерева при каждом выводе страницы
-	scanMentalAutomatizmNodes(-1, &UnderstandingTree)
+	//strArr,_:=lib.ReadLines(lib.GetMainPathExeFile()+"/memory_psy/automatism_tree.txt")
+	automatismMentalTreeModel = "" // иначе дублирует блоки дерева при каждом выводе страницы
+	scanMentalAutomatismNodes(-1, &UnderstandingTree)
 
-	if len(automatizmMentalTreeModel) < 10 {
+	if len(automatismMentalTreeModel) < 10 {
 		return "Еще нет информационных веток дерева"
 	}
 
-	return automatizmMentalTreeModel
+	return automatismMentalTreeModel
 
 }
 
 // ////////////////////
 // ID|ParentNode|Mood|EmotionID|SituationID|PurposeID
-func scanMentalAutomatizmNodes(level int, node *UnderstandingNode) {
+func scanMentalAutomatismNodes(level int, node *UnderstandingNode) {
 
 	if node.ID > 0 {
-		automatizmMentalTreeModel += "<span style='color:#666666;'>" + strconv.Itoa(node.ID) + ":</span> "
+		automatismMentalTreeModel += "<span style='color:#666666;'>" + strconv.Itoa(node.ID) + ":</span> "
 
-		automatizmMentalTreeModel += setOutShift(level)
+		automatismMentalTreeModel += setOutShift(level)
 
 		switch level {
 		case 0: // Mood
-			automatizmMentalTreeModel += getMoodStr(node)
+			automatismMentalTreeModel += getMoodStr(node)
 		case 1: // EmotionID
-			automatizmMentalTreeModel += getEmotionStr(node)
+			automatismMentalTreeModel += getEmotionStr(node)
 		case 2: // SituationID
-			automatizmMentalTreeModel += getSituationStr(node)
+			automatismMentalTreeModel += getSituationStr(node)
 			//case 3: // PurposeID
-			//	automatizmMentalTreeModel +=getPurposeStr(node)
+			//	automatismMentalTreeModel +=getPurposeStr(node)
 		}
-		automatizmMentalTreeModel += "<br>\n"
+		automatismMentalTreeModel += "<br>\n"
 	}
 	level++
 	for n := 0; n < len(node.Children); n++ {
-		scanMentalAutomatizmNodes(level, &node.Children[n])
+		scanMentalAutomatismNodes(level, &node.Children[n])
 	}
 }
 

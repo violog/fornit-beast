@@ -82,7 +82,7 @@ type mentalInfo struct {
 	//mentalAtmzmID int // ID ментального автоматизма
 	ThemeImageType   int  // ТИП актуальной темы размышления
 	mentalPurposeID  int  // ID ментальной цели, альтернативной текущей  PurposeImage
-	notOldAutomatizm bool // true - НЕ позволить запустить рвущийся на выполнение старый автоматизм
+	notOldAutomatism bool // true - НЕ позволить запустить рвущийся на выполнение старый автоматизм
 	runInfoFuncID    int  // запуск инфо-функции
 	epizodFrameIndex int  // ID успешной инфо-функции со все большим отклонением от условий - по ментальным правилам
 	volutionReload   int  // для функ 10: 0 не найдены параметры перезапуска дерева, 1 - найдены
@@ -104,7 +104,7 @@ type mentalInfo struct {
 
 var mentalInfoStruct mentalInfo
 
-func clinerMentalInfo() {
+func clearMentalInfo() {
 	mentalInfoStruct.ActionsImageID = 0
 	mentalInfoStruct.AmtzmNextStringID = 0
 	mentalInfoStruct.toAutmtzmActionsImageID = 0
@@ -114,7 +114,7 @@ func clinerMentalInfo() {
 	mentalInfoStruct.motorAtmzmID = 0
 	//mentalInfoStruct.mentalAtmzmID=0
 	// никогда не очищать Цель! только перекрывать новой	mentalInfoStruct.mentalPurposeID=0 Иначе просто зацикливается
-	mentalInfoStruct.notOldAutomatizm = false
+	mentalInfoStruct.notOldAutomatism = false
 	mentalInfoStruct.runInfoFuncID = 0 // запуск инфо-функции
 	mentalInfoStruct.epizodFrameIndex = 0
 	// для произвольной переактивации дерева ситуации infoFunc14():
@@ -154,7 +154,7 @@ var mentalSituationVolitionPulsCount = 0 // произвольно активи�
 //var mentalPurposeImageID=0// призвольно активированная цель
 //var mentalPurposeImagePulsCount=0// призвольно активированная цель
 
-var runningMotAutmtzmID = 0 // запущенный в infoFunc17() моторный автоматизм - для MentalAutomatizm.motAutmtzmID
+var runningMotAutmtzmID = 0 // запущенный в infoFunc17() моторный автоматизм - для MentalAutomatism.motAutmtzmID
 
 func GetgetInfoFuncInfoStr(fID int) string {
 	return getMentalFunctionString(fID)
@@ -210,7 +210,7 @@ func getMentalFunctionString(id int) string {
 	case 21:
 		return "Срочно найти какое-то подходящее действие и запустить его"
 	case 22:
-		return "Добавление нового действия mentalInfoStruct.ActionsImageID в цепочку действий автоматизма Automatizm.NextID"
+		return "Добавление нового действия mentalInfoStruct.ActionsImageID в цепочку действий автоматизма Automatism.NextID"
 	case 23:
 		return "Создание новой цепочки произвольных действий mentalInfoStruct.AmtzmNextStringID\nс добавлением mentalInfoStruct.motorAtmzmID"
 	case 24:
@@ -326,7 +326,7 @@ func runMentalFunctionID(c *cycleInfo, id int) bool {
 		return true // Срочно найти какое-то подходящее действие и запустить его
 	case 22:
 		infoFunc22(c)
-		return true // Добавление нового действия в цепочку действий автоматизма Automatizm.NextID
+		return true // Добавление нового действия в цепочку действий автоматизма Automatism.NextID
 	case 23:
 		infoFunc23(c)
 		return true //Создание новой цепочки произвольных действий mentalInfoStruct.AmtzmNextStringID с добавлением mentalInfoStruct.motorAtmzmID
@@ -368,7 +368,7 @@ func runMentalFunctionID(c *cycleInfo, id int) bool {
 
 //////////////////////////////////////////////////////////
 /* далее идут ПРОНУМЕРОВАННЫЕ ИНФОРМАЦИОННЫЕ ФУНКЦИИ,
-для которых в mental_automatizm_INFO_structs.go определяются ИНФОРМАЦИОННЫЕ ГЛОБАЛЬНЫЕ СТРУКТУРЫ - для
+для которых в mental_automatism_INFO_structs.go определяются ИНФОРМАЦИОННЫЕ ГЛОБАЛЬНЫЕ СТРУКТУРЫ - для
 передачи в них полученной информации.
 Так же для передачи информации в инфо-функции (если это нужно, например, что найти) применяюися входне структуры.
 */
@@ -509,7 +509,7 @@ func mentalSimpleReflexSolution(c *cycleInfo) bool {
 	}
 
 	//Нужно подумать о проблеме автоматизма или проявить инициативу, в общем, запустить func infoFunc25()
-	if CurrentInformationEnvironment.needThinkingAboutAutomatizm {
+	if CurrentInformationEnvironment.needThinkingAboutAutomatism {
 		//Более внимательно рассмотреть ситуацию с Правилами: ментальными и связанными с ними моторными
 		if !infoFunc29(c) {
 			infoFunc25(c)
@@ -521,7 +521,7 @@ func mentalSimpleReflexSolution(c *cycleInfo) bool {
 	if mentalInfoStruct.toAutmtzmActionsImageID > 0 {
 		//		c.log+="в infoFunc2() ID образа действий, который нужно запустить в автоматизме: "+strconv.Itoa(mentalInfoStruct.toAutmtzmActionsImageID)+"<br>"
 		if c.isMainCycle {
-			runAutomatizmAfterCheck(c)
+			runAutomatismAfterCheck(c)
 		} else {
 			insight(c)
 		}
@@ -576,7 +576,7 @@ func mentalSimpleReflexSolution(c *cycleInfo) bool {
 	}
 	/////////////////////////////////
 
-	//!!!! clinerMentalInfo() не терять Тему и Цель!!!!!
+	//!!!! clearMentalInfo() не терять Тему и Цель!!!!!
 
 	// здесь ищем Какое действие нужно совершить, не только инфо-функции
 
@@ -590,7 +590,7 @@ func mentalSimpleReflexSolution(c *cycleInfo) bool {
 		Мент.Правила, в конечном счете - последовательность infoFuncSequence []int
 				- последовательность ID выполненных инфо-функций одной активации consciousnessElementary()
 		Тут нет конкретного образа действия, но есть ID инфо-функций, которые приводили к достижению Цели,
-				но С последней ф-цией может быть связан и MentalAutomatizm.motAutmtzmID
+				но С последней ф-цией может быть связан и MentalAutomatism.motAutmtzmID
 				По действию - аналогично func infoFunc3
 		*/
 		/*funcID := findSuitableMentalFunc()
@@ -651,7 +651,7 @@ func mentalSimpleReflexSolution(c *cycleInfo) bool {
 			проверить его и запустить.
 			*/
 			if c.isMainCycle {
-				runAutomatizmAfterCheck(c)
+				runAutomatismAfterCheck(c)
 			} else {
 				insight(c)
 			}
@@ -755,7 +755,7 @@ func mentalSimpleReflexSolution(c *cycleInfo) bool {
 для данного detectedActiveLastProblemNodID
 
 Тут нет конкретного образа действия, но есть ID инфо-функций, которые приводили к достижению Цели, но
-С последней ф-цией может быть связан и MentalAutomatizm.motAutmtzmIDrulesm
+С последней ф-цией может быть связан и MentalAutomatism.motAutmtzmIDrulesm
 
 Допускается не точное совпадение условий ментального правила.
 */
@@ -769,7 +769,7 @@ func infoFunc3(c *cycleInfo) bool {
 		}*/
 	mentalInfoStruct.epizodFrameIndex = 0
 	setCurIfoFuncID(c, 3)
-	//	clinerMentalInfo()
+	//	clearMentalInfo()
 	return infoFindRightMentalRules(c)
 
 }
@@ -806,7 +806,7 @@ func infoFunc4(c *cycleInfo) bool {
 		return false
 	}
 	setCurIfoFuncID(c, 4)
-	//	clinerMentalInfo()
+	//	clearMentalInfo()
 	return analisAndSintez(c.ID, c)
 
 }
@@ -976,7 +976,7 @@ func infoMentalScaning(c *cycleInfo) bool {
 					extremImportanceObject = eobj
 				}
 				if c.isMainCycle {
-					runAutomatizmAfterCheck(c)
+					runAutomatismAfterCheck(c)
 				} else {
 					insight(c)
 				}
@@ -1054,7 +1054,7 @@ func infoFunc6(c *cycleInfo) bool {
 		return false
 	}
 	setCurIfoFuncID(c, 6)
-	mentalInfoStruct.notOldAutomatizm = false // true - запрет запуска штатного автоматизма mentalInfoStruct.motorAtmzmID
+	mentalInfoStruct.notOldAutomatism = false // true - запрет запуска штатного автоматизма mentalInfoStruct.motorAtmzmID
 	if (EvolushnStage == 4 || CurrentInformationEnvironment.veryActualSituation) &&
 		!CurrentInformationEnvironment.danger {
 		if mentalInfoStruct.motorAtmzmID > 0 {
@@ -1070,8 +1070,8 @@ func infoCreateAndRunNewActionMentAtmzmFromAction(c *cycleInfo) bool {
 	}
 	motorAtmzmID := mentalInfoStruct.motorAtmzmID
 
-	//atmzm,ok := AutomatizmFromId[motorAtmzmID]
-	atmzm, ok := ReadeAutomatizmFromId(motorAtmzmID)
+	//atmzm,ok := AutomatismFromId[motorAtmzmID]
+	atmzm, ok := ReadeAutomatismFromId(motorAtmzmID)
 	if !ok {
 		return false
 	}
@@ -1094,7 +1094,7 @@ func infoCreateAndRunNewActionMentAtmzmFromAction(c *cycleInfo) bool {
 		чтобы если он хороший, посчитать такое действие приемлемым и запустить автоматизм?
 		*/
 		if !isNextWellEffectFromActonRules(3, harm, actImgID) { // нет последующего позитивного эффекта
-			mentalInfoStruct.notOldAutomatizm = true // не запускать такой автоматизм
+			mentalInfoStruct.notOldAutomatism = true // не запускать такой автоматизм
 			c.log += "Не запускать старый штатный автоматизм ID=" + strconv.Itoa(actImgID) + "<br>"
 			// попробовать найти альтернативу
 
@@ -1105,19 +1105,19 @@ func infoCreateAndRunNewActionMentAtmzmFromAction(c *cycleInfo) bool {
 		*/
 		if mentalInfoStruct.motorAtmzmBlockedID > 0 {
 
-			//autmzm := AutomatizmFromId[mentalInfoStruct.motorAtmzmBlockedID]
-			autmzm, ok := ReadeAutomatizmFromId(mentalInfoStruct.motorAtmzmBlockedID)
+			//autmzm := AutomatismFromId[mentalInfoStruct.motorAtmzmBlockedID]
+			autmzm, ok := ReadeAutomatismFromId(mentalInfoStruct.motorAtmzmBlockedID)
 			if !ok {
 				return false
 			}
-			SetAutomatizmBelief(autmzm, 0) // убрать из штатных
+			SetAutomatismBelief(autmzm, 0) // убрать из штатных
 			addNewTryAction(0, -detectedActiveLastProblemNodID, autmzm.ActionsImageID, -harm, true)
 			mentalInfoStruct.motorAtmzmID = 0 // забыть про него
 			return false
 		}
 		mentalInfoStruct.motorAtmzmBlockedID = 0
 	} else { // mentalInfoStruct.motorAtmzmID не опасен и сразу тут запускается:
-		c.log += "Запустить автоматизм ID=<b><span style='cursor:pointer;color:blue' onClick='show_automatizms(" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + ")'>" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + "</span></b><br>"
+		c.log += "Запустить автоматизм ID=<b><span style='cursor:pointer;color:blue' onClick='show_automatisms(" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + ")'>" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + "</span></b><br>"
 		// вытащить образ действий успешного автоматизма и попробовать решить подходящую по аналогии Домимнату
 		checkRelevantAction(curActions.ID, atmzm.ActionsImageID, atmzm.Usefulness)
 
@@ -1154,16 +1154,16 @@ func isDangerousImportansAutomatism(actImgID int) int {
 В основном повторяет проверку в func infoFunc6
 Если нет атаса выбирать среди них наиболее подходящий, даже если он не штатный и запускать его (не меняя штатность).
 */
-func checkAutomatizm(atmzm *Automatizm) *Automatizm {
+func checkAutomatism(atmzm *Automatism) *Automatism {
 
 	if !CurrentInformationEnvironment.veryActualSituation && !CurrentInformationEnvironment.danger {
 		//нет атаса, можно выбрать не штатный автоматизм из привязанных к ветке
 		// список всех автоматизмов для ID узла Дерева
 
-		aArr := GetMotorsAutomatizmListFromTreeId(detectedActiveLastNodID)
+		aArr := GetMotorsAutomatismListFromTreeId(detectedActiveLastNodID)
 
 		harmMax := 1000
-		var maxA *Automatizm
+		var maxA *Automatism
 		for i := 0; i < len(aArr); i++ {
 			actImgID := aArr[i].ActionsImageID
 			// посмотреть, грозит ли опасностной значимостью запускаемый автоматизм
@@ -1210,12 +1210,12 @@ func checkAutomatizm(atmzm *Automatizm) *Automatizm {
 			//и убрать из штатных.
 			if mentalInfoStruct.motorAtmzmBlockedID > 0 {
 
-				//	autmzm := AutomatizmFromId[mentalInfoStruct.motorAtmzmBlockedID]
-				autmzm, ok := ReadeAutomatizmFromId(mentalInfoStruct.motorAtmzmBlockedID)
+				//	autmzm := AutomatismFromId[mentalInfoStruct.motorAtmzmBlockedID]
+				autmzm, ok := ReadeAutomatismFromId(mentalInfoStruct.motorAtmzmBlockedID)
 				if !ok {
 					return nil
 				}
-				SetAutomatizmBelief(autmzm, 0) // убрать из штатных
+				SetAutomatismBelief(autmzm, 0) // убрать из штатных
 				addNewTryAction(0, -detectedActiveLastProblemNodID, autmzm.ActionsImageID, -harm, true)
 				// забыть про него
 			}
@@ -1263,7 +1263,7 @@ func infoCreateAndRunMentMotorAtmzmFromAction(ActionsImageID int, c *cycleInfo) 
 	if ActionsImageID == 0 {
 		return false
 	}
-	motorID, motorAtmzm := createNewAutomatizmID(0, detectedActiveLastNodID, ActionsImageID, true)
+	motorID, motorAtmzm := createNewAutomatismID(0, detectedActiveLastNodID, ActionsImageID, true)
 	if motorID == 0 {
 		mentalInfoStruct.ActionsImageID = 0
 		mentalInfoStruct.runMotorAtmzmID = 0
@@ -1274,7 +1274,7 @@ func infoCreateAndRunMentMotorAtmzmFromAction(ActionsImageID int, c *cycleInfo) 
 		cerebellumCoordination(motorAtmzm, 1) // 1 - усилить действие
 	}
 	prevMotorAtmzmID = motorID
-	//	clinerMentalInfo()
+	//	clearMentalInfo()
 	//mentalInfoStruct.motorAtmzmID=motorID
 	/*if motorID==0{
 		mentalInfoStruct.ActionsImageID=0
@@ -1304,7 +1304,7 @@ func infoFunc9(c *cycleInfo) bool {
 		return false
 	}
 	setCurIfoFuncID(c, 9)
-	//	clinerMentalInfo()
+	//	clearMentalInfo()
 	return infoFindAttentionObjImprovement(c)
 
 }
@@ -1394,7 +1394,7 @@ func infoFindAttentionObjMentalImprovement(c *cycleInfo) bool {
 		}
 
 		if needRecalingConsciousness {
-			clinerMentalInfo()
+			clearMentalInfo()
 			mentalInfoStruct.volutionReload = 1
 			// переактивировать с eo.PsyMood и eo.PsyEmotionId
 			mentalMoodVolitionID = eo.PsyMood
@@ -1427,7 +1427,7 @@ func infoFunc11(c *cycleInfo) bool {
 		return false
 	}
 	setCurIfoFuncID(c, 11)
-	//	clinerMentalInfo()
+	//	clearMentalInfo()
 	return infoMentalMirriring(c)
 }
 func infoMentalMirriring(c *cycleInfo) bool {
@@ -1474,7 +1474,7 @@ func infoFunc12(c *cycleInfo) bool {
 		return false
 	}
 	setCurIfoFuncID(c, 12)
-	//	clinerMentalInfo()
+	//	clearMentalInfo()
 	return infoSynthesisOwnPrase(c)
 }
 func infoSynthesisOwnPrase(c *cycleInfo) bool {
@@ -1565,22 +1565,22 @@ func infoFunc13(c *cycleInfo) bool {
 	}
 	// для случая, когда нажали учительскую кнопку, давшую отрицательный эффект - не нужно запускать в этом случае func 13
 	// иначе просто создастся автоматизм с действием кнопки и все
-	if GetBelief2AutomatizmListFromTreeId(detectedActiveLastNodID) != nil && mentalInfoStruct.motorAtmzmID > 0 {
+	if GetBelief2AutomatismListFromTreeId(detectedActiveLastNodID) != nil && mentalInfoStruct.motorAtmzmID > 0 {
 		return false
 	}
 
 	setCurIfoFuncID(c, 13)
-	//	clinerMentalInfo()
+	//	clearMentalInfo()
 	return infoMirroringStimul(c)
 }
 
 // маркер для отработки второго шага отзеркаливания после ответа оператора
-// в calcAutomatizmResult(): EvolushnStage == 3 || curFunc13ID > 0
+// в calcAutomatismResult(): EvolushnStage == 3 || curFunc13ID > 0
 var curFunc13ID int
 
 func infoMirroringStimul(c *cycleInfo) bool {
 	// свежесть ответа оператора - не позже, чем limitOfActionsAfterStimul пульсов назад
-	// число ожидания пульсов должно совпадать с аналогичным числом в RumAutomatizm(), иначе 2-шаговый алгоритм infoFunc13() будет срабатывать не стабильно
+	// число ожидания пульсов должно совпадать с аналогичным числом в RumAutomatism(), иначе 2-шаговый алгоритм infoFunc13() будет срабатывать не стабильно
 	// периодически прерываясь на первом шаге и закрепляя в виде шататного попугайский автотизм, а не авторитарный, который должен помочь создать Оператор
 	if curActiveActionsID > 0 {
 		if curActiveActionsPulsCount > (PulsCount - limitOfActionsAfterStimul) {
@@ -1590,15 +1590,15 @@ func infoMirroringStimul(c *cycleInfo) bool {
 			в расчете получить реакцию и оценить такой прием как полражание.
 			*/
 			isTeachQuestion = true //Показать непонимание, растерянность с предложением научить
-			motorID, atmz := createNewAutomatizmID(0, detectedActiveLastNodID, curActiveActionsID, true)
+			motorID, atmz := createNewAutomatismID(0, detectedActiveLastNodID, curActiveActionsID, true)
 			oldUseful := atmz.Usefulness
-			wasRunPurposeActionFunc = false // иначе может не пропустить в RumAutomatizmID()
+			wasRunPurposeActionFunc = false // иначе может не пропустить в RumAutomatismID()
 			if atmz.Usefulness < 0 {
 				atmz.Usefulness = 0 //если попугайский был заблокирован и получен его код - открываем его, иначе не получится задать вопрос
 				atmz.Count = 1
 			}
-			if RumAutomatizmID(motorID) {
-				c.log += "Инфо-функция 13: запуск моторного автоматизма <b> <span style='cursor:pointer;color:blue' onClick='show_automatizms(" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + ")'>" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + "</span>" + "</b>.<br>"
+			if RumAutomatismID(motorID) {
+				c.log += "Инфо-функция 13: запуск моторного автоматизма <b> <span style='cursor:pointer;color:blue' onClick='show_automatisms(" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + ")'>" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + "</span>" + "</b>.<br>"
 				runningMotAutmtzmID = motorID
 				// при запуске прекратить думать про extremImportanceObject
 				//!!! extremImportanceObject=nil
@@ -1610,7 +1610,7 @@ func infoMirroringStimul(c *cycleInfo) bool {
 				//setAsMaimCycle(c.ID)
 
 				c.isWaitingPeriod = true    // блокируем повторную активацию этого цикла
-				curFunc13ID = c.ID          // создаем маркер активации цикла, закрываем его в calcAutomatizmResult()
+				curFunc13ID = c.ID          // создаем маркер активации цикла, закрываем его в calcAutomatismResult()
 				atmz.Usefulness = oldUseful // возвращаем успешность обратно
 				return true
 			}
@@ -1651,7 +1651,7 @@ func infoFunc14(c *cycleInfo) bool {
 		return false
 	}
 	setCurIfoFuncID(c, 14)
-	// clinerMentalInfo() чтобы можно было задавать mentalInfoStruct.moodeID и mentalInfoStruct.emotonID
+	// clearMentalInfo() чтобы можно было задавать mentalInfoStruct.moodeID и mentalInfoStruct.emotonID
 	return reactivateEmotionUnderstandingЕree(c)
 }
 func reactivateEmotionUnderstandingЕree(c *cycleInfo) bool {
@@ -1688,7 +1688,7 @@ func reactivateEmotionUnderstandingЕree(c *cycleInfo) bool {
 	mentalEmotionVolitionPulsCount = PulsCount
 	mentalSituationVolitionPulsCount = PulsCount
 	understandingSituation(2)
-	clinerMentalInfo()
+	clearMentalInfo()
 	return true
 }
 
@@ -1734,7 +1734,7 @@ func infoFunc15(c *cycleInfo) bool {
 		return false
 	}
 	setCurIfoFuncID(c, 15)
-	//	clinerMentalInfo()
+	//	clearMentalInfo()
 	return beastIDRulesFromCondA(c)
 }
 func beastIDRulesFromCondA(c *cycleInfo) bool {
@@ -1778,7 +1778,7 @@ func infoFunc16(c *cycleInfo) bool {
 		return false
 	}
 	setCurIfoFuncID(c, 16)
-	//	clinerMentalInfo()
+	//	clearMentalInfo()
 	return randomAction(c)
 }
 
@@ -1854,22 +1854,22 @@ func infoFunc17(c *cycleInfo) bool { //запустить моторный ав�
 		return false
 	}
 
-	//autmzm:=AutomatizmFromId[mentalInfoStruct.motorAtmzmID]
-	autmzm, ok := ReadeAutomatizmFromId(mentalInfoStruct.motorAtmzmID)
+	//autmzm:=AutomatismFromId[mentalInfoStruct.motorAtmzmID]
+	autmzm, ok := ReadeAutomatismFromId(mentalInfoStruct.motorAtmzmID)
 	if !ok {
 		return false
 	}
-	// нет смысла запускать заблокированный автоматизм, его остановят в RumAutomatizmID()
+	// нет смысла запускать заблокированный автоматизм, его остановят в RumAutomatismID()
 	// и тем более нет смысла делать его штатным
 	if autmzm.Usefulness >= 0 {
-		SetAutomatizmBelief(autmzm, 2) // сделать автоматизм штатным
+		SetAutomatismBelief(autmzm, 2) // сделать автоматизм штатным
 	}
 	// инфа, сопровозжающая ментальный запуск мот.автоматизма
 	//wasMentalRunMotorAtmzmID = mentalInfoStruct.motorAtmzmID
 	//wasExtremImportanceObject = extremImportanceObject
 
-	if RumAutomatizmID(mentalInfoStruct.motorAtmzmID) {
-		c.log += "Инфо-функция 17: запуск моторного автоматизма <b> <span style='cursor:pointer;color:blue' onClick='show_automatizms(" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + ")'>" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + "</span>" + "</b>.<br>"
+	if RumAutomatismID(mentalInfoStruct.motorAtmzmID) {
+		c.log += "Инфо-функция 17: запуск моторного автоматизма <b> <span style='cursor:pointer;color:blue' onClick='show_automatisms(" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + ")'>" + strconv.Itoa(mentalInfoStruct.motorAtmzmID) + "</span>" + "</b>.<br>"
 		runningMotAutmtzmID = mentalInfoStruct.motorAtmzmID
 		// при запуске прекратить думать про extremImportanceObject
 		//!!! extremImportanceObject=nil
@@ -1879,7 +1879,7 @@ func infoFunc17(c *cycleInfo) bool { //запустить моторный ав�
 		// итак успевает
 		//infoFuncSequence = append(infoFuncSequence, 17)// т.к. после не будет наполняться infoFuncSequence
 		motorActionEffect = autmzm.Usefulness
-		levelOfRunAutomatizm = 3 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
+		levelOfRunAutomatism = 3 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
 		return true
 	}
 
@@ -2009,7 +2009,7 @@ func thinkingAboutHeuristics(c *cycleInfo) bool {
 		// сразу запустить
 		if mentalInfoStruct.DominantSuccessValue == 1 {
 			mentalInfoStruct.ActionsImageID = mentalInfoStruct.DominantSuccessAImgID
-			runAutomatizmAfterCheck(c)
+			runAutomatismAfterCheck(c)
 			return true
 		}
 		if mentalInfoStruct.DominantSuccessValue > 1 {
@@ -2023,7 +2023,7 @@ func thinkingAboutHeuristics(c *cycleInfo) bool {
 		*/
 		// при озарении из неглавного цикла (подсознание)
 		if mentalInfoStruct.ActionsImageID > 0 {
-			runAutomatizmAfterCheck(c)
+			runAutomatismAfterCheck(c)
 			return true
 		}
 	}
@@ -2064,7 +2064,7 @@ func beginPrepareLastEmptyEpisode(c *cycleInfo) bool {
 		}
 		if node.Action == 0 {
 			// вытащить образ Стимула
-			//_,ai:=getActiveActionsFromAutomatizmTreeNode(node.NodeAID)
+			//_,ai:=getActiveActionsFromAutomatismTreeNode(node.NodeAID)
 			ai, ok := ReadeActionsImageArr(node.Action)
 			// выделить наиболее значимое в восприятии в массив типа extremImportance
 			if ok {
@@ -2137,7 +2137,7 @@ func beginPrepareNextEmptyEpisode(c *cycleInfo) bool {
 		}
 		if node.Action == 0 {
 			// вытащить образ Стимула
-			//_,ai:=getActiveActionsFromAutomatizmTreeNode(node.NodeAID)
+			//_,ai:=getActiveActionsFromAutomatismTreeNode(node.NodeAID)
 			ai, ok := ReadeActionsImageArr(node.Action)
 			// выделить наиболее значимое в восприятии в массив типа extremImportance
 			if ok {
@@ -2225,7 +2225,7 @@ func findRunMotorAtmzmID(c *cycleInfo) bool {
 	}
 	// выполнить, если есть что
 	if mentalInfoStruct.ActionsImageID > 0 { // создать, проверить и запустить сразу, не в цикле.
-		runAutomatizmAfterCheck(c)
+		runAutomatismAfterCheck(c)
 		mentalInfoStruct.ActionsImageID = 0
 		return true
 	}
@@ -2255,7 +2255,7 @@ func findSuitableMotorAction(c *cycleInfo) int {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////
-/* Добавление нового действия mentalInfoStruct.ActionsImageID в цепочку действий автоматизма Automatizm.NextID.
+/* Добавление нового действия mentalInfoStruct.ActionsImageID в цепочку действий автоматизма Automatism.NextID.
 
 Можно в цикле мышления начать формировать произвльную цепочку действий в infoFunc22()
 на основе имеющегося автоматизма,
@@ -2352,8 +2352,8 @@ func infoFunc24(c *cycleInfo) {
 	addVolutionString(c)
 }
 func addVolutionString(c *cycleInfo) {
-	lib.MapFree(MapGwardAutomatizmNextStringFromID)
-	nArr, ok := AutomatizmNextStringFromID[mentalInfoStruct.AmtzmNextStringID]
+	lib.MapFree(MapGwardAutomatismNextStringFromID)
+	nArr, ok := AutomatismNextStringFromID[mentalInfoStruct.AmtzmNextStringID]
 	if !ok {
 		return
 	}
@@ -2375,7 +2375,7 @@ func addVolutionString(c *cycleInfo) {
 
 В этих случаях запускается функция для 1) найти новое infoFunc23(c)
 и запустить как произвольность showNextAtmtzmAction, 2) дополнить сомнительный автоматизм infoFunc22(c),
-в том числе если уже есть довесок Automatizm.NextID то добавить еще infoFunc24(c).
+в том числе если уже есть довесок Automatism.NextID то добавить еще infoFunc24(c).
 */
 func infoFunc25(c *cycleInfo) {
 	if c == nil {
@@ -2390,7 +2390,7 @@ func infoFunc25(c *cycleInfo) {
 	lookForInitiativeAction(c)
 
 	//Нужно подумать о проблеме автоматизма или проявить инициативу, в общем, запустить func infoFunc25()
-	CurrentInformationEnvironment.needThinkingAboutAutomatizm = false
+	CurrentInformationEnvironment.needThinkingAboutAutomatism = false
 }
 func lookForInitiativeAction(c *cycleInfo) {
 
@@ -2537,7 +2537,7 @@ func lookForInitiativeAction(c *cycleInfo) {
 ////////////////////////
 /* спокойно найти подходящий образ действия mentalInfoStruct.motorAtmzmID в исследовательской ситуации
 Выбрать все, что подходит под ситуацию, набирая цепочку
-из Правил и из карты AutomatizmNextStringFromID[] (прогнозы по Правилам).
+из Правил и из карты AutomatismNextStringFromID[] (прогнозы по Правилам).
 
 Алгоритм: начиная с текущего CurrentInformationEnvironment.ExtremImportanceObjectID
 найти действие, добавить в цепочку, при этом выявляя следующий экстремальный объект
@@ -2587,13 +2587,13 @@ func infoFunc26(c *cycleInfo) {
 		return
 	}
 	setCurIfoFuncID(c, 26)
-	if LastRunAutomatizmPulsCount > 0 { // не запускать в период ожидания
+	if LastRunAutomatismPulsCount > 0 { // не запускать в период ожидания
 		return
 	}
 	runVolutionString()
 }
 func runVolutionString() {
-	levelOfRunAutomatizm = 3 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
+	levelOfRunAutomatism = 3 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
 
 	infoFuncSequence = append(infoFuncSequence, 26) // т.к. после не будет наполняться infoFuncSequence
 
@@ -2611,7 +2611,7 @@ func runVolutionString() {
 
 Эта функция - на всякий случай, т.к.
 АВТОМАТИЗМ ВСЕГДА СОЗДАЕТСЯ ПРИ ЗАПУСКЕ mentalInfoStruct.AmtzmNextStringID на выполнение
-	по результату периода ожидания - в func calcAutomatizmResult()
+	по результату периода ожидания - в func calcAutomatismResult()
 */
 func infoFunc27(c *cycleInfo) {
 	if c == nil {
@@ -2628,8 +2628,8 @@ func infoFunc27(c *cycleInfo) {
 	createAnvtzmFromVolutionString(c)
 }
 func createAnvtzmFromVolutionString(c *cycleInfo) {
-	automatizm := createAndRunAutomatizmFromAmtzmNextString(mentalInfoStruct.AmtzmNextStringID)
-	mentalInfoStruct.motorAtmzmID = automatizm.ID
+	automatism := createAndRunAutomatismFromAmtzmNextString(mentalInfoStruct.AmtzmNextStringID)
+	mentalInfoStruct.motorAtmzmID = automatism.ID
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2644,7 +2644,7 @@ func createAnvtzmFromVolutionString(c *cycleInfo) {
 
 Эта функция - на всякий случай, т.к.
 АВТОМАТИЗМ ВСЕГДА СОЗДАЕТСЯ ПРИ ЗАПУСКЕ mentalInfoStruct.AmtzmNextStringID на выполнение
-	по результату периода ожидания - в func calcAutomatizmResult()
+	по результату периода ожидания - в func calcAutomatismResult()
 
 При каждом проходе генерировать 1 ассоциацию и примерять ее к актуальной доминанте.
 */
@@ -2846,7 +2846,7 @@ func infoFunc300(c *cycleInfo) bool {
 	*/
 	if actsID > 0 { // ID действия с наиболее позитивным Эффектом
 		mentalInfoStruct.ActionsImageID = actsID
-		runAutomatizmAfterCheck(c)
+		runAutomatismAfterCheck(c)
 		isUnrecognizedPhraseFromAtmtzmTreeActivation = false
 		return true
 	}
@@ -2894,8 +2894,8 @@ func infoFunc31(c *cycleInfo) bool {
 	}
 	setCurIfoFuncID(c, 31)
 
-	//if wasRunTreeStandardAutomatizm { // уже был запущен штатный автоматизм после Стимула.
-	if LastRunAutomatizmPulsCount > 0 { // уже был запущен штатный автоматизм после Стимула - период ожидания
+	//if wasRunTreeStandardAutomatism { // уже был запущен штатный автоматизм после Стимула.
+	if LastRunAutomatismPulsCount > 0 { // уже был запущен штатный автоматизм после Стимула - период ожидания
 		return false
 	}
 	if wasRunPurposeActionFunc { // если ранее был запущен ментально в infoFunc17
@@ -2903,7 +2903,7 @@ func infoFunc31(c *cycleInfo) bool {
 	}
 
 	// wasRunProvocationFunc используется как флаг "провокация func infoFunc31"
-	wasRunProvocationFunc = true //сработала провокация оператора на действие, очистка - в clinerAutomatizmRunning()
+	wasRunProvocationFunc = true //сработала провокация оператора на действие, очистка - в clearAutomatismRunning()
 	/*Выбрать лучшее Правило, как можно с более точным учетом условий, искать все виды Правил
 	т.к. поиск идет при Стимуле==0, то может находится много правил, из них выбирается самое эффективное.
 	При ответе оператора на провокацию будет записано Правила со Стимулом равным 0
@@ -2917,8 +2917,8 @@ func infoFunc31(c *cycleInfo) bool {
 		if ok {
 			purpose := getPurposeGenetic()
 			purpose.actionID = ai
-			levelOfRunAutomatizm = 3 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
-			createAndRunAutomatizmFromPurpose(purpose)
+			levelOfRunAutomatism = 3 // для передачи в пульт при ответе бота - на каком уровне осмысления был дан ответ
+			createAndRunAutomatismFromPurpose(purpose)
 			if !isInterruptAutmtzm { // не выполнился, например если уже был запущен штатный автоматизм после Стимула и т.п.
 				wasRunPurposeActionFunc = false //иначе не пропускает на исполнение
 				// судя по всему, происходит наложение активации lib.SentActionsForPult(out) от рефлексов и автоматизмов, и выдает действия обоих.
@@ -2958,7 +2958,7 @@ func insight(c *cycleInfo) {
 создать автоматизм (если такого еще нет),
 проверить его и запустить.
 */
-func runAutomatizmAfterCheck(c *cycleInfo) {
+func runAutomatismAfterCheck(c *cycleInfo) {
 	if mentalInfoStruct.ActionsImageID > 0 { // создать, проверить и запустить сразу, не в цикле.
 		c.log += "По образу действий создать автоматизм, проверить его и запустить.<br>"
 		if infoFunc7(c) { //создать новый моторный автоматизм по действию ActionsImageID
@@ -2992,7 +2992,7 @@ func infoFindRundomMentalFunction() int {
 		return 13
 	}
 
-	clinerMentalInfo() // чтобы было случайное clinerMentalInfo() для 14-й функции
+	clearMentalInfo() // чтобы было случайное clearMentalInfo() для 14-й функции
 
 	// 11 и 13	отзеркаливание
 	// весь набор допустимых функций повышенная вероятность для 13 и пониженная для 14
@@ -3007,7 +3007,7 @@ func infoFindRundomMentalFunction() int {
 	/* var actualArr []int
 	чтобы func13 прошла нужно удалить ее код из functionsInAllCickles. Блокировка вызова 2 экземпляров делается через curFunc13ID
 	иначе в functionsInAllCickles добавится 13 от какого то цикла и больше не даст запустить отзеркаливание не явным образом
-	clinerFunctionsInAllCickles(13)
+	clearFunctionsInAllCickles(13)
 		for i := 0; i < len(infoArr); i++ {
 			if !lib.ExistsValInArr(functionsInAllCickles, infoArr[i]) {
 				actualArr = append(actualArr, infoArr[i])
@@ -3047,7 +3047,7 @@ func listUnusedInfoId(list []int) []int {
 
 /* чтобы после отработки func13 infoFindRundomMentalFunction позволяло выдать новый код 13
 нужно удалить из functionsInAllCickles коды прошлых вызовов 13
-func clinerFunctionsInAllCickles(val int) {
+func clearFunctionsInAllCickles(val int) {
 	for id, n := range functionsInAllCickles {
 		if n == val {
 			functionsInAllCickles = lib.RemoveArrIndex(functionsInAllCickles, id)
@@ -3155,7 +3155,7 @@ func isNeedForCommunication() bool {
 	if (PulsCount - curActiveActionsPulsCount) > waitingTimeBeforeProvocation { // прошло > 10 пульсов со времени последнего стимула от оператора
 		if CurrentInformationEnvironment.veryActualSituation ||
 			CurrentInformationEnvironment.danger ||
-			CurrentInformationEnvironment.needThinkingAboutAutomatizm ||
+			CurrentInformationEnvironment.needThinkingAboutAutomatism ||
 			gomeostas.IsNeedForCommunication() {
 			infoFunc31pulsCount = PulsCount
 			return true
@@ -3178,10 +3178,10 @@ func getBenefitFromEpizosMemory(c *cycleInfo, actBest *ActionsImage) bool {
 	}
 	// может быть несколько автоматизмов с одним и тем же действием, но с разными BranchID веками дерева автоматизмов или вообще не привязанные
 	var eMax = 0
-	var aBest *Automatizm
+	var aBest *Automatism
 
 	//штатный автоматизм активного узла дерева
-	sA := AutomatizmBelief2FromTreeNodeId[detectedActiveLastNodID]
+	sA := AutomatismBelief2FromTreeNodeId[detectedActiveLastNodID]
 	if sA != nil {
 		if sA.ActionsImageID == actBest.ID {
 			// как раз штатный автоматизм и делает это
@@ -3193,7 +3193,7 @@ func getBenefitFromEpizosMemory(c *cycleInfo, actBest *ActionsImage) bool {
 
 	//найти мот.автоматизмы с таким действием и сравинить со штатным автоматизмом активного узла detectedActiveLastNodID
 
-	for _, v := range AutomatizmFromId {
+	for _, v := range AutomatismFromId {
 		if v == nil {
 			continue
 		}

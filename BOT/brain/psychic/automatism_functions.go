@@ -7,15 +7,15 @@
 и блокировка общего автоматизма лишает первичной реакции у всех их.
 Но у.рефлекс может быть заморожен, а общий автоматизм сейчас – нет.
 Это значит, то в случае блокирующих действий для данной ветки, необходимо запускать автоматизм бездействия,
-останавливающий все более низкоуровневое.lib.MapCheckBlock(MapGwardAutomatizmFromId)
+останавливающий все более низкоуровневое.lib.MapCheckBlock(MapGwardAutomatismFromId)
 При блокировке такого автоматизма опять НЕ БЛОКРУЕТСЯ.
 Наличие игнор.автоматизма в конце ветки для func consciousnessElementary() равноценно отсуствю автоматизма.
 Функции:
 // это - игнорирующий штатный автоматизм - расценивается как отсуствие реакции.
-func isIgnoreAutomatizmID(atmtzmID int)bool{
-func isIgnoreAutomatizm(atmtzm *Automatizm)bool{
+func isIgnoreAutomatismID(atmtzmID int)bool{
+func isIgnoreAutomatism(atmtzm *Automatism)bool{
 // автоматизм игнорирования для остановки общего автоматизма, штатно привязанный к активной ветке detectedActiveLastNodID
-func getIgnoreAtmtzmToBrench()(int,*Automatizm)
+func getIgnoreAtmtzmToBrench()(int,*Automatism)
 */
 
 package psychic
@@ -34,7 +34,7 @@ import (
 ВЫБРАТЬ ЛУЧШИЙ АВТОМАТИЗМ для узла nodeID то более ранних, если нет у поздних.
 а если нет, то учитывать общие автомтизмы, привязанные к действиям (виртуальная ветка ID от 1000000) и словам (>2000000)
 */
-func getAutomatizmFromNodeID(nodeID int) int {
+func getAutomatismFromNodeID(nodeID int) int {
 	if nodeID == 0 {
 		return 0
 	}
@@ -48,9 +48,9 @@ func getAutomatizmFromNodeID(nodeID int) int {
 	}
 
 	// список всех автоматизмов для ID узла Дерева
-	aArr := GetMotorsAutomatizmListFromTreeId(nodeID)
+	aArr := GetMotorsAutomatismListFromTreeId(nodeID)
 	var usefulness = -10 // полезность, выбрать наилучшую
-	var autmtzm *Automatizm
+	var autmtzm *Automatism
 	if aArr != nil {
 		for i := 0; i < len(aArr); i++ {
 			var allowRun = false
@@ -78,7 +78,7 @@ func getAutomatizmFromNodeID(nodeID int) int {
 			// сделаем приоритет выбора между одинаковыми usefulness за самым свежим
 			// в 3 стадии это уберет косяк, когда создается новый вариант ответа на стимул, а на пульт отправляется старый
 			// хотя новый автоматизм создается нормально
-			// на стадиях больше 3 предпочтение отдаем штатному, который определяется при блокировке предыдущего штатного в SetAutomatizmBelief()/findBestNonStaff()
+			// на стадиях больше 3 предпочтение отдаем штатному, который определяется при блокировке предыдущего штатного в SetAutomatismBelief()/findBestNonStaff()
 			// если не учитывать EvolushnStage > 3 то выбранный штатным в findBestNonStaff() автоматизм тут переназначится на "самый свежий", который не факт что лучший
 			if aArr[i].Usefulness >= usefulness {
 				if EvolushnStage > 3 && aArr[i].Usefulness >= 0 && aArr[i].Belief == 2 { // хотя Belief==2 и Usefulness >0 подразумевается по умолчанию, но подстрахуемся
@@ -95,15 +95,15 @@ func getAutomatizmFromNodeID(nodeID int) int {
 		- для всех фраз - и для всех действий на основе привязанного автоматизма,
 		чтобы другие ветки могли пользоваться при разных условиях.
 		*/
-		createNodeUnattachedAutomatizm(nodeID, autmtzm.ID)
-		SetAutomatizmBelief(autmtzm, 2)
+		createNodeUnattachedAutomatism(nodeID, autmtzm.ID)
+		SetAutomatismBelief(autmtzm, 2)
 		return autmtzm.ID
 	}
 	//
 	/* нет привязанных к данному узлу
 	Это ситуация: фраза, для которой в узле нет автоматизма или нераспознанная фраза.
 	*/
-	if (curActions.PhraseID != nil && currentAutomatizmAfterTreeActivatedID == 0) || isUnrecognizedPhraseFromAtmtzmTreeActivation {
+	if (curActions.PhraseID != nil && currentAutomatismAfterTreeActivatedID == 0) || isUnrecognizedPhraseFromAtmtzmTreeActivation {
 		/* Для текущей фразы сначала смотрим есть ли для данных условий (BaseID + EmotionID) автоматзмы для известных слов фразы.
 		Если нет, то по Правилам выбираются подходяшие дейстивия.
 		Если найдены действия, то создается автоматизм, который прикрепляется к узлу дерева автоматизмов branchID.
@@ -112,7 +112,7 @@ func getAutomatizmFromNodeID(nodeID int) int {
 		*/
 		aID, atzm := tryCreateAnswerForPhrese(2, detectedActiveLastNodID) // 2 - максимальное число действия для автоматизма
 		if aID > 0 && atzm.Usefulness >= 0 {                              // смотрим, чтобы не открыло заблокирванный автоматизм
-			SetAutomatizmBelief(atzm, 2)
+			SetAutomatismBelief(atzm, 2)
 			return aID
 		}
 	}
@@ -124,13 +124,13 @@ func getAutomatizmFromNodeID(nodeID int) int {
 	// в данном узле нет привязанного к нему автоматизма, либо автоматизм заблокирован
 	// если это - узел действий или узел фразы, смотрим, если привязанные к таким объектам автоматизм
 
-	//	node:=AutomatizmTreeFromID[nodeID] // должен быть обязательно, но...
-	node, ok := ReadeAutomatizmTreeFromID(nodeID)
+	//	node:=AutomatismTreeFromID[nodeID] // должен быть обязательно, но...
+	node, ok := ReadeAutomatismTreeFromID(nodeID)
 	if !ok {
 		return 0
 	}
 	if node.PhraseID > 0 { // это узел фразы
-		atmzS := GetAutomatizmBeliefFromPhraseId(node.PhraseID)
+		atmzS := GetAutomatismBeliefFromPhraseId(node.PhraseID)
 		if atmzS != nil {
 			if autmtzm != nil {
 				// если в найденном общем автоматизме такая акция, которая заблокирована в стандартном - не пускаем общий, ведь именно акцию и заблокировали
@@ -145,7 +145,7 @@ func getAutomatizmFromNodeID(nodeID int) int {
 	}
 	/////////////
 	if node.ActivityID > 0 && node.ToneMoodID == 90 { // это узел действий - конечный в активной ветке. 90 - ToneMoodID по умолчанию
-		atmzA := GetAutomatizmBeliefFromActionId(node.ActivityID)
+		atmzA := GetAutomatismBeliefFromActionId(node.ActivityID)
 		if atmzA != nil {
 			if autmtzm != nil {
 				// если в найденном общем автоматизме такая акция, которая заблокирована в стандартном - не пускаем общий, ведь именно акцию и заблокировали
@@ -166,13 +166,13 @@ func getAutomatizmFromNodeID(nodeID int) int {
 	//////////// нет штатных автоматизмов, выбрать любой нештатный на пробу
 	/* такого быть не должно, т.к. штатный должен быть всегда
 	if node.PhraseID>0 { // это узел фразы
-		aArr = AutomatizmIdFromPhraseId[node.PhraseID]
+		aArr = AutomatismIdFromPhraseId[node.PhraseID]
 		if aArr != nil {
 			return aArr[0].ID // первый попавшийся не штатный, раз уже не нашелся штатный
 		}
 	}
 	if node.ActivityID>0 && node.ToneMoodID==0 {
-		aArr = AutomatizmIdFromActionId[node.PhraseID]
+		aArr = AutomatismIdFromActionId[node.PhraseID]
 		if aArr != nil {
 			return aArr[0].ID // первый попавшийся не штатный
 		}
@@ -182,10 +182,10 @@ func getAutomatizmFromNodeID(nodeID int) int {
 	// найти у предыдущих узел действий
 	for i := len(ActiveBranchNodeArr) - 1; i > 2; i-- {
 
-		//		node=AutomatizmTreeFromID[ActiveBranchNodeArr[i]]
-		node, ok := ReadeAutomatizmTreeFromID(ActiveBranchNodeArr[i])
+		//		node=AutomatismTreeFromID[ActiveBranchNodeArr[i]]
+		node, ok := ReadeAutomatismTreeFromID(ActiveBranchNodeArr[i])
 		if ok {
-			atmzA := GetAutomatizmBeliefFromActionId(node.ActivityID)
+			atmzA := GetAutomatismBeliefFromActionId(node.ActivityID)
 			if atmzA != nil {
 				if autmtzm != nil {
 					// если в найденном общем автоматизме такая акция, которая заблокирована в стандартном - не пускаем общий, ведь именно акцию и заблокировали
@@ -205,7 +205,7 @@ func getAutomatizmFromNodeID(nodeID int) int {
 }
 
 // проверка по действию и ветке дерева автоматизма - не заблокирован ли
-func isBranchUsefullnesAct(aArr []*Automatizm, act int) bool {
+func isBranchUsefullnesAct(aArr []*Automatism, act int) bool {
 	for _, v := range aArr {
 		if v.ActionsImageID == act && v.Usefulness < 0 {
 			return true
@@ -215,13 +215,13 @@ func isBranchUsefullnesAct(aArr []*Automatizm, act int) bool {
 }
 
 // выбрать самый успешный автоматизм ветки
-func getBeastAutomatizmFromNodeID(node *AutomatizmNode) *Automatizm {
+func getBeastAutomatismFromNodeID(node *AutomatismNode) *Automatism {
 	if node == nil {
 		return nil
 	}
 	// список всех автоматизмов для ID узла Дерева
-	var aArr []*Automatizm
-	for _, a := range AutomatizmFromId {
+	var aArr []*Automatism
+	for _, a := range AutomatismFromId {
 		if a == nil {
 			continue
 		}
@@ -231,7 +231,7 @@ func getBeastAutomatizmFromNodeID(node *AutomatizmNode) *Automatizm {
 	}
 
 	var usefulness = -10 // полезность, выбрать наилучшую
-	var autmtzm *Automatizm
+	var autmtzm *Automatism
 	if aArr != nil {
 		for i := 0; i < len(aArr); i++ {
 			if aArr[i].Usefulness > usefulness {
@@ -250,11 +250,11 @@ func getBeastAutomatizmFromNodeID(node *AutomatizmNode) *Automatizm {
 /*задать тип автоматизма Belief.
 Только один из автоматизмов, прикрепленных к ветке или образу, может иметь Belief=2 - проверенное собственное знание
 Если задается Belief=2, остальные Belief=2 становится Belief=0.
-ТАК ПРОСТО НЕЛЬЗЯ ЗАДАВАТЬ Belief=2: LastAutomatizmWeiting.Belief=2
+ТАК ПРОСТО НЕЛЬЗЯ ЗАДАВАТЬ Belief=2: LastAutomatismWeiting.Belief=2
 
-Для блокировки автоматизма нужно использовать SetAutomatizmBelief(atmzm,0) - для реализации func findBestNonStaff()
+Для блокировки автоматизма нужно использовать SetAutomatismBelief(atmzm,0) - для реализации func findBestNonStaff()
 */
-func SetAutomatizmBelief(atmzm *Automatizm, belief int) {
+func SetAutomatismBelief(atmzm *Automatism, belief int) {
 	if atmzm == nil || atmzm.BranchID == 0 {
 		return
 	}
@@ -268,7 +268,7 @@ func SetAutomatizmBelief(atmzm *Automatizm, belief int) {
 			atmzm.Count = 1
 		}
 	}
-	// при SetAutomatizmBelief(atmzm,0) - для выноса автоматизма из штатного
+	// при SetAutomatismBelief(atmzm,0) - для выноса автоматизма из штатного
 	if belief == 0 {
 		atmzm.Belief = 0
 		removeAllBeliefFormBranchID(atmzm) // все другие автоматизмы ветки вынести из штатных
@@ -285,35 +285,35 @@ func SetAutomatizmBelief(atmzm *Automatizm, belief int) {
 
 // //////////////////////////
 // все автоматизмы ветки вынести из штатных
-func removeAllBeliefFormBranchID(atmzm *Automatizm) {
+func removeAllBeliefFormBranchID(atmzm *Automatism) {
 	if atmzm == nil || atmzm.BranchID == 0 {
 		return
 	}
 	// привязанные к ID узла дерева
 	if atmzm.BranchID < 1000000 { // обнулить Belief у всех привязанных к узлу
 
-		aArr := GetMotorsAutomatizmListFromTreeId(atmzm.BranchID)
+		aArr := GetMotorsAutomatismListFromTreeId(atmzm.BranchID)
 
 		if len(aArr) > 1 {
 			for i := 0; i < len(aArr); i++ {
 				if aArr[i] != atmzm && aArr[i].Belief == 2 {
 					aArr[i].Belief = 0
-					AutomatizmBelief2FromTreeNodeId[aArr[i].BranchID] = nil
+					AutomatismBelief2FromTreeNodeId[aArr[i].BranchID] = nil
 				}
 			}
 		}
-		AutomatizmBelief2FromTreeNodeId[atmzm.BranchID] = atmzm
+		AutomatismBelief2FromTreeNodeId[atmzm.BranchID] = atmzm
 	}
 	// привязанные к ID образа действий с пульта ActivityID
 	if atmzm.BranchID > 1000000 && atmzm.BranchID < 2000000 { // обнулить Belief у всех привязанных к ActivityID
 		imgID := atmzm.BranchID - 1000000
-		for _, v := range AutomatizmIdFromActionId[imgID] {
+		for _, v := range AutomatismIdFromActionId[imgID] {
 			v.Belief = 0
 		}
 	}
 	if atmzm.BranchID > 2000000 { // обнулить Belief у всех привязанных к PhraseID
 		imgID := atmzm.BranchID - 2000000
-		for _, v := range AutomatizmIdFromPhraseId[imgID] {
+		for _, v := range AutomatismIdFromPhraseId[imgID] {
 			v.Belief = 0
 		}
 	}
@@ -321,19 +321,19 @@ func removeAllBeliefFormBranchID(atmzm *Automatizm) {
 
 /*
 найти нештатные автоматизмы в ветке с Usefulness>0 т.е. заблокированные оператором под горячую руку
-кроме данного: atmzm *Automatizm
+кроме данного: atmzm *Automatism
 Только для нормальных (не групповых) автоматизмов.
 
 Восстановление блокированных автомаптизмов ветки.
 */
-func findBestNonStaff(atmzm *Automatizm) *Automatizm {
+func findBestNonStaff(atmzm *Automatism) *Automatism {
 	if atmzm == nil || atmzm.BranchID == 0 {
 		return nil
 	}
 	beat := 0
-	var aBest *Automatizm
+	var aBest *Automatism
 
-	aArr := GetMotorsAutomatizmListFromTreeId(atmzm.BranchID)
+	aArr := GetMotorsAutomatismListFromTreeId(atmzm.BranchID)
 
 	if len(aArr) > 1 {
 		for i := 0; i < len(aArr); i++ {
@@ -355,46 +355,46 @@ func findBestNonStaff(atmzm *Automatizm) *Automatizm {
 /////////////////////////////////////////////////////
 
 // список всех автоматизмов для ID узла Дерева
-var lastAutomatizmArrFromNodeID []*Automatizm // уже полученный массив для lastAutomatizmsNodeID чтобы не повторяться
-var lastAutomatizmsNodeID int
+var lastAutomatismArrFromNodeID []*Automatism // уже полученный массив для lastAutomatismsNodeID чтобы не повторяться
+var lastAutomatismsNodeID int
 
-func GetMotorsAutomatizmListFromTreeId(nodeID int) []*Automatizm {
+func GetMotorsAutomatismListFromTreeId(nodeID int) []*Automatism {
 	if nodeID == 0 {
 		return nil
 	}
 
-	if AutomatizmFromId == nil {
+	if AutomatismFromId == nil {
 		return nil
 	}
-	if lastAutomatizmsNodeID == nodeID { // уже есть массив для nodeID
-		return lastAutomatizmArrFromNodeID
+	if lastAutomatismsNodeID == nodeID { // уже есть массив для nodeID
+		return lastAutomatismArrFromNodeID
 	}
-	lastAutomatizmsNodeID = nodeID
+	lastAutomatismsNodeID = nodeID
 
-	lastAutomatizmArrFromNodeID = nil
+	lastAutomatismArrFromNodeID = nil
 
-	for _, a := range AutomatizmFromId {
+	for _, a := range AutomatismFromId {
 		if a == nil {
 			continue
 		}
 		if a.BranchID < 1000000 && a.BranchID == nodeID {
-			lastAutomatizmArrFromNodeID = append(lastAutomatizmArrFromNodeID, a)
+			lastAutomatismArrFromNodeID = append(lastAutomatismArrFromNodeID, a)
 		}
 	}
 
 	// нужно для работы в 3 стадии
-	sort.SliceStable(lastAutomatizmArrFromNodeID, func(i, j int) bool {
-		return lastAutomatizmArrFromNodeID[i].ID < lastAutomatizmArrFromNodeID[j].ID
+	sort.SliceStable(lastAutomatismArrFromNodeID, func(i, j int) bool {
+		return lastAutomatismArrFromNodeID[i].ID < lastAutomatismArrFromNodeID[j].ID
 	})
-	return lastAutomatizmArrFromNodeID
+	return lastAutomatismArrFromNodeID
 }
 
 // штатный, невредный автоматизм, привязанный к ветке
-func GetBelief2AutomatizmListFromTreeId(nodeID int) *Automatizm {
+func GetBelief2AutomatismListFromTreeId(nodeID int) *Automatism {
 	if nodeID == 0 {
 		return nil
 	}
-	aArr := AutomatizmBelief2FromTreeNodeId[nodeID]
+	aArr := AutomatismBelief2FromTreeNodeId[nodeID]
 
 	if aArr == nil {
 		return nil
@@ -408,8 +408,8 @@ func GetBelief2AutomatizmListFromTreeId(nodeID int) *Automatizm {
 //////////////////////////////////////////////////
 
 // есть ли штатный автоматизм (с Belief==2), привязанные к узлу дерева
-func ExistsAutomatizmForThisNodeID(nodeID int) bool {
-	aArr := AutomatizmBelief2FromTreeNodeId[nodeID]
+func ExistsAutomatismForThisNodeID(nodeID int) bool {
+	aArr := AutomatismBelief2FromTreeNodeId[nodeID]
 	if aArr != nil {
 		return true
 	}
@@ -419,16 +419,16 @@ func ExistsAutomatizmForThisNodeID(nodeID int) bool {
 ///////////////////////////////////////
 
 /*
-	если для прикрепленных к узлу дерева есть карта штатных AutomatizmBelief2FromTreeNodeId,
+	если для прикрепленных к узлу дерева есть карта штатных AutomatismBelief2FromTreeNodeId,
 
 то для прикрепленных к образам нужны ФУНКЦИИ ПОЛУЧЕНИЯ ШТАТНОГО ДЛЯ ДАННОГО ОБРАЗА
 */
-func GetAutomatizmBeliefFromActionId(activityID int) *Automatizm {
-	if AutomatizmIdFromActionId[activityID] == nil {
+func GetAutomatismBeliefFromActionId(activityID int) *Automatism {
+	if AutomatismIdFromActionId[activityID] == nil {
 		return nil
 	}
 
-	for _, v := range AutomatizmIdFromActionId[activityID] {
+	for _, v := range AutomatismIdFromActionId[activityID] {
 		if v == nil {
 			continue
 		}
@@ -445,11 +445,11 @@ func GetAutomatizmBeliefFromActionId(activityID int) *Automatizm {
 }
 
 // /////////////////////////////////////////////////
-func GetAutomatizmBeliefFromPhraseId(verbalID int) *Automatizm {
-	if AutomatizmIdFromPhraseId[verbalID] == nil {
+func GetAutomatismBeliefFromPhraseId(verbalID int) *Automatism {
+	if AutomatismIdFromPhraseId[verbalID] == nil {
 		return nil
 	}
-	for _, v := range AutomatizmIdFromPhraseId[verbalID] {
+	for _, v := range AutomatismIdFromPhraseId[verbalID] {
 		if v.Belief == 2 {
 			return v
 		}
@@ -462,15 +462,15 @@ func GetAutomatizmBeliefFromPhraseId(verbalID int) *Automatizm {
 - для всех фраз - и для всех действий на основе привязанного автоматизма,
 чтобы другие ветки могли пользоваться при разных условиях.
 */
-func createNodeUnattachedAutomatizm(nodeID int, aID int) {
+func createNodeUnattachedAutomatism(nodeID int, aID int) {
 
-	//	node:=AutomatizmTreeFromID[nodeID] // должен быть обязательно, но...
-	node, ok := ReadeAutomatizmTreeFromID(nodeID)
+	//	node:=AutomatismTreeFromID[nodeID] // должен быть обязательно, но...
+	node, ok := ReadeAutomatismTreeFromID(nodeID)
 	if !ok {
 		return
 	}
-	//autmzm0:= AutomatizmFromId[aID] // должен быть обязательно, но...
-	autmzm0, ok := ReadeAutomatizmFromId(aID)
+	//autmzm0:= AutomatismFromId[aID] // должен быть обязательно, но...
+	autmzm0, ok := ReadeAutomatismFromId(aID)
 	if !ok {
 		return
 	}
@@ -479,7 +479,7 @@ func createNodeUnattachedAutomatizm(nodeID int, aID int) {
 		_, autmzm := CreateAtutomatizmNoSaveFile(2000000+node.PhraseID, autmzm0.ActionsImageID)
 		if autmzm != nil && autmzm.Usefulness >= 0 { // не даем открывать заблокированные
 			autmzm.Usefulness = 0          // пока предположительно
-			SetAutomatizmBelief(autmzm, 2) // сделать автоматизм штатным
+			SetAutomatismBelief(autmzm, 2) // сделать автоматизм штатным
 		}
 	}
 	/*	получается некий аналог у-рефлекса, когда на разные стимулы выдается один и тот же ответ
@@ -488,7 +488,7 @@ func createNodeUnattachedAutomatizm(nodeID int, aID int) {
 		_, autmzm := CreateAtutomatizmNoSaveFile(1000000+node.ActivityID, autmzm0.ActionsImageID)
 		if autmzm != nil && autmzm.Usefulness >= 0 { // не даем открывать заблокированные
 			autmzm.Usefulness = 0          // пока предположительно
-			SetAutomatizmBelief(autmzm, 2) // сделать автоматизм штатным
+			SetAutomatismBelief(autmzm, 2) // сделать автоматизм штатным
 		}
 		// можно выделить из ответа только действие и создать общий автоматизм с таким ответом, но тогда получится просто клон рефлекса
 		// что и так происходит в стадиях начиная со 2. Поэтому пока под сомнением - надо ли так делать, может правильнее вариант выше
@@ -497,17 +497,17 @@ func createNodeUnattachedAutomatizm(nodeID int, aID int) {
 				_,autmzm:= CreateAtutomatizmNoSaveFile(1000000+node.ActivityID, actimgID)
 				if autmzm!=nil{
 					autmzm.Usefulness=0 // пока предположительно
-					SetAutomatizmBelief(autmzm, 2) // сделать автоматизм штатным
+					SetAutomatismBelief(autmzm, 2) // сделать автоматизм штатным
 				}
 			}*/
 	}
 }
 
-// разблоикровака автоматизма для http://go/pages/automatizm_table.php
-func UnblockAutomatizmID(atmtzmID int) string {
+// разблоикровака автоматизма для http://go/pages/automatism_table.php
+func UnblockAutomatismID(atmtzmID int) string {
 
-	//	atmtzm:= AutomatizmFromId[atmtzmID]
-	atmtzm, ok := ReadeAutomatizmFromId(atmtzmID)
+	//	atmtzm:= AutomatismFromId[atmtzmID]
+	atmtzm, ok := ReadeAutomatismFromId(atmtzmID)
 	if !ok {
 		return "0"
 	}
@@ -517,7 +517,7 @@ func UnblockAutomatizmID(atmtzmID int) string {
 }
 
 func UnblockingAllAtmtzms() {
-	for _, v := range AutomatizmFromId {
+	for _, v := range AutomatismFromId {
 		if v == nil {
 			continue
 		}
@@ -532,49 +532,49 @@ func UnblockingAllAtmtzms() {
 /////////////////////////////////////////////////////////////////////
 
 // привязать общий автоматизм к активной ветке detectedActiveLastNodID
-func linkCoomonAtmtzmToBrench(commonAutomatizm *Automatizm) {
-	if LastAutomatizmWeiting.BranchID < 1000000 { // это НЕ общий - не должно такого быть
+func linkCoomonAtmtzmToBrench(commonAutomatism *Automatism) {
+	if LastAutomatismWeiting.BranchID < 1000000 { // это НЕ общий - не должно такого быть
 		return
 	}
-	atmtzm := GetBelief2AutomatizmListFromTreeId(detectedActiveLastNodID)
-	if atmtzm != nil && atmtzm.ID == commonAutomatizm.ID {
+	atmtzm := GetBelief2AutomatismListFromTreeId(detectedActiveLastNodID)
+	if atmtzm != nil && atmtzm.ID == commonAutomatism.ID {
 		return
 	}
-	CreateAtutomatizmNoSaveFile(detectedActiveLastNodID, commonAutomatizm.ActionsImageID)
+	CreateAtutomatizmNoSaveFile(detectedActiveLastNodID, commonAutomatism.ActionsImageID)
 }
 
 /////////////////////////////////////////////////////////////////////
 
 // автоматизм игнорирования для остановки общиего автоматизма, штатно привязанный к активной ветке
-func getIgnoreAtmtzmToBrench(BranchID int) (int, *Automatizm) {
+func getIgnoreAtmtzmToBrench(BranchID int) (int, *Automatism) {
 	// игнорирующее действие:
 	aID, _ := CreateNewlastActionsImageID(0, 0, []int{9}, nil, 0, 0, true)
 	if aID <= 0 {
 		return 0, nil
 	}
-	id, atmtzm := createNewAutomatizmID(0, BranchID, aID, true)
+	id, atmtzm := createNewAutomatismID(0, BranchID, aID, true)
 
 	if atmtzm != nil {
 		return 0, nil
 	}
-	SetAutomatizmBelief(atmtzm, 2)
+	SetAutomatismBelief(atmtzm, 2)
 
 	return id, atmtzm
 }
 
 // определение, что это - игнорирующий ID автоматизма
-func isIgnoreAutomatizmID(atmtzmID int) bool {
-	//	atmtzm,ok:=AutomatizmFromId[atmtzmID]
-	atmtzm, ok := ReadeAutomatizmFromId(atmtzmID)
+func isIgnoreAutomatismID(atmtzmID int) bool {
+	//	atmtzm,ok:=AutomatismFromId[atmtzmID]
+	atmtzm, ok := ReadeAutomatismFromId(atmtzmID)
 	if !ok {
 		return false
 	}
 
-	return isIgnoreAutomatizm(atmtzm)
+	return isIgnoreAutomatism(atmtzm)
 }
 
 // определение, что это - игнорирующий автоматизм
-func isIgnoreAutomatizm(atmtzm *Automatizm) bool {
+func isIgnoreAutomatism(atmtzm *Automatism) bool {
 	if atmtzm == nil {
 		return false
 	}
@@ -593,8 +593,8 @@ func isIgnoreAutomatizm(atmtzm *Automatizm) bool {
 потому как это - новое авторитарное подтвержение полезности.
 Для текущей ветки дерева автоматизмов.
 */
-func checkForUnbolokingAutomatizm(actID int) {
-	for _, v := range AutomatizmFromId {
+func checkForUnbolokingAutomatism(actID int) {
+	for _, v := range AutomatismFromId {
 		if v == nil {
 			continue
 		}
@@ -604,7 +604,7 @@ func checkForUnbolokingAutomatizm(actID int) {
 			v.Usefulness = v.Usefulness + 1 // ++ не срабатывает
 			if v.Usefulness == 0 {
 				//v.Usefulness=0  пока предположительно
-				SetAutomatizmBelief(v, 2) // сделать автоматизм штатным, полезность 1 установится там же автоматически
+				SetAutomatismBelief(v, 2) // сделать автоматизм штатным, полезность 1 установится там же автоматически
 			}
 		}
 	}
@@ -618,15 +618,15 @@ func checkForUnbolokingAutomatizm(actID int) {
 
 Первый уровень - BaseID, 6-й уровень - PhraseID
 */
-func getNodeFromLevel(level int, branchID int) *AutomatizmNode {
+func getNodeFromLevel(level int, branchID int) *AutomatismNode {
 
-	//ln:=AutomatizmTreeFromID[branchID]
-	ln, ok := ReadeAutomatizmTreeFromID(branchID)
+	//ln:=AutomatismTreeFromID[branchID]
+	ln, ok := ReadeAutomatismTreeFromID(branchID)
 	if !ok {
 		return nil
 	}
 	// сначала получить спиоск всех узлов ветки
-	var nArr []*AutomatizmNode
+	var nArr []*AutomatismNode
 	for ln != nil {
 		nArr = append(nArr, ln)
 		ln = ln.ParentNode
@@ -644,11 +644,11 @@ func getNodeFromLevel(level int, branchID int) *AutomatizmNode {
 
 пройти 2 урояня: ActivityID и ToneMoodID до SimbolID
 */
-func getAtmtzmFromNodesFrase(node *AutomatizmNode, phraseID int) *Automatizm {
+func getAtmtzmFromNodesFrase(node *AutomatismNode, phraseID int) *Automatism {
 	//FirstSimbolID:=word_sensor.GetFirstSymbolFromWordID(wordIDarr[0])
 	FirstSimbolID := word_sensor.GetFirstSymbolFromPraseID([]int{phraseID})
 
-	var atmzmArr []*Automatizm
+	var atmzmArr []*Automatism
 
 	for k := 0; k < len(node.Children); k++ { // тут ActivityID
 		nextlev1 := &node.Children[k]
@@ -662,7 +662,7 @@ func getAtmtzmFromNodesFrase(node *AutomatizmNode, phraseID int) *Automatizm {
 
 				//if nextlev3.PhraseID == phraseID {
 				if existsPraseIDinVerbID(nextlev3.PhraseID, phraseID) {
-					a := getBeastAutomatizmFromNodeID(nextlev3)
+					a := getBeastAutomatismFromNodeID(nextlev3)
 					if a != nil {
 						atmzmArr = append(atmzmArr, a)
 					}
@@ -670,18 +670,18 @@ func getAtmtzmFromNodesFrase(node *AutomatizmNode, phraseID int) *Automatizm {
 				for n := 0; n < len(nextlev3.Children); n++ { // тут PhraseID
 					nextlev4 := &nextlev3.Children[n]
 					/*
-						AutomatizmTreeMapCheck()
+						AutomatismTreeMapCheck()
 						verbal,ok:=VerbalFromIdArr[nextlev.PhraseID]
 						if ok {
 							wArr:=word_sensor.GetWordsIDarrFromPraseNodeID(verbal.PhraseID[0])
 							if lib.EqualArrs(wArr, phraseArr){
-								a:=getBeastAutomatizmFromNodeID(nextlev)
+								a:=getBeastAutomatismFromNodeID(nextlev)
 								atmzmArr=append(atmzmArr,a)
 							}
 						}*/
 					//if nextlev4.PhraseID == phraseID {
 					if existsPraseIDinVerbID(nextlev4.PhraseID, phraseID) { //// есть ли в данном Verb фраза praseID int
-						a := getBeastAutomatizmFromNodeID(nextlev4)
+						a := getBeastAutomatismFromNodeID(nextlev4)
 						if a != nil {
 							atmzmArr = append(atmzmArr, a)
 						}
@@ -692,7 +692,7 @@ func getAtmtzmFromNodesFrase(node *AutomatizmNode, phraseID int) *Automatizm {
 	}
 	if atmzmArr != nil { // выбор лучшего
 		max := -1
-		var curA *Automatizm
+		var curA *Automatism
 		for n := 0; n < len(atmzmArr); n++ {
 			if atmzmArr[n].Usefulness > max {
 				max = atmzmArr[n].Usefulness
@@ -728,7 +728,7 @@ func existsThistActionIdInAtreeNode(nodeID int, ActionsImage int) (bool, int) {
 		return false, 0
 	}
 	// список всех автоматизмов для ID узла Дерева
-	aArr := GetMotorsAutomatizmListFromTreeId(nodeID)
+	aArr := GetMotorsAutomatismListFromTreeId(nodeID)
 	if aArr == nil {
 		return false, 0
 	}

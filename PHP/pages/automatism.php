@@ -1,6 +1,6 @@
 <?
 /*   Стрнаница автоматизмов Beast
-http://go/pages/automatizm.php  
+http://go/pages/automatism.php
 
 */
 $page_id = 6;
@@ -18,7 +18,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/show_waiting.php");
 <div style='position:absolute;top:38px;left:590px;font-family:courier;font-size:16px;cursor:pointer;color:blue;'
 	onClick="get_tree1()">Дерево автоматизмов</div>
 <div style='position:absolute;top:38px;left:800px;font-family:courier;font-size:16px;cursor:pointer;color:blue;'
-	onClick="get_rulles()">Правила</div>
+	onClick="get_rules()">Правила</div>
 
 
 <!--  НЕТ СРАЗУ ЗАГРУЖАЕМОГО КОНТЕНТА div id='div_id' style='font-family:courier;font-size:16px;'>Нужен коннект с Beast.</div>
@@ -47,9 +47,9 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/show_waiting.php");
 
 	<div style='display:inline-block;font-family:courier;font-size:18px;cursor:pointer;color:blue;border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;
 background-color:#eeeeee;' title="Для тестирования различных конфигураций автоматизмов - очистка предудыщих."
-		onClick="cliner_all_automatizm()">Удалить все автоматизмы и очистить дерево автоматизмов</div> - для создания
-	новой порции автоматизмов. Или можно самим удалить содержимое в файлах /memory_psy/automatizm_images.txt и
-	/memory_psy/automatizm_tree.txt и перезагрузить Beast.<br>
+		onClick="clear_all_automatism()">Удалить все автоматизмы и очистить дерево автоматизмов</div> - для создания
+	новой порции автоматизмов. Или можно самим удалить содержимое в файлах /memory_psy/automatism_images.txt и
+	/memory_psy/automatism_tree.txt и перезагрузить Beast.<br>
 	<br>
 
 
@@ -60,18 +60,18 @@ background-color:#eeeeee;' title="Для тестирования различн
 	В дальнейшем такие автоматизмы будут проверяться в зависимости от реакции оператора и изменения состояния Beast,
 	корректируясь настолько эффективно, насколько позволяет текущая стадия развития.
 	<br><br>
-	<div id="make_genetic_automatizms_id" style='display: inline-block;relative;font-family:courier;font-size:16px;cursor:pointer;
+	<div id="make_genetic_automatisms_id" style='display: inline-block;relative;font-family:courier;font-size:16px;cursor:pointer;
 border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;
-background-color:#eeeeee;' onClick="make_genetic_automatizms()">Создать автоматизмы на основе существующих
+background-color:#eeeeee;' onClick="make_genetic_automatisms()">Создать автоматизмы на основе существующих
 		<b>безусловных</b> рефлексов</div> - связываются с 3-м уровнем ветки дерева<br>
 
 	<br>
 	<div id='res_div_id' style='font-family:courier;font-size:21px;color:green;font-weight:bold;'></div>
 	<div id='div_id' style='font-family:courier;font-size:21px;color:red;font-weight:bold;'></div>
 </div>
-<div id="make_automatizms_id" style='display:inline-block;relative;font-family:courier;font-size:16px;cursor:pointer;
+<div id="make_automatisms_id" style='display:inline-block;relative;font-family:courier;font-size:16px;cursor:pointer;
 border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;
-background-color:#eeeeee;' onClick="make_automatizms()">Создать автоматизмы на основе существующих <b>условных</b>
+background-color:#eeeeee;' onClick="make_automatisms()">Создать автоматизмы на основе существующих <b>условных</b>
 	рефлексов</div> - связываются с 7-м (вербальным) уровнем ветки дерева. Если условные рефлексы были сгенерированы
 искусственно, то будет создано большое число автоматизмов. Но <span style='color:red'>нет смысла создавать автоматизмы
 	из условных рефлексов, если затем воспользоваться кнопкой "Сформировать зеркальные автоматизмы для всех таблиц
@@ -88,7 +88,7 @@ background-color:#eeeeee;' onClick="make_automatizms()">Создать авто�
 <br><br>
 <div style='display: inline-block;relative;font-family:courier;font-size:16px;cursor:pointer;
 border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;
-background-color:#eeeeee;' onClick="open_anotjer_win('/pages/mirrors_automatizm.php')">Начать набивку зеркальных
+background-color:#eeeeee;' onClick="open_anotjer_win('/pages/mirrors_automatism.php')">Начать набивку зеркальных
 	автоматизмов на основе существующих</div>
 
 
@@ -115,7 +115,7 @@ if ($m_file_count) {
 	echo "<br><br>
 <div  style='display: inline-block;relative;font-family:courier;font-size:16px;cursor:pointer;
 border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;
-background-color:#eeeeee;' onClick='open_anotjer_win(\"/pages/mirrors_automatizm_maker.php\")' >Сформировать зеркальные автоматизмы для всех таблиц сочетаний контекстов</div> - очень большое число автоматизмов, которые, впрочем, будут нормально отрабатывать.";
+background-color:#eeeeee;' onClick='open_anotjer_win(\"/pages/mirrors_automatism_maker.php\")' >Сформировать зеркальные автоматизмы для всех таблиц сочетаний контекстов</div> - очень большое число автоматизмов, которые, впрочем, будут нормально отрабатывать.";
 	echo "";
 }
 
@@ -123,7 +123,7 @@ background-color:#eeeeee;' onClick='open_anotjer_win(\"/pages/mirrors_automatizm
 if (file_exists($_SERVER["DOCUMENT_ROOT"] . "/lib/mirror_basic_phrases_common.txt") && filesize($_SERVER["DOCUMENT_ROOT"] . "/lib/mirror_basic_phrases_common.txt") > 20) {
 	echo "<br><br><div  style='display: inline-block;relative;font-family:courier;font-size:16px;cursor:pointer;
 border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;
-background-color:#eeeeee;' onClick='open_anotjer_win(\"/pages/mirrors_automatizm_maker_from_template.php\")' >Сформировать зеркальные автоматизмы только для таблицы общего шаблона</div> - это наиболее разумное решение, т.к. будет создано относительно недольшое число автоматизмов. И в этом случае не требуется заполнять таблицы по каждому сочетанию Базовых контекстов.";
+background-color:#eeeeee;' onClick='open_anotjer_win(\"/pages/mirrors_automatism_maker_from_template.php\")' >Сформировать зеркальные автоматизмы только для таблицы общего шаблона</div> - это наиболее разумное решение, т.к. будет создано относительно недольшое число автоматизмов. И в этом случае не требуется заполнять таблицы по каждому сочетанию Базовых контекстов.";
 }
 ?>
 <br>
@@ -142,7 +142,7 @@ background-color:#eeeeee;' onClick='open_anotjer_win(\"/pages/mirrors_automatizm
 <br>
 <b>Альтернативный вариант (неподьемный для персонального компьютера):</b><br>
 7. Заполнить таблицы для всех сочетаний Базовых контекстов <a
-	href="/pages/mirrors_automatizm.php">/pages/mirrors_automatizm.php (очень большая работа)</a><br>
+	href="/pages/mirrors_automatism.php">/pages/mirrors_automatism.php (очень большая работа)</a><br>
 8. Нажать кнопку “Сформировать зеркальные автоматизмы для всех таблиц сочетаний контекстов”.<br>
 Такой вариант сделает загрузку при включении очень долгой и НЕ РЕКОМЕНДУЕТСЯ.
 <br>
@@ -170,22 +170,22 @@ background-color:#eeeeee;' onClick='open_anotjer_win(\"/pages/mirrors_automatizm
 	;
 
 var bot_is_connected=0;
-var AJAX = new ajax_support(linking_address + "?check_Beast_activnost=1", check_conn_info);
+var AJAX = new ajax_support(linking_address + "?check_activity=1", check_conn_info);
 AJAX.send_reqest();
 function check_conn_info(res) {
 	bot_is_connected=1;
 }
 
 
-function cliner_all_automatizm()
+function clear_all_automatism()
 { 
-show_dlg_confirm("Дерево автоматизмов и сами автоматизмы будут очищены.<br>Вы уверены?","Да, очистить!","Отмена",cliner_all_automatizm2);
+show_dlg_confirm("Дерево автоматизмов и сами автоматизмы будут очищены.<br>Вы уверены?","Да, очистить!","Отмена",clear_all_automatism2);
 }
-function cliner_all_automatizm2()
+function clear_all_automatism2()
 {
-var AJAX = new ajax_support("/lib/cliner_all_automatizm_memory.php", sent_cliner_reflex_memory);
+var AJAX = new ajax_support("/lib/clear_all_automatism_memory.php", sent_clear_reflex_memory);
 AJAX.send_reqest();
-function sent_cliner_reflex_memory(res) {
+function sent_clear_reflex_memory(res) {
 
 if(bot_is_connected==0)
 show_dlg_alert("Файлы памяти автоматизвом очищены.",0);
@@ -200,8 +200,8 @@ var server = "/kill.php";
 		function sent_end_answer(res) {
 			show_dlg_alert("Beast выключен.", 2000);
 		}*/
-//Выключить без сохранения памяти (bot_closing=2), просто погасить исполняемый файл
-		var AJAX = new ajax_support(linking_address + "?bot_closing=2", sent_info);
+//Выключить без сохранения памяти (bot_shutdown=2), просто погасить исполняемый файл
+		var AJAX = new ajax_support(linking_address + "?bot_shutdown=2", sent_info);
 		AJAX.send_reqest();
 		function sent_info(res) {
 			// не будет ответа
@@ -214,13 +214,13 @@ var server = "/kill.php";
 
 function get_autimat_table()
 {
-open_anotjer_win("/pages/automatizm_table.php");
+open_anotjer_win("/pages/automatism_table.php");
 }
 
 function get_tree1()
 {
 //alert("Дерево автоматизмов");
-open_anotjer_win("/pages/automatizm_tree.php");
+open_anotjer_win("/pages/automatism_tree.php");
 }
 function get_tree2()
 {
@@ -228,12 +228,12 @@ alert("Дерево понимания");
 }
 // процесс идет в ГО
 var type_reqwest_go=0;// 1 - создать автоматизмы из рефлексов
-function make_automatizms()
+function make_automatisms()
 {
-document.getElementById('make_automatizms_id').disabled=true
+document.getElementById('make_automatisms_id').disabled=true
 //exists_connection(); // если нет коннекта, будет сообщение
 // ждем пока не включат бестию
-check_Beast_activnost(6);// после 4-го пульса И запускается get_info()
+check_activity(6);// после 4-го пульса И запускается get_info()
 type_reqwest_go=1; //alert(type_reqwest_go);
 }
 function get_info() 
@@ -242,13 +242,13 @@ if(type_reqwest_go==1)/////////////////////////////
 {
 var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>';
 wait_begin();
-var AJAX = new ajax_support(linking_address + "?make_automatizms_from_reflexes=1", sent_process_info);
+var AJAX = new ajax_support(linking_address + "?make_automatisms_from_reflexes=1", sent_process_info);
 AJAX.send_reqest();
 function sent_process_info(res) {
 			//alert(res);
 wait_end();
 document.getElementById('res_div_id').innerHTML = res;
-document.getElementById('make_automatizms_id').disabled=false
+document.getElementById('make_automatisms_id').disabled=false
 }
 }/////////////////////////////
 
@@ -256,24 +256,24 @@ if(type_reqwest_go==2)/////////////////////////////
 {
 var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>';
 wait_begin();
-var AJAX = new ajax_support(linking_address + "?make_automatizms_from_genetic_reflexes=1", sent_process_info);
+var AJAX = new ajax_support(linking_address + "?make_automatisms_from_genetic_reflexes=1", sent_process_info);
 AJAX.send_reqest();
 function sent_process_info(res) {
 			//alert(res);
 wait_end();
 document.getElementById('res_div_id').innerHTML = res;
-document.getElementById('make_genetic_automatizms_id').disabled=false
+document.getElementById('make_genetic_automatisms_id').disabled=false
 }
 }/////////////////////////////
 
 }
 ////////////////////////////////
-function make_genetic_automatizms()
+function make_genetic_automatisms()
 {
-document.getElementById('make_genetic_automatizms_id').disabled=true
+document.getElementById('make_genetic_automatisms_id').disabled=true
 //exists_connection(); // если нет коннекта, будет сообщение
 // ждем пока не включат бестию
-check_Beast_activnost(4);// после 4-го пульса И запускается get_info()
+check_activity(4);// после 4-го пульса И запускается get_info()
 type_reqwest_go=2; //alert(type_reqwest_go);
 }
 
@@ -284,7 +284,7 @@ type_reqwest_go=2; //alert(type_reqwest_go);
 
 
 // станица правил
-function get_rulles()
+function get_rules()
 {
 open_anotjer_win("/pages/rules.php");
 }

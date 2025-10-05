@@ -1,6 +1,6 @@
 <?
 /*  обнулить гомео-параметры. (AJAX)
-/lib/cliner_gomeo_pars.php
+/lib/clear_gomeo_pars.php
 
 */
 header("Expires: Tue, 1 Jul 2003 05:00:00 GMT");

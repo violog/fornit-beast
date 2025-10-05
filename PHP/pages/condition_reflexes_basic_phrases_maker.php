@@ -38,7 +38,7 @@ if ($n == 0) {
 include_once($_SERVER['DOCUMENT_ROOT'] . "/common/linking.php");
 ?>
 Сначала нужно:<br>
-1. При выключенном Beast очистить файлы памяти, связанные с условными рефлексами: <span style="font-size:21px;border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;cursor:pointer;" onClick='cliner_files()' title='Будут очищены файлы:
+1. При выключенном Beast очистить файлы памяти, связанные с условными рефлексами: <span style="font-size:21px;border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;cursor:pointer;" onClick='clear_files()' title='Будут очищены файлы:
 /memory_reflex/condition_reflexes.txt
 /memory_reflex/trigger_stimuls_images.txt
 '>Очистить</span><br>
@@ -56,7 +56,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/linking.php");
 <script>
 var linking_address='<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>';
 //wait_begin(); // wait_end();
-var AJAX = new ajax_support(linking_address+"?stop_activnost=1",sent_blocing);
+var AJAX = new ajax_support(linking_address+"?stop_activity=1",sent_blocing);
 AJAX.send_reqest();
 //var check_working_timer=setTimeout("check_working()",2000);
 function sent_blocing(res)
@@ -80,8 +80,8 @@ function sent_blocing(res)
 //alert(res);
 show_dlg_alert("<span style='font-size:20px;'><b>"+(next+1)+"</b> файл из "+fileCount,0);
 
-bot_contact("file_for_condition_reflexes="+res,sent_process_mess);
-//param="file_for_condition_reflexes="+res;
+bot_contact("file_for_cond_reflexes="+res,sent_process_mess);
+//param="file_for_cond_reflexes="+res;
 //var AJAX = new ajax_post_support(linking_address,param,sent_request_mess,1);
 //AJAX.send_reqest();
 function sent_process_mess(res)
@@ -110,20 +110,20 @@ function end()
 wait_end();
 document.getElementById('div_id').innerHTML="Закончен процесс формирования условных рефлексов.";
 show_dlg_alert("Beast выключается для корректного сохранения информации.",2000);
-var AJAX = new ajax_support(linking_address+"?bot_closing=1",sent_bot_closing);
+var AJAX = new ajax_support(linking_address+"?bot_shutdown=1",sent_bot_shutdown);
 AJAX.send_reqest();
-function sent_bot_closing(res)
+function sent_bot_shutdown(res)
 {
 	// не будет ответа
 
 }
 }
 ///////////////////////////////////
-function cliner_files()
+function clear_files()
 {
-var AJAX = new ajax_support("/lib/cliner_condition_reflex_memory.php", sent_cliner_reflex_memory);
+var AJAX = new ajax_support("/lib/clear_condition_reflex_memory.php", sent_clear_reflex_memory);
 AJAX.send_reqest();
-function sent_cliner_reflex_memory(res) {
+function sent_clear_reflex_memory(res) {
 show_dlg_alert("Файлы памяти условных рефлексов очищены.",0);
 }
 }

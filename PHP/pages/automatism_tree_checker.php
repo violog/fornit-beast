@@ -1,6 +1,6 @@
 <?
-/* получить инфу из /memory_psy/automatizm_tree.txt
-/pages/automatizm_tree_checker.php
+/* получить инфу из /memory_psy/automatism_tree.txt
+/pages/automatism_tree_checker.php
 */
 
 header("Expires: Tue, 1 Jul 2003 05:00:00 GMT");
@@ -10,7 +10,7 @@ header("Pragma: no-cache");
 header('Content-Type: text/html; charset=UTF-8');
 setlocale(LC_ALL, "ru_RU.UTF-8");
 
-$file = $_SERVER['DOCUMENT_ROOT'] . "/memory_psy/automatizm_tree.txt";
+$file = $_SERVER['DOCUMENT_ROOT'] . "/memory_psy/automatism_tree.txt";
 $size = filesize($file);
 echo $size;
 

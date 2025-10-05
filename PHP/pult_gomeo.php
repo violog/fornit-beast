@@ -66,7 +66,7 @@ EOD;
 <b>Управление жизненными параметрами</b>
 <?
 if (stages_dev < 5) {
-	echo '<span style="color:red;cursor:pointer;padding-left:2px;padding-right:2px;border:solid 1px #8A3CA4;border-radius:50%;background-color:#ffffff" title="Сбросить все жизненные параметры в 0" onClick="cliner_gomeo_pars(this)"><b>X</b></span> &nbsp;&nbsp;&nbsp;&nbsp;';
+	echo '<span style="color:red;cursor:pointer;padding-left:2px;padding-right:2px;border:solid 1px #8A3CA4;border-radius:50%;background-color:#ffffff" title="Сбросить все жизненные параметры в 0" onClick="clear_gomeo_pars(this)"><b>X</b></span> &nbsp;&nbsp;&nbsp;&nbsp;';
 }
 ?>
 - не использовать в качестве ответа на действия Beast:<br>
@@ -392,17 +392,17 @@ periodI.innerHTML="<span style='color:#B870BB' ><nobr>Нет автоматиз�
 periodI.style.display="block";
 periodI.style.fontSize="18px";
 old_period_val=1;
-isAutomatizmShow=0;
-endNoautomatizmAfterStimul();// ноужно погасить 
+isAutomatismShow=0;
+endNoautomatismAfterStimul();// ноужно погасить
 //setTimeout("endperiodIShow()",2000);
 game_moda_prolongate();
 }
 else
 {
-//	alert(p[6]+" | "+isAutomatizmShow);
-if(isAutomatizmShow)
+//	alert(p[6]+" | "+isAutomatismShow);
+if(isAutomatismShow)
 {
-isAutomatizmShow=0;
+isAutomatismShow=0;
 allowShowWaightStr=1;
 isBigFontShow=1;
 setTimeout("endBigFontShow()",3000);
@@ -529,24 +529,24 @@ var triggersName={
 };
 
 // сбросить локально в GomeostazParams.txt, а если Включен, то послать на ГО.
-function cliner_gomeo_pars(parent)
+function clear_gomeo_pars(parent)
 {
-	show_dlg_control("Сделать:<br><div class='cliner_button' onclick='cliner_gomeo_pars2(0)'>Плохо</div>&nbsp;&nbsp;<div class='cliner_button' onclick='cliner_gomeo_pars2(100)'>Норма</div>",parent);
+	show_dlg_control("Сделать:<br><div class='clear_button' onclick='clear_gomeo_pars2(0)'>Плохо</div>&nbsp;&nbsp;<div class='clear_button' onclick='clear_gomeo_pars2(100)'>Норма</div>",parent);
 
 }
-function cliner_gomeo_pars2(value)
+function clear_gomeo_pars2(value)
 {
-	var server = "/lib/cliner_gomeo_pars.php?value="+value;    
-	var AJAX = new ajax_support(server, sent_cliner_gomeo);
+	var server = "/lib/clear_gomeo_pars.php?value="+value;
+	var AJAX = new ajax_support(server, sent_clear_gomeo);
 	AJAX.send_reqest();
-function sent_cliner_gomeo(res)
+function sent_clear_gomeo(res)
 {
 // alert(exists_connect);
 	if (exists_connect) 
 		{     
-var AJAX = new ajax_support(linking_address + "?cliner_gomeo_pars="+value, sent_cliner_gomeo_go);
+var AJAX = new ajax_support(linking_address + "?clear_gomeo_pars="+value, sent_clear_gomeo_go);
 AJAX.send_reqest();  
-function sent_cliner_gomeo_go(res) 
+function sent_clear_gomeo_go(res)
 {
 
 }
@@ -559,7 +559,7 @@ show_dlg_alert("Установлено",1500);
 
 function end_whell_bad()
 {
-var AJAX = new ajax_support(linking_address + "?close_whell_bad_mode=1", sent_whell_bad_action);
+var AJAX = new ajax_support(linking_address + "?clear_well_bad=1", sent_whell_bad_action);
 AJAX.send_reqest();
 function sent_whell_bad_action(res) 
 {		
@@ -579,11 +579,11 @@ var periodI=document.getElementById('time_limit_id');
 periodI.style.display="none";
 }
 
-function endNoautomatizmAfterStimul()
+function endNoautomatismAfterStimul()
 { 
-var AJAX = new ajax_support(linking_address + "?end_noautomatizm=111", sent_Noautomatizm_action);
+var AJAX = new ajax_support(linking_address + "?end_no_automatism=111", sent_Noautomatism_action);
 AJAX.send_reqest();
-function sent_Noautomatizm_action(res) 
+function sent_Noautomatism_action(res)
 {		  
 setTimeout("endperiodIShow()",2000); //alert(res);
 }
@@ -591,7 +591,7 @@ setTimeout("endperiodIShow()",2000); //alert(res);
 
 </script>
 <style>
-.cliner_button /* кнопка выбора очитки жизненных параметров */
+.clear_button /* кнопка выбора очитки жизненных параметров */
 {
 position:relative;
 #margin-top:10px;
@@ -606,7 +606,7 @@ padding-left:4px;
 padding-right:4px;
 display:inline-block;
 }
-.cliner_button:hover
+.clear_button:hover
 {
 background:linear-gradient(180deg, #dddddd, #eeeeee);
 }

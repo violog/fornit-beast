@@ -86,7 +86,7 @@ var GomeostazActionEffectArr = make([]string, 30) //make(map[int]string)
 	нажатия кнопок действий Пульта дают значение эффекта Боли и Радости
 
 На уровне рефлексов не оказывает действия - только в период ожидания результата действий Beast
-- для (де)мотивации в automatizm_result.go
+- для (де)мотивации в automatism_result.go
 */
 var GomeostazActionCommonEffectArr = make([]string, 30) //make(map[int]string)
 
@@ -110,7 +110,7 @@ var GomeostazActionCommonEffectArr = make([]string, 30) //make(map[int]string)
 Боль и радость: fornit.ru/67646
 
 Здесь применяются детекторы общих (де)мотивирующих действий - пока только в период ожидания результата действий Beast
-- для (де)мотивации в automatizm_result.go TODO но могут использовать в безусловных рефлексах.
+- для (де)мотивации в automatism_result.go TODO но могут использовать в безусловных рефлексах.
 Максимальные значения до 10.
 
 Боль и Радость возникают при:

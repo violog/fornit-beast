@@ -1,7 +1,7 @@
 <?
 /*  все используемые фразы в шаблонах условных рефлексов
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/pages/mirrors_automatizm_get_all_phrases.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/pages/mirrors_automatism_get_all_phrases.php");
 
 foreach ($triggerPhraseArr as $tArr)
 */

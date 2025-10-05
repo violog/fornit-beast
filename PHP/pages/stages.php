@@ -74,7 +74,7 @@ cursor:pointer;
 <li><a href="/pages/words.php">Заливка Фраз для дерева слов и дерева фраз</a></li>
 <li><a href="/pages/terminal_actions.php">Редактор возможных Действий</a></li>
 <li><a href="/pages/reflexes.php">Редактор безусловных рефлексов</a> 
-<span style="font-size:16px;cursor:pointer;color:#7E58FF;" onClick="cliner_reflex_times_stadies()"  title="Чтобы рефлексы не просрочили свое время жизни, нужно обновлять его перед началом использования." ><b>Обновить время жизни рефлексов</b></span></li>
+<span style="font-size:16px;cursor:pointer;color:#7E58FF;" onClick="clear_reflex_times_stadies()"  title="Чтобы рефлексы не просрочили свое время жизни, нужно обновлять его перед началом использования." ><b>Обновить время жизни рефлексов</b></span></li>
 В общем-то эта стадия уже предложена в головом виде и можно просто перейти к следубщей, а можно изменить базовую сущность этого живого существа.
 <br><br>
 <div style="position:relative;">
@@ -132,7 +132,7 @@ var bot_is_connected=0;
 function check_activnost()
 {
 	bot_is_connected=0;
-var AJAX = new ajax_support(linking_address + "?check_Beast_activnost=1", check_conn_info);
+var AJAX = new ajax_support(linking_address + "?check_activity=1", check_conn_info);
 AJAX.send_reqest();
 function check_conn_info(res) {
 	bot_is_connected=1;
@@ -188,9 +188,9 @@ gotonextlevel2()
 function gotonextlevel()
 {
 // в зависимости от того, куда возвращаемся
-var AJAX = new ajax_support("/lib/cliner_stadies_memory.php?next_level="+next_level, sent_cliner_reflex_memory);
+var AJAX = new ajax_support("/lib/clear_stadies_memory.php?next_level="+next_level, sent_clear_reflex_memory);
 AJAX.send_reqest();
-function sent_cliner_reflex_memory(res) {
+function sent_clear_reflex_memory(res) {
 show_dlg_alert("Память, зависимая от стадии "+next_level+", очищена.",2000);
 setTimeout("gotonextlevel2();",2000);
 }
@@ -203,24 +203,24 @@ form.submit();
 next_level=0;
 }
 
-var cliner_reflex_timer=0;
-function cliner_reflex_times_stadies()
+var clear_reflex_timer=0;
+function clear_reflex_times_stadies()
 {
 if(!bot_is_connected)
 {
 show_dlg_alert("Включите Beast для обновления времени жизни рефлексов.",0);
 return;
 }
- cliner_reflex_timer=setTimeout("cliner_reflex_times_stadies2()",2000);
-var AJAX = new ajax_support(linking_address + "?cliner_time_condition_reflex=1", sent_get_info);
+ clear_reflex_timer=setTimeout("clear_reflex_times_stadies2()",2000);
+var AJAX = new ajax_support(linking_address + "?clear_cond_reflex_timer=1", sent_get_info);
 AJAX.send_reqest();
 function sent_get_info(res) 
 {
 show_dlg_alert('Время жизни условных рефлексов очищено.',2000);
-clearTimeout(cliner_reflex_timer);
+clearTimeout(clear_reflex_timer);
 }
 }
-function cliner_reflex_times_stadies2()
+function clear_reflex_times_stadies2()
 {
 show_dlg_alert('Функция не срабатывает, сначала нужно включить Beast.',0);
 }

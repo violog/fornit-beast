@@ -38,7 +38,7 @@ if (isset($_POST['gogogo'])) {
 			<script Language="JavaScript" src="/ajax/ajax_post.js"></script>
 			<script>
 				//alert("!!!!!");
-				bot_contact("text_block=<?= $out ?>", text_block_answer)
+				bot_contact("raw_text_block=<?= $out ?>", raw_text_block_answer)
 				;
 				function text_block_answer(res)
 				{ 
@@ -71,7 +71,7 @@ echo "<div class='main_page_div' style='margin-top:0px;'>";
 echo "<a href='/pages/words_tree.php' target='showpage2' style=''>Показать дерево слов</a>&nbsp;&nbsp;
 <a href='/pages/phrase_tree.php' target='showpage2' style=''>Дерево фраз</a>&nbsp;&nbsp;
 <a href='/pages/words_list.php' target='showpage2' style=''>Список слов</a>&nbsp;&nbsp;
-<span style='color:red;cursor:pointer;' onClick='tree_cliner()' title='Очистить дерево слов и фраз чтобы начать заново.'>Очистить дерево слов и фраз</span>";
+<span style='color:red;cursor:pointer;' onClick='tree_clear()' title='Очистить дерево слов и фраз чтобы начать заново.'>Очистить дерево слов и фраз</span>";
 
 /////////////////////////////////////////////////////////////
 
@@ -101,16 +101,16 @@ echo "<a href='/pages/words_temp.php' target='showpage1' style=''>Показат
 </div>
 
 <script>
-function tree_cliner()
+function tree_clear()
 {
-	show_dlg_confirm("Вам придется заново набивать фразы.<br>Точно очистить детектор фраз?",1,1,cliner_continue);
+	show_dlg_confirm("Вам придется заново набивать фразы.<br>Точно очистить детектор фраз?",1,1,clear_continue);
 
 }
-function cliner_continue()
+function clear_continue()
 {
-var AJAX = new ajax_support("/lib/tree_cliner_server.php",sent_tree_cliner);
+var AJAX = new ajax_support("/lib/tree_clear_server.php",sent_tree_clear);
 AJAX.send_reqest();
-function sent_tree_cliner(res)
+function sent_tree_clear(res)
 {
 //document.getElementById('txt_list_id').value="";
 show_dlg_alert("Деревья слов и фраз очищены.<br><br>Нужно перезагрузить Beast.",0);

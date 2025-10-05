@@ -263,7 +263,7 @@ func lookForUnactualDominant() {
 			if v.endTime > diffT { // уже не актуальна
 				// закрыть доминанту
 				v.isSuccess = 4
-				clinerProblemDominenta(dID)
+				clearProblemDominenta(dID)
 			}
 		}
 

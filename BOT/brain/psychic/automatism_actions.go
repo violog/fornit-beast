@@ -36,24 +36,24 @@ import (
 var MotorTerminalBlocking = false
 
 // ссылка на запущенный автоматизм перекрывается следующим запуском, т.е. всегда есть инфа о последнем запущенном
-var lastAutomatizmRun *Automatizm
-var lastAutomatizmRunPulsCount = 0
+var lastAutomatismRun *Automatism
+var lastAutomatismRunPulsCount = 0
 
 /*
 НАЧАЛО ПЕРИОДА ОЖИДАНИЯ ОТВЕТА с Пульта
 момент запуска автоматизма в числе пульсов -
-только если LastAutomatizmWeiting был в ответ на действия Оператора!
+только если LastAutomatismWeiting был в ответ на действия Оператора!
 Cбрасывать ожидание результата автоматизма если прошло WaitingPeriodForActionsVal (60) пульсов
 */
-var LastRunAutomatizmPulsCount = 0 //
+var LastRunAutomatismPulsCount = 0 //
 // период ожидания реакции оператора на действие автоматизма
 const WaitingPeriodForActionsVal = 60
 
-// ожидается результат запущенного MotAutomatizm
-var LastAutomatizmWeiting *Automatizm
+// ожидается результат запущенного MotAutomatism
+var LastAutomatismWeiting *Automatism
 
-// предыдущий запущенный MotAutomatizm
-var prevLastAutomatizmWeiting *Automatizm
+// предыдущий запущенный MotAutomatism
+var prevLastAutomatismWeiting *Automatism
 
 // активный узел дерева в момент запуска автоматизма
 var LastDetectedActiveLastNodID = 0
@@ -61,7 +61,7 @@ var LastDetectedActiveLastNodID = 0
 /*
 	предыдущий момент запуска автоматизма
 
-теперь prevLastDetectedActiveLastPulsCount==lastAutomatizmRunPulsCount НО НЕ СБРАСЫВАЕТСЯ, а есть всегда
+теперь prevLastDetectedActiveLastPulsCount==lastAutomatismRunPulsCount НО НЕ СБРАСЫВАЕТСЯ, а есть всегда
 */
 var prevLastDetectedActiveLastPulsCount = 0
 
@@ -70,14 +70,14 @@ var prevLastDetectedActiveLastPulsCount = 0
 
 возвращает true при успехе
 */
-func RumAutomatizmID(id int) bool {
+func RumAutomatismID(id int) bool {
 
-	//	a:= AutomatizmFromId[id]
-	a, ok := ReadeAutomatizmFromId(id)
+	//	a:= AutomatismFromId[id]
+	a, ok := ReadeAutomatismFromId(id)
 	if !ok {
 		return false
 	}
-	return RumAutomatizm(a)
+	return RumAutomatism(a)
 }
 
 /*
@@ -103,14 +103,14 @@ func GetAllowReflexRuning() bool {
 
 в случае отсуствия пси-реакций с вопросом о том, как нужно реагировать.
 
-При запуске вторичного автоматизма Next не устанавливаются lastAutomatizmRun и т.п. переменные,
+При запуске вторичного автоматизма Next не устанавливаются lastAutomatismRun и т.п. переменные,
 т.о. в периоде ожидания Эффект реакции применяется только к первому, пусковому автоматизму цепочки.
 */
 var isTeachQuestion = false
 var isInterruptAutmtzm = false
 
-func RumAutomatizm(am *Automatizm) bool {
-	//var isActiveLastRunAutomatizmPulsCount bool // маркер срабатывания фиксации активность мот. автоматизма
+func RumAutomatism(am *Automatism) bool {
+	//var isActiveLastRunAutomatismPulsCount bool // маркер срабатывания фиксации активность мот. автоматизма
 	isInterruptAutmtzm = false
 
 	if am == nil {
@@ -122,8 +122,8 @@ func RumAutomatizm(am *Automatizm) bool {
 		return false
 	}
 
-	//if wasRunTreeStandardAutomatizm { // уже был запущен штатный автоматизм после Стимула. ТЕПЕРЬ всегда после запуска автоматизма LastRunAutomatizmPulsCount >0
-	if LastRunAutomatizmPulsCount > 0 {
+	//if wasRunTreeStandardAutomatism { // уже был запущен штатный автоматизм после Стимула. ТЕПЕРЬ всегда после запуска автоматизма LastRunAutomatismPulsCount >0
+	if LastRunAutomatismPulsCount > 0 {
 		isInterruptAutmtzm = true
 		return false
 	}
@@ -153,7 +153,7 @@ func RumAutomatizm(am *Automatizm) bool {
 	res := GetAutomotizmActionsString(am, true, false) // здесь пишется "Энергичность"
 	if len(res) == 0 {                                 // может не быть акции, а фраза не распознана, тогда ничего нет
 		// такой автоматизм нужно удалить
-		deleteAutomatizm(am)
+		deleteAutomatism(am)
 		isInterruptAutmtzm = true
 		return false
 	}
@@ -161,27 +161,27 @@ func RumAutomatizm(am *Automatizm) bool {
 	//	if am.BranchID > 0 {  любоый запуск автоматизма, даже пробный, без привязки к узлу
 	notAllowReflexRuning = true // блокировка рефлексов
 	// для учительского правила
-	if LastAutomatizmWeiting == nil {
-		prevLastAutomatizmWeiting = am
+	if LastAutomatismWeiting == nil {
+		prevLastAutomatismWeiting = am
 	} else {
-		prevLastAutomatizmWeiting = LastAutomatizmWeiting
+		prevLastAutomatismWeiting = LastAutomatismWeiting
 	}
-	LastAutomatizmWeiting = am
-	lastAutomatizmRun = am
-	/* 	if lastAutomatizmRunPulsCount == 0 {
+	LastAutomatismWeiting = am
+	lastAutomatismRun = am
+	/* 	if lastAutomatismRunPulsCount == 0 {
 		prevLastDetectedActiveLastPulsCount = PulsCount
 	} else {
-		prevLastDetectedActiveLastPulsCount = lastAutomatizmRunPulsCount
+		prevLastDetectedActiveLastPulsCount = lastAutomatismRunPulsCount
 	}		 */
-	// всегда показывать время запуска автоматизма, в принципе теперь prevLastDetectedActiveLastPulsCount==lastAutomatizmRunPulsCount
+	// всегда показывать время запуска автоматизма, в принципе теперь prevLastDetectedActiveLastPulsCount==lastAutomatismRunPulsCount
 	prevLastDetectedActiveLastPulsCount = PulsCount
 
-	lastAutomatizmRunPulsCount = PulsCount
+	lastAutomatismRunPulsCount = PulsCount
 	//	}
 
-	if NoautomatizmAfterStimul > 0 { // чтобы ставить прерывание
+	if NoautomatismAfterStimul > 0 { // чтобы ставить прерывание
 		// ПО-ЛЮБОМУ УБИРАЕМ МЕТКУ - ДЕТЕКТОР
-		NoautomatizmAfterStimul = 0 // автоматизм выполнен, обнуляем метку
+		NoautomatismAfterStimul = 0 // автоматизм выполнен, обнуляем метку
 	}
 
 	stimulCount = 0 //сколько раз был стимул от оператора после последнего запуска Ответа
@@ -189,7 +189,7 @@ func RumAutomatizm(am *Automatizm) bool {
 	var out = "3|" // Бессознательный Автоматизм
 
 	ta := ""
-	switch levelOfRunAutomatizm {
+	switch levelOfRunAutomatism {
 	case 0:
 		ta = "Штатный"
 	case 1:
@@ -201,14 +201,14 @@ func RumAutomatizm(am *Automatizm) bool {
 	}
 	out += "<div style=\"position:absolute;top:-10px;right:0;color:gray;\">" + ta + "</div>"
 	//out += "<span style=\"position:relative;top:-10px;\">WWWWWWWW</span>"
-	levelOfRunAutomatizm = 0
+	levelOfRunAutomatism = 0
 
 	// записать в инфо-окружение - память о происходящем сохраняется в массиве InformationEnvironmentObjects []*InformationEnvironment
 	if am.BranchID > 0 {
-		CurrentInformationEnvironment.AnswerImageID = lastAutomatizmRun.ActionsImageID
+		CurrentInformationEnvironment.AnswerImageID = lastAutomatismRun.ActionsImageID
 
-		//if isActiveLastRunAutomatizmPulsCount == true {
-		if len(res) < 2 { // пустой и без запуска LastRunAutomatizmPulsCount не пускать
+		//if isActiveLastRunAutomatismPulsCount == true {
+		if len(res) < 2 { // пустой и без запуска LastRunAutomatismPulsCount не пускать
 			return false
 		}
 		if isTeachQuestion {
@@ -218,9 +218,9 @@ func RumAutomatizm(am *Automatizm) bool {
 			out += res
 		}
 		/*		} else {
-				// не сработало isActiveLastRunAutomatizmPulsCount в процессе выполнения func13
+				// не сработало isActiveLastRunAutomatismPulsCount в процессе выполнения func13
 				if isTeachQuestion {
-					passivationAutomatizm(am, -1)
+					passivationAutomatism(am, -1)
 					return false
 				}
 				out += res
@@ -231,14 +231,14 @@ func RumAutomatizm(am *Automatizm) bool {
 
 	/* на стадиях меньше 4 не активируем флаг потому, что он так и будет висеть в true и все блокировать. False ставится в consciousnessElementary(), которая активна только с 4 стадии
 	if EvolushnStage > 3 {
-		wasRunTreeStandardAutomatizm = true //Был запущен штатный автоматизм
-	ТЕПЕРЬ всегда после запуска автоматизма LastRunAutomatizmPulsCount >0
+		wasRunTreeStandardAutomatism = true //Был запущен штатный автоматизм
+	ТЕПЕРЬ всегда после запуска автоматизма LastRunAutomatismPulsCount >0
 	}*/
 
 	lib.SentActionsForPult(out)
 	isTeachQuestion = false //надо скидывать при любом раскладе - прошел попугайский автоматизм или нет
 
-	// отслеживать последствия в automatizm_result.go при любом срабатывании автоматизма
+	// отслеживать последствия в automatism_result.go при любом срабатывании автоматизма
 	/* (было: начать ПЕРИОД ОЖИДАНИЯ реакции оператора - только при Стимуле Оператора, а не изменением состояния)
 	Период ожидания должен начинаться ЗАНОВО после каждого ответа Beast и независимо от того, привязан ли автоматизм к ветке.
 	*/
@@ -252,18 +252,18 @@ func RumAutomatizm(am *Automatizm) bool {
 	*/
 	// свежесть Стимула оператора - не позже, чем limitOfActionsAfterStimul пульса до Ответа на него
 	//	if curActiveActionsID > 0 && (curActiveActionsPulsCount > (PulsCount - limitOfActionsAfterStimul)) {
-	LastRunAutomatizmPulsCount = PulsCount // активность мот.автоматизма в чисде пульсов
+	LastRunAutomatismPulsCount = PulsCount // активность мот.автоматизма в чисде пульсов
 	detectedActiveLastNodPrevID = detectedActiveLastNodID
 	detectedActiveLastUnderstandingNodPrevID = detectedActiveLastUnderstandingNodID
 	// может быть больше 3 пульсов - с этим надо что то делать
 	// причина - циклы запускающие функции
-	//isActiveLastRunAutomatizmPulsCount = true
+	//isActiveLastRunAutomatismPulsCount = true
 
-	setAutomatizmRunning(am, curPurposeGeneticAutmtzm)
+	setAutomatismRunning(am, curPurposeGeneticAutmtzm)
 	//	}
 	//	}
 
-	/* при отзеркаливании на 2 и 4 стадиях нельзя делать попугайские с Usefulnes==-1 - иначе они могут разблокироваться и стать штатными в checkForUnbolokingAutomatizm()!!!
+	/* при отзеркаливании на 2 и 4 стадиях нельзя делать попугайские с Usefulnes==-1 - иначе они могут разблокироваться и стать штатными в checkForUnbolokingAutomatism()!!!
 	кроме того, если заминусовать Usefulnes и при этом не отработал вопрос-ответ типа [out="10|Ответь сам на...] то получится заминусованный попугайский автоматизм
 	который потом не даст ничего привязать к узлу, придется меняя пусковой стимул привязывать автоматизм к другому
 	при создании автоматизма Usefulness и Belief ==0
@@ -271,25 +271,25 @@ func RumAutomatizm(am *Automatizm) bool {
 	/*		if isTeachQuestion{
 			isTeachQuestion = false
 			am.Usefulness=0
-			SetAutomatizmBelief(am,0)
+			SetAutomatismBelief(am,0)
 		}*/
 	if am.BranchID > 0 {
 		//выполнить мозжечковый рефлекс сразу после выполняющегося автоматизма
 		if !transfer.IsPsychicGameMode { // в игровом режиме нельзя корректировать действия - здесь только запись нового
-			runCerebellumAdditionalAutomatizm(0, am.ID)
+			runCerebellumAdditionalAutomatism(0, am.ID)
 		}
 		LastDetectedActiveLastNodID = detectedActiveLastNodID
 		/* Блокировать выполнение рефлексов на время ожидания результата автоматизма
 		вызывается из reflex_action.go рефлексов
 		*/
-		//isReflexesActionBloking=true // отмена в automatizm_result.go или просто isReflexesActionBloking=false
+		//isReflexesActionBloking=true // отмена в automatism_result.go или просто isReflexesActionBloking=false
 
 		return true
 	}
 	return false
 }
 
-func GetAutomotizmActionsString(am *Automatizm, writeLog bool, infoPult bool) string {
+func GetAutomotizmActionsString(am *Automatism, writeLog bool, infoPult bool) string {
 	var out = ""
 
 	//ai:=ActionsImageArr[am.ActionsImageID]
@@ -317,12 +317,12 @@ func GetAutomotizmActionsString(am *Automatizm, writeLog bool, infoPult bool) st
 			sumEnergy = 1
 		}
 		//am.Count++
-		actAtr = TerminateMotorAutomatizmActions(am.ID, ai.ActID, sumEnergy, infoPult)
+		actAtr = TerminateMotorAutomatismActions(am.ID, ai.ActID, sumEnergy, infoPult)
 	}
 
 	if ai.PhraseID != nil && am.BranchID > 0 {
 		addE := getCerebellumReflexAddEnergy(0, am.ID)
-		praseStr = TerminatePraseAutomatizmActions(ai.PhraseID, am.Energy+addE)
+		praseStr = TerminatePraseAutomatismActions(ai.PhraseID, am.Energy+addE)
 	}
 	// может не быть акции, а фраза не распознана, тогда ничего нет
 	if len(actAtr) == 0 && len(praseStr) == 0 {
@@ -355,8 +355,8 @@ func GetAutomotizmActionsString(am *Automatizm, writeLog bool, infoPult bool) st
 // для функций пульта
 func GetAutomotizmIDString(id int) string {
 
-	//	am:= AutomatizmFromId[id]
-	am, ok := ReadeAutomatizmFromId(id)
+	//	am:= AutomatismFromId[id]
+	am, ok := ReadeAutomatismFromId(id)
 	if !ok {
 		return "Нет автоматизма с ID = " + strconv.Itoa(id)
 	}
@@ -374,12 +374,12 @@ func GetAutomotizmIDString(id int) string {
 			sumEnergy = 1
 		}
 		//am.Count++
-		out += TerminateMotorAutomatizmActions(am.ID, ai.ActID, sumEnergy, true)
+		out += TerminateMotorAutomatismActions(am.ID, ai.ActID, sumEnergy, true)
 	}
 
 	if ai.PhraseID != nil {
 		addE := getCerebellumReflexAddEnergy(0, am.ID)
-		out += TerminatePraseAutomatizmActions(ai.PhraseID, am.Energy+addE)
+		out += TerminatePraseAutomatismActions(ai.PhraseID, am.Energy+addE)
 	}
 	if len(out) == 0 {
 		return "ПУСТО..."
@@ -400,12 +400,12 @@ func GetAutomotizmIDString(id int) string {
 	совершить МОТОРНОЕ (http://go/pages/terminal_actions.php) действие  - Dnn-часть автоматизма (не фраза)
 
 cила действия сначала задается =5, а потот корректируется мозжечковыми рефлексами
-Использование: 	TerminateMotorAutomatizmActions(actIDarr,energy)
+Использование: 	TerminateMotorAutomatismActions(actIDarr,energy)
 */
-var rumAutomatizmOldID = 0 //
-var rumAutomatizmOldEnergi = 0
+var rumAutomatismOldID = 0 //
+var rumAutomatismOldEnergi = 0
 
-func TerminateMotorAutomatizmActions(amID int, actIDarr []int, energy int, infoPult bool) string {
+func TerminateMotorAutomatismActions(amID int, actIDarr []int, energy int, infoPult bool) string {
 	// energy=1
 	var out = ""
 	var isAct = false
@@ -447,19 +447,19 @@ func TerminateMotorAutomatizmActions(amID int, actIDarr []int, energy int, infoP
 		то чисто "рефлекторно" повышать его силу действия с каждым разом, без мозжечкового механизма
 		чтобы потом в одиночном вызове он не срабатывал.
 		*/
-		if rumAutomatizmOldID == amID { // повторился автоматизм
+		if rumAutomatismOldID == amID { // повторился автоматизм
 			// в игровом режиме это не учитываем, там постоянно используются одни и теже учительские кнопки при обучении
 			// так же при показе инфо-окон по щелчку по строке таблицы автоматизмов на пульте просто показываем текущий уровень энергии
 			if !transfer.IsPsychicGameMode && !infoPult {
-				if energy+rumAutomatizmOldEnergi < len(termineteAction.EnergyDescrib) { // не превышать максимум
-					rumAutomatizmOldEnergi++
+				if energy+rumAutomatismOldEnergi < len(termineteAction.EnergyDescrib) { // не превышать максимум
+					rumAutomatismOldEnergi++
 				}
-				energy += rumAutomatizmOldEnergi
+				energy += rumAutomatismOldEnergi
 			}
 		} else {
-			rumAutomatizmOldEnergi = 0
+			rumAutomatismOldEnergi = 0
 		}
-		rumAutomatizmOldID = amID
+		rumAutomatismOldID = amID
 
 		// название силы:
 		var enegrName = ""
@@ -507,7 +507,7 @@ func getFontFromEnergy(energy int) string {
 
 cила действия сначала задается = 5, а потот корректируется мозжечковыми рефлексами
 */
-func TerminatePraseAutomatizmActions(IDarr []int, energy int) string {
+func TerminatePraseAutomatismActions(IDarr []int, energy int) string {
 	// при моторном действии  меняются гомео-параметры:
 	// expensesGomeostatParametersAfterAction(aI) болтать можно без устали?
 
@@ -560,11 +560,11 @@ func expensesGomeostatParametersAfterAction(actID int, energy int) {
 }
 
 // запуск найденного автоматизма в цикле func consciousnessElementary()
-func runConsciousnessAutomatizm(autmtzm *Automatizm) {
+func runConsciousnessAutomatism(autmtzm *Automatism) {
 	if autmtzm == nil {
 		return
 	}
-	RumAutomatizmID(autmtzm.ID)
+	RumAutomatismID(autmtzm.ID)
 	mentalInfoStruct.motorAtmzmID = 0
 	mentalInfoStruct.noStaffAtmzmID = false
 	motorActionEffect = autmtzm.Usefulness
@@ -580,7 +580,7 @@ func runConsciousnessAutomatizm(autmtzm *Automatizm) {
 func runIgnoreAction() {
 	// игнорирования
 	ignorImageID, _ := CreateNewlastActionsImageID(0, 0, []int{9}, nil, 0, 0, true)
-	TerminateMotorAutomatizmActions(0, []int{ignorImageID}, 1, false)
+	TerminateMotorAutomatismActions(0, []int{ignorImageID}, 1, false)
 
 	lib.WritePultConsol("<span style='color:blue;background-color:#FFFFA3;'>Игнорирование из-за глубокого размышления.</span>: ")
 

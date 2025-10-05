@@ -53,40 +53,40 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 
 		if !isGlobalStopAllActivnost {
 			// текстовый блок для набивки дерева слов-фраз из http://go/pages/words.php
-			text_block := r.FormValue("text_block")
-			if len(text_block) > 0 {
+			raw_text_block := r.FormValue("raw_text_block")
+			if len(raw_text_block) > 0 {
 				brain.IsPultActivnost = true
-				res := word_sensor.SetNewTextBlock(text_block)
+				res := word_sensor.SetNewTextBlock(raw_text_block)
 				brain.IsPultActivnost = false
 				_, _ = fmt.Fprint(resp, res)
 				return
 			}
 			// текст из окна ввода с пульта
-			text_dlg := r.FormValue("text_dlg")
-			if len(text_dlg) > 0 {
+			text_split := r.FormValue("text_split")
+			if len(text_split) > 0 {
 				brain.IsPultActivnost = true
-				is_input_rejim, _ := strconv.Atoi(r.FormValue("is_input_rejim")) // режим быстрого формирования у-рефлексов
-				if is_input_rejim == 0 {                                         // наоборот
+				is_forced_mode, _ := strconv.Atoi(r.FormValue("is_forced_mode")) // режим быстрого формирования у-рефлексов
+				if is_forced_mode == 0 {                                         // наоборот
 					reflexes.IsUnlimitedMode = 1
 				} else {
 					reflexes.IsUnlimitedMode = 0
 				}
-				toneID, _ := strconv.Atoi(r.FormValue("pult_tone"))
-				pultMood := r.FormValue("pult_mood") // тон сообщения
-				moodID, _ := strconv.Atoi(pultMood)  // настроение сообщения
-				res := word_sensor.VerbalDetection(text_dlg, is_input_rejim, toneID, moodID)
+				toneID, _ := strconv.Atoi(r.FormValue("control_tone"))
+				pultMood := r.FormValue("control_mood") // тон сообщения
+				moodID, _ := strconv.Atoi(pultMood)     // настроение сообщения
+				res := word_sensor.VerbalDetection(text_split, is_forced_mode, toneID, moodID)
 				if moodID > 0 {
 					// учесть мотивирующий эффект
 					action_sensor.UpdateMoodEffectFromMessage(moodID)
 				}
 				// если добавлены пусковые стимулы (нажаты кнопки на пульте)
-				set_img_action := r.FormValue("set_img_action")
+				actions_image := r.FormValue("actions_image")
 				action_sensor.IsPultAction()
-				if len(set_img_action) > 0 {
+				if len(actions_image) > 0 {
 					// brain.IsPultActivnost = true
 
 					enegry, _ := strconv.Atoi(r.FormValue("food_portion"))
-					action_sensor.SetActionFromPult(set_img_action, enegry)
+					action_sensor.SetActionFromPult(actions_image, enegry)
 					/*
 						// активировать дерево действием
 						reflexes.ActiveFromAction()
@@ -99,7 +99,7 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				// и если есть ответ, то тут же выдать на Пульт
 				var answerStr = ""
 				if len(lib.ActionsForPultStr) > 5 && !sleep.IsSleeping {
-					lib.ActionsForPultStr = lib.SharedReflexWithAutomatizm()
+					lib.ActionsForPultStr = lib.SharedReflexWithAutomatism()
 					if len(lib.ActionsForPultStr) > 5 {
 						if false { // проверка акций
 							arts := strings.Split(lib.ActionsForPultStr, "||")
@@ -121,6 +121,7 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 			}
 
 			// отправить на пульт состояние гомеостаза Beast и его базовые контексты
+			// not present in PHP = never used
 			sincronism := r.FormValue("sincronism")
 			if len(sincronism) > 0 {
 				// выполнить цикл действий по пульсу перед отправкой результата на Пульт
@@ -137,14 +138,14 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 
 				var waitingPeriod = "_"
 				// был Стиму оператора, но 2 пульса как нет ответного автоматизма
-				if psychic.NoautomatizmAfterStimul == 2 {
+				if psychic.NoautomatismAfterStimul == 2 {
 					// активация дерева не вызвала автоматизм и не было периода ожидания
 					waitingPeriod = "zzz"
-					/*	psychic.NoautomatizmAfterStimul=0 // не повторять, а дать сбросить сообщение
+					/*	psychic.NoautomatismAfterStimul=0 // не повторять, а дать сбросить сообщение
 						потому как все сложно из-за синхронизации пульсов (js:sincronisationWithGo()),
-						котоая тоже вызывает "set_img_action"
-						Cброс NoautomatizmAfterStimul происходит по js:endNoautomatizmAfterStimul()
-						после отработки сообщения в GET обработчике: r.FormValue("endNoautomatizmAfterStimul")
+						котоая тоже вызывает "actions_image"
+						Cброс NoautomatismAfterStimul происходит по js:endNoautomatismAfterStimul()
+						после отработки сообщения в GET обработчике: r.FormValue("endNoautomatismAfterStimul")
 					*/
 				}
 				res, timeWait := psychic.WaitingPeriodForActions()
@@ -193,7 +194,7 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 			if len(setParamsId) > 0 {
 				brain.IsPultActivnost = true
 				id, _ := strconv.Atoi(setParamsId)
-				gomeostas.SetCurGomeoParams(id, r.FormValue("params_val"))
+				gomeostas.SetCurGomeoParams(id, r.FormValue("params_list"))
 				brain.IsPultActivnost = false
 				_, _ = fmt.Fprint(resp, "1")
 				return
@@ -211,7 +212,7 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 			информация о действиях Beast ничинается с идентификатора назначения: "ACTION:"
 			*/
 			if len(lib.ActionsForPultStr) > 0 {
-				sctionsStr := lib.SharedReflexWithAutomatizm()
+				sctionsStr := lib.SharedReflexWithAutomatism()
 				if len(sctionsStr) > 0 {
 					_, _ = fmt.Fprint(resp, "ACTION:"+sctionsStr)
 				}
@@ -231,9 +232,9 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 			brain.NotAllowAnyActions = true
 
 			// Сформировать условные рефлексы на основе списка фраз-синонимов
-			file_for_condition_reflexes := r.FormValue("file_for_condition_reflexes")
-			if len(file_for_condition_reflexes) > 0 {
-				reflexes.FormingConditionsRefleaxFromList(file_for_condition_reflexes)
+			file_for_cond_reflexes := r.FormValue("file_for_cond_reflexes")
+			if len(file_for_cond_reflexes) > 0 {
+				reflexes.FormingConditionsRefleaxFromList(file_for_cond_reflexes)
 				_, _ = fmt.Fprint(resp, "OK")
 			}
 		}
@@ -243,22 +244,22 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		// проверка активности Beast, аозвращает текущий brain.PulsCount
 		brain.IsPultActivnost = true
-		check_Beast_activnost := r.FormValue("check_Beast_activnost")
-		if check_Beast_activnost == "1" {
+		check_activity := r.FormValue("check_activity")
+		if check_activity == "1" {
 			_, _ = fmt.Fprint(resp, brain.PulsCount)
 			return
 		}
 		// остановка любой активности Beast
 		brain.IsPultActivnost = true
-		stop_activnost := r.FormValue("stop_activnost")
-		if stop_activnost == "1" {
+		stop_activity := r.FormValue("stop_activity")
+		if stop_activity == "1" {
 			isGlobalStopAllActivnost = true
 			_, _ = fmt.Fprint(resp, "stop")
 			return
 		}
 		// восстановление активности Beast
-		start_activnost := r.FormValue("start_activnost")
-		if start_activnost == "1" {
+		start_activity := r.FormValue("start_activity")
+		if start_activity == "1" {
 			isGlobalStopAllActivnost = false
 			brain.IsPultActivnost = false
 			_, _ = fmt.Fprint(resp, "active")
@@ -280,10 +281,10 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 			return
 		}
 		// корректное выключение Beast
-		bot_closing := r.FormValue("bot_closing")
-		if len(bot_closing) > 0 {
+		bot_shutdown := r.FormValue("bot_shutdown")
+		if len(bot_shutdown) > 0 {
 			brain.IsPultActivnost = true
-			cleanupFunc(bot_closing)
+			cleanupFunc(bot_shutdown)
 			return
 		}
 		// выключение по крестику окна браузера
@@ -301,8 +302,8 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 			return
 		}
 		// на время перезагрузки НЕ закрывать прогу
-		no_close_weght := r.FormValue("no_close_weght")
-		if len(no_close_weght) > 0 {
+		do_not_close_on_restart := r.FormValue("do_not_close_on_restart")
+		if len(do_not_close_on_restart) > 0 {
 			noСloseWeght = true
 			_, _ = fmt.Fprint(resp, "!")
 			//time.Sleep(2 * time.Second) // ждем 2 сек
@@ -315,20 +316,20 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 		// Формирование зеркальных автоматизмов на основе списка ответов
 		mirror_making_fool := r.FormValue("mirror_making_fool")
 		if len(mirror_making_fool) > 0 {
-			res := psychic.FormingMirrorAutomatizmFromList(mirror_making_fool)
+			res := psychic.FormingMirrorAutomatismFromList(mirror_making_fool)
 			_, _ = fmt.Fprint(resp, res)
 			return
 		}
 		// Формирование зеркальных автоматизмов на основе общего шаблона
 		mirror_making_temp := r.FormValue("mirror_making_temp")
 		if len(mirror_making_temp) > 0 {
-			res := psychic.FormingMirrorAutomatizmFromTempList(mirror_making_temp)
+			res := psychic.FormingMirrorAutomatismFromTempList(mirror_making_temp)
 			_, _ = fmt.Fprint(resp, res)
 			return
 		}
 
 		if !isGlobalStopAllActivnost {
-			setExpParam := r.FormValue("set_exp_param") // экспорт данных
+			setExpParam := r.FormValue("export_data") // экспорт данных
 			if len(setExpParam) > 0 {
 				brain.IsPultActivnost = true
 				if setExpParam == "1" {
@@ -344,7 +345,7 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			setImpParam := r.FormValue("set_imp_param") // импорт данных
+			setImpParam := r.FormValue("import_data") // импорт данных
 			if len(setImpParam) > 0 {
 				brain.IsPultActivnost = true
 				if setImpParam == "1" {
@@ -445,7 +446,7 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				// и если есть ответ, то тут же выдать на ПультL
 				var answerStr = ""
 				if len(lib.ActionsForPultStr) > 5 {
-					lib.ActionsForPultStr = lib.SharedReflexWithAutomatizm()
+					lib.ActionsForPultStr = lib.SharedReflexWithAutomatism()
 					if len(lib.ActionsForPultStr) > 5 {
 						answerStr = lib.ActionsForPultStr
 					}
@@ -480,8 +481,8 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 			}
 
 			// снятие состояния Хорошо и Плохо
-			close_whell_bad_mode := r.FormValue("close_whell_bad_mode")
-			if len(close_whell_bad_mode) > 0 {
+			clear_well_bad := r.FormValue("clear_well_bad")
+			if len(clear_well_bad) > 0 {
 				// Снять режимы Плохо и Хорошо
 				gomeostas.CliarWellBad()
 				_, _ = fmt.Fprint(resp, "ok")
@@ -499,8 +500,8 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				return
 			}*/
 
-			cliner_time_condition_reflex := r.FormValue("cliner_time_condition_reflex")
-			if len(cliner_time_condition_reflex) > 0 {
+			clear_cond_reflex_timer := r.FormValue("clear_cond_reflex_timer")
+			if len(clear_cond_reflex_timer) > 0 {
 				isGlobalStopAllActivnost = true
 				ret := reflexes.ClinerTimeConditionReflex()
 				isGlobalStopAllActivnost = false
@@ -517,24 +518,24 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			get_automatizm_list_info := r.FormValue("get_automatizm_list_info")
-			if len(get_automatizm_list_info) > 0 {
+			get_automatism_list_info := r.FormValue("get_automatism_list_info")
+			if len(get_automatism_list_info) > 0 {
 				lpage := r.FormValue("limitBasicID")
 				limitPage, _ := strconv.Atoi(lpage)
-				ref := psychic.GetAutomatizmInfo(limitPage)
+				ref := psychic.GetAutomatismInfo(limitPage)
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
 
-			unblocking_all := r.FormValue("unblocking_all")
-			if len(unblocking_all) > 0 {
+			unblock_all_automatisms := r.FormValue("unblock_all_automatisms")
+			if len(unblock_all_automatisms) > 0 {
 				psychic.UnblockingAllAtmtzms()
 				_, _ = fmt.Fprint(resp, "ok")
 				return
 			}
 
-			get_next_actions_info_list := r.FormValue("get_next_actions_info_list")
-			if len(get_next_actions_info_list) > 0 {
+			get_next_actions := r.FormValue("get_next_actions")
+			if len(get_next_actions) > 0 {
 				ref := psychic.GetNextActionsInfoList()
 				_, _ = fmt.Fprint(resp, ref)
 				return
@@ -543,7 +544,7 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 			get_trigger_info := r.FormValue("get_trigger_info")
 			if len(get_trigger_info) > 0 {
 				triggerID, _ := strconv.Atoi(r.FormValue("triggerID"))
-				ref := reflexes.GetTreeAutomatizmTriggersInfo(triggerID)
+				ref := reflexes.GetTreeAutomatismTriggersInfo(triggerID)
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
@@ -551,7 +552,7 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 			get_sequence_info := r.FormValue("get_sequence_info")
 			if len(get_sequence_info) > 0 {
 				autmzmID, _ := strconv.Atoi(r.FormValue("autmzmID"))
-				ref := psychic.GetAutomatizmSequenceInfo(autmzmID, false)
+				ref := psychic.GetAutomatismSequenceInfo(autmzmID, false)
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
@@ -588,10 +589,10 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			cliner_atmtzm_block := r.FormValue("cliner_atmtzm_block")
-			if len(cliner_atmtzm_block) > 0 {
+			clear_atmtzm_block := r.FormValue("clear_atmtzm_block")
+			if len(clear_atmtzm_block) > 0 {
 				atmtzmID, _ := strconv.Atoi(r.FormValue("atmtzmID"))
-				ref := psychic.UnblockAutomatizmID(atmtzmID)
+				ref := psychic.UnblockAutomatismID(atmtzmID)
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
@@ -626,25 +627,25 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			get_automatizm_tree := r.FormValue("get_automatizm_tree")
-			if len(get_automatizm_tree) > 0 {
+			get_automatism_tree := r.FormValue("get_automatism_tree")
+			if len(get_automatism_tree) > 0 {
 				base := r.FormValue("limitBasicID")
 				limitBasicID, _ := strconv.Atoi(base)
-				ref := psychic.GetAutomatizmTreeForPult(limitBasicID)
+				ref := psychic.GetAutomatismTreeForPult(limitBasicID)
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
-			get_node_automatizms := r.FormValue("get_node_automatizms")
-			if len(get_node_automatizms) > 0 {
+			get_node_automatisms := r.FormValue("get_node_automatisms")
+			if len(get_node_automatisms) > 0 {
 				nodeID, _ := strconv.Atoi(r.FormValue("autNodeID"))
-				ref := psychic.GetNodesAutomatismsInfo(nodeID) //GetAutomatizmForNodeInfo(nodeID)- пишет в лог
+				ref := psychic.GetNodesAutomatismsInfo(nodeID) //GetAutomatismForNodeInfo(nodeID)- пишет в лог
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
-			get_automatizm := r.FormValue("get_automatizm")
-			if len(get_automatizm) > 0 {
+			get_automatism := r.FormValue("get_automatism")
+			if len(get_automatism) > 0 {
 				ID, _ := strconv.Atoi(r.FormValue("autID"))
-				atmz, ok := psychic.ReadeAutomatizmFromId(ID)
+				atmz, ok := psychic.ReadeAutomatismFromId(ID)
 				if ok {
 					ref := psychic.GetAutomotizmActionsString(atmz, false, true)
 					_, _ = fmt.Fprint(resp, ref)
@@ -663,16 +664,16 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 			get_node_aut_tree_node := r.FormValue("get_node_aut_tree_node")
 			if len(get_node_aut_tree_node) > 0 {
 				nodeID, _ := strconv.Atoi(r.FormValue("autNodeID"))
-				ref := psychic.GetAutomatizmNodeTreeForPult(nodeID)
+				ref := psychic.GetAutomatismNodeTreeForPult(nodeID)
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
 
-			get_mental_automatizm_tree := r.FormValue("get_mental_automatizm_tree")
-			if len(get_mental_automatizm_tree) > 0 {
+			get_mental_automatism_tree := r.FormValue("get_mental_automatism_tree")
+			if len(get_mental_automatism_tree) > 0 {
 				base := r.FormValue("limit")
 				limit, _ := strconv.Atoi(base)
-				ref := psychic.GetMentalAutomatizmTreeForPult(limit)
+				ref := psychic.GetMentalAutomatismTreeForPult(limit)
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
@@ -684,16 +685,16 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			get_node_mental_automatizm := r.FormValue("get_node_mental_automatizm")
-			if len(get_node_mental_automatizm) > 0 {
+			get_node_mental_automatism := r.FormValue("get_node_mental_automatism")
+			if len(get_node_mental_automatism) > 0 {
 				//maID,_:=strconv.Atoi(r.FormValue("autNodeID"))
-				ref := psychic.GetMentalAutomatizmForPult()
+				ref := psychic.GetMentalAutomatismForPult()
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
 
-			get_ment_model_index := r.FormValue("get_ment_model_index")
-			if len(get_ment_model_index) > 0 {
+			get_mental_model := r.FormValue("get_mental_model")
+			if len(get_mental_model) > 0 {
 				maID, _ := strconv.Atoi(r.FormValue("autNodeID"))
 				ref := psychic.GetModelExtremImportanceInfo(maID)
 				_, _ = fmt.Fprint(resp, ref)
@@ -716,8 +717,8 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			get_mental_priblem_tree := r.FormValue("get_mental_priblem_tree")
-			if len(get_mental_priblem_tree) > 0 {
+			get_mental_problem_tree := r.FormValue("get_mental_problem_tree")
+			if len(get_mental_problem_tree) > 0 {
 				base := r.FormValue("limit")
 				limit, _ := strconv.Atoi(base)
 				ref := psychic.GetMentalPriblemTreeForPult(limit)
@@ -725,31 +726,31 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				return
 			}
 			/*
-				get_mental_undestanding_models_info := r.FormValue("get_mental_undestanding_models_info")
-				if len(get_mental_undestanding_models_info) > 0 {
+				get_mental_understanding_models_info := r.FormValue("get_mental_understanding_models_info")
+				if len(get_mental_understanding_models_info) > 0 {
 					ref := psychic.GetMentalUndestandingModelsForPult()
 					_, _ = fmt.Fprint(resp, ref)
 					return
 				}
 			*/
-			get_rulles_list_info := r.FormValue("get_rulles_list_info")
-			if get_rulles_list_info == "1" {
-				rulles := psychic.GetCur100lastRules(0)
-				_, _ = fmt.Fprint(resp, rulles)
+			get_rules_list_info := r.FormValue("get_rules_list_info")
+			if get_rules_list_info == "1" {
+				rules := psychic.GetCur100lastRules(0)
+				_, _ = fmt.Fprint(resp, rules)
 				return
 			}
 
-			get_undestand_model := r.FormValue("get_undestand_model")
-			if get_undestand_model == "1" {
+			get_understanding_model := r.FormValue("get_understanding_model")
+			if get_understanding_model == "1" {
 				ids := r.FormValue("objID")
 				id, _ := strconv.Atoi(ids)
-				model := psychic.Get_undestand_model_from_object(id)
+				model := psychic.Get_understand_model_from_object(id)
 				_, _ = fmt.Fprint(resp, model)
 				return
 			}
 
-			clian_episodic_memory := r.FormValue("clian_episodic_memory")
-			if clian_episodic_memory == "1" {
+			clear_episodic_memory := r.FormValue("clear_episodic_memory")
+			if clear_episodic_memory == "1" {
 				psychic.ClianEpisodicMemory()
 				_, _ = fmt.Fprint(resp, "did")
 				return
@@ -762,26 +763,26 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			get_mental_rulles_list_info := r.FormValue("get_mental_rulles_list_info")
-			if get_mental_rulles_list_info == "1" {
-				rulles := psychic.GetMentallastRules()
-				_, _ = fmt.Fprint(resp, rulles)
+			get_mental_rules_list_info := r.FormValue("get_mental_rules_list_info")
+			if get_mental_rules_list_info == "1" {
+				rules := psychic.GetMentallastRules()
+				_, _ = fmt.Fprint(resp, rules)
 				return
 			}
 
 			get_mental_action_info := r.FormValue("get_mental_action_info")
 			if len(get_mental_action_info) > 0 {
 				//actID,_:=strconv.Atoi(get_mental_action_info)
-				rulles := "НЕТ ПОДДЕРЖКИ psychic.GetMentalActionInfo - устарело." //psychic.GetMentalActionInfo(actID)
-				_, _ = fmt.Fprint(resp, rulles)
+				rules := "НЕТ ПОДДЕРЖКИ psychic.GetMentalActionInfo - устарело." //psychic.GetMentalActionInfo(actID)
+				_, _ = fmt.Fprint(resp, rules)
 				return
 			}
 
 			get_mental_goNext_info := r.FormValue("get_mental_goNext_info")
 			if len(get_mental_goNext_info) > 0 {
 				//actID,_:=strconv.Atoi(get_mental_goNext_info)
-				rulles := "НЕТ ПОДДЕРЖКИ psychic.GetMentalActionsString - устарело." //psychic.GetMentalActionsString(actID)
-				_, _ = fmt.Fprint(resp, rulles)
+				rules := "НЕТ ПОДДЕРЖКИ psychic.GetMentalActionsString - устарело." //psychic.GetMentalActionsString(actID)
+				_, _ = fmt.Fprint(resp, rules)
 				return
 			}
 
@@ -789,8 +790,8 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 			get_cycle_info := r.FormValue("get_cycle_info")
 			if len(get_cycle_info) > 0 {
 				cID, _ := strconv.Atoi(get_cycle_info)
-				rulles := psychic.GetCycleStrInfo(cID)
-				_, _ = fmt.Fprint(resp, rulles)
+				rules := psychic.GetCycleStrInfo(cID)
+				_, _ = fmt.Fprint(resp, rules)
 				return
 			}
 
@@ -798,42 +799,42 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 			get_mental_func_info := r.FormValue("get_mental_func_info")
 			if len(get_mental_func_info) > 0 {
 				fID, _ := strconv.Atoi(get_mental_func_info)
-				rulles := psychic.GetgetInfoFuncInfoStr(fID)
-				_, _ = fmt.Fprint(resp, rulles)
+				rules := psychic.GetgetInfoFuncInfoStr(fID)
+				_, _ = fmt.Fprint(resp, rules)
 				return
 			}
 
-			get_atmzm_tree_info := r.FormValue("get_atmzm_tree_info")
-			if get_atmzm_tree_info == "1" {
+			get_automatism_tree_info := r.FormValue("get_automatism_tree_info")
+			if get_automatism_tree_info == "1" {
 				objID, _ := strconv.Atoi(r.FormValue("objID"))
 				ref := psychic.GetAtmzmTreeInfo(objID)
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
-			get_undstg_tree_info := r.FormValue("get_undstg_tree_info")
-			if get_undstg_tree_info == "1" {
+			get_understanding_tree_info := r.FormValue("get_understanding_tree_info")
+			if get_understanding_tree_info == "1" {
 				objID, _ := strconv.Atoi(r.FormValue("objID"))
 				ref := psychic.GetUndstgTreeInfo(objID)
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
-			get_ment_atmzm_info := r.FormValue("get_ment_atmzm_info")
-			if get_ment_atmzm_info == "1" {
+			get_mental_automatism_info := r.FormValue("get_mental_automatism_info")
+			if get_mental_automatism_info == "1" {
 				objID, _ := strconv.Atoi(r.FormValue("objID"))
 				ref := psychic.GetMentAtmzmInfo(objID)
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
 
-			make_automatizms_from_reflexes := r.FormValue("make_automatizms_from_reflexes")
-			if len(make_automatizms_from_reflexes) == 1 {
-				ref := reflexes.RunMakeAutomatizmsFromReflexes()
+			make_automatisms_from_reflexes := r.FormValue("make_automatisms_from_reflexes")
+			if len(make_automatisms_from_reflexes) == 1 {
+				ref := reflexes.RunMakeAutomatismsFromReflexes()
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
-			make_automatizms_from_genetic_reflexes := r.FormValue("make_automatizms_from_genetic_reflexes")
-			if len(make_automatizms_from_genetic_reflexes) == 1 {
-				ref := reflexes.RunMakeAutomatizmsFromGeneticReflexes()
+			make_automatisms_from_genetic_reflexes := r.FormValue("make_automatisms_from_genetic_reflexes")
+			if len(make_automatisms_from_genetic_reflexes) == 1 {
+				ref := reflexes.RunMakeAutomatismsFromGeneticReflexes()
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
@@ -844,8 +845,8 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
-			get_show_cyckle_info := r.FormValue("get_show_cyckle_info")
-			if get_show_cyckle_info == "1" {
+			get_show_cycle_info := r.FormValue("get_show_cycle_info")
+			if get_show_cycle_info == "1" {
 				cID, _ := strconv.Atoi(r.FormValue("objID"))
 				ref := psychic.GetCycleInfo(cID)
 				_, _ = fmt.Fprint(resp, ref)
@@ -877,17 +878,17 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				bID = strings.Trim(bID, " ")
 				basicID, _ := strconv.Atoi(bID)
 				contexts := r.FormValue("contexts")
-				ref := psychic.GetAutomatizmPraseList(basicID, contexts)
+				ref := psychic.GetAutomatismPraseList(basicID, contexts)
 				brain.IsPultActivnost = false
 				_, _ = fmt.Fprint(resp, ref)
 				return
 			}
 
 			// обнулить параметры гомеостаза Beast
-			cliner_gomeo_pars := r.FormValue("cliner_gomeo_pars")
-			if len(cliner_gomeo_pars) > 0 {
+			clear_gomeo_pars := r.FormValue("clear_gomeo_pars")
+			if len(clear_gomeo_pars) > 0 {
 				brain.IsPultActivnost = true
-				value, _ := strconv.ParseFloat(cliner_gomeo_pars, 64)
+				value, _ := strconv.ParseFloat(clear_gomeo_pars, 64)
 				gomeostas.ClinerAllGomeoParams(value)
 				brain.IsPultActivnost = false
 				_, _ = fmt.Fprint(resp, "1")
@@ -902,9 +903,9 @@ func receiveSend(resp http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			end_noautomatizm := r.FormValue("end_noautomatizm")
-			if len(end_noautomatizm) > 0 {
-				psychic.NoautomatizmAfterStimul = 0
+			end_no_automatism := r.FormValue("end_no_automatism")
+			if len(end_no_automatism) > 0 {
+				psychic.NoautomatismAfterStimul = 0
 				_, _ = fmt.Fprint(resp, "ok_end")
 				return
 			}

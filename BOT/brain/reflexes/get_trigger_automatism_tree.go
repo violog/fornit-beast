@@ -8,11 +8,11 @@ import (
 	"BOT/brain/psychic"
 )
 
-func GetTreeAutomatizmTriggersInfo(treeNodeID int) string {
+func GetTreeAutomatismTriggersInfo(treeNodeID int) string {
 	var out = ""
 
-	//	treeNode := psychic.AutomatizmTreeFromID[treeNodeID]
-	treeNode, ok := psychic.ReadeAutomatizmTreeFromID(treeNodeID)
+	//	treeNode := psychic.AutomatismTreeFromID[treeNodeID]
+	treeNode, ok := psychic.ReadeAutomatismTreeFromID(treeNodeID)
 	if ok && treeNode.ActivityID > 0 {
 		out += "Действия кнопок: <b>" + GetAcivButtInfo(treeNode.ActivityID) + "</b><br>"
 	}

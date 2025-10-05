@@ -75,7 +75,7 @@ var detectedActiveLevel = 0 // уровень условий, до которо�
 var oldReflexesIdArr []int         // собираются Древние безусловные - у которых в условиях не прописаны пусковые стимулы.
 var geneticReflexesIdArr []int     // собираются Новые безусловные - с прописанными пусковыми стимулами.
 var conditionReflexesIdArr []int   // собираются Условные рефлексы - на основе предыдущих безусловных или условных - связанных с новыми стимулами.
-var flgConditionReflexesIdArr bool // true - есть у-рефлексы. Только для getPurposeGeneticAndRunAutomatizm(), чтобы не ссылаться на срез conditionReflexesIdArr[]
+var flgConditionReflexesIdArr bool // true - есть у-рефлексы. Только для getPurposeGeneticAndRunAutomatism(), чтобы не ссылаться на срез conditionReflexesIdArr[]
 
 // сообщить на Пульт, что при данных условиях нет б.рефлекса.
 var NoUnconditionRefles = ""
@@ -85,7 +85,7 @@ func activeReflexTree() {
 	detectedActiveLastNodID = 0
 	detectedActiveLevel = 0
 	flgConditionReflexesIdArr = false
-	clinerReflexArrID()
+	clearReflexArrID()
 
 	quardingSleepCenter() //сторожевой центр сна
 	if sleep.IsSleeping {
@@ -215,7 +215,7 @@ func activeReflexTree() {
 иначе в стадии формирования автоматизмов действия рефлекса будут передаваться в образ действий чисто вербального автоматизма
 от предыдущей активации рефлекса, если она была
 */
-func clinerReflexArrID() {
+func clearReflexArrID() {
 	oldReflexesIdArr = nil
 	geneticReflexesIdArr = nil
 	conditionReflexesIdArr = nil

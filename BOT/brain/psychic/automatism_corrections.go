@@ -53,7 +53,7 @@ wellIDarr - ID улучшившихся гомеопараметров
 
 Здесь могут быть только штатные и с atmtzm.UsefulnessЮ=0, незаблокированные автоматизмы раз было совершено действие.
 */
-func automatizmCorrection(atmtzm *Automatizm, lastCommonDiffValue int, wellIDarr []int) {
+func automatismCorrection(atmtzm *Automatism, lastCommonDiffValue int, wellIDarr []int) {
 	if atmtzm == nil {
 		return
 	}
@@ -83,20 +83,20 @@ func automatizmCorrection(atmtzm *Automatizm, lastCommonDiffValue int, wellIDarr
 		PsyBaseMood = -1
 
 		// это - игнорирующий автоматизм для предовтащения действия общего автоматизма в данной ветке?
-		isIgnore := isIgnoreAutomatizm(atmtzm)
+		isIgnore := isIgnoreAutomatism(atmtzm)
 		if !isCommon && !isIgnore { // не для общего автоматизма и не для игнорирующего
 
-			passivationAutomatizm(atmtzm, lastCommonDiffValue)
+			passivationAutomatism(atmtzm, lastCommonDiffValue)
 
 			if atmtzm.Usefulness < 0 {
 				// очистить списки улучшения
 				atmtzm.GomeoIdSuccesArr = nil
-				if AutomatizmSuccessFromIdArr[atmtzm.ID] != nil {
-					AutomatizmSuccessFromIdArr[atmtzm.ID] = nil
+				if AutomatismSuccessFromIdArr[atmtzm.ID] != nil {
+					AutomatismSuccessFromIdArr[atmtzm.ID] = nil
 				}
 
 				// убрать из штатного
-				SetAutomatizmBelief(atmtzm, 0)
+				SetAutomatismBelief(atmtzm, 0)
 				if EvolushnStage > 3 {
 					//в коллекцию неудач
 					addNewTryAction(0, -detectedActiveLastProblemNodID, atmtzm.ActionsImageID, atmtzm.Usefulness, true)
@@ -131,10 +131,10 @@ func automatizmCorrection(atmtzm *Automatizm, lastCommonDiffValue int, wellIDarr
 			atmtzm.GomeoIdSuccesArr = wellIDarr // м.б. nil !!!! если нет таких явных действий
 		}
 		// пополняется список полезных автоматизмов
-		AutomatizmSuccessFromIdArr[atmtzm.ID] = atmtzm
+		AutomatismSuccessFromIdArr[atmtzm.ID] = atmtzm
 
 		// задать тип автоматизма, 2 - проверенный
-		SetAutomatizmBelief(atmtzm, 2) // сделать автоматизм штатным
+		SetAutomatismBelief(atmtzm, 2) // сделать автоматизм штатным
 
 		if !isCommon { // не для общего автоматизма
 			// повысить ранее плохой штатный автоматизм
@@ -154,7 +154,7 @@ func automatizmCorrection(atmtzm *Automatizm, lastCommonDiffValue int, wellIDarr
 
 // ухудшение автоматизма негативом
 // TODO @violog эту функцию надо пересмотреть позже, т.к. логика совсем уж магическая
-func passivationAutomatizm(atmtzm *Automatizm, negativeValue int) {
+func passivationAutomatism(atmtzm *Automatism, negativeValue int) {
 	// Хитрый алгоритм понижения пользы и уверенности в ранее полезном автоматизме
 	if atmtzm.Usefulness >= 0 {
 		//зависимость шага надежности от стадии развития
@@ -191,11 +191,11 @@ func passivationAutomatizm(atmtzm *Automatizm, negativeValue int) {
 func findAlternativeAtmtzm() int {
 
 	// список всех автоматизмов для ID узла Дерева
-	aArr := GetMotorsAutomatizmListFromTreeId(detectedActiveLastNodID)
+	aArr := GetMotorsAutomatismListFromTreeId(detectedActiveLastNodID)
 	if aArr != nil {
 		var usefulCount = -100 // полезность, выбрать наилучшую
 		var autmtzmID = 0
-		var autmtzm *Automatizm
+		var autmtzm *Automatism
 		if aArr != nil {
 			for i := 0; i < len(aArr); i++ {
 				if aArr[i].Belief == 2 { // есть штатный, проверенный автоматизм
@@ -214,7 +214,7 @@ func findAlternativeAtmtzm() int {
 				autmtzm.Usefulness = 0
 				autmtzm.Count = 1
 			}
-			SetAutomatizmBelief(autmtzm, 2) // сделать автоматизм штатным
+			SetAutomatismBelief(autmtzm, 2) // сделать автоматизм штатным
 			return autmtzmID
 		}
 	}
@@ -228,13 +228,13 @@ func findAlternativeAtmtzm() int {
 		_, rule := findBestRule(targetEpisodicStrIdArr)
 		if rule.Effect > 0 {
 			// создать автоматизм, если такого нет и привязать к ветке
-			oldID, am := checkUnicumMotorsAutomatizm(detectedActiveLastNodID, rule.Action)
+			oldID, am := checkUnicumMotorsAutomatism(detectedActiveLastNodID, rule.Action)
 			if oldID > 0 { // уже есть такой на ветке, хотя мы же выше проверяли, но на всякий, не создавать новый
 				return oldID
 			}
 			if am != nil {
 				// нужно создать дубликат автоматизма, чтобы старый не отвязывался от своей ветки
-				id, _ := createDuplicateAutomatizm(detectedActiveLastNodID, am)
+				id, _ := createDuplicateAutomatism(detectedActiveLastNodID, am)
 				if id > 0 {
 					return id
 				}

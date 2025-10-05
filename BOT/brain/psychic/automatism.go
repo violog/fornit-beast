@@ -1,19 +1,19 @@
 /* Автоматизмы, могут совершать внешние действия или внутренние произвольные действия.
-К ветке дерева может быть прикреплено сколько угодно автоматизмов: GetMotorsAutomatizmListFromTreeId(branchID)
+К ветке дерева может быть прикреплено сколько угодно автоматизмов: GetMotorsAutomatismListFromTreeId(branchID)
 но только один из автоматизмов, прикрепленных к ветке, может иметь Belief=2 - проверенное собственное знание
-Автоматизмы могут быть и не привязаны к конкретной ветке дерева, а быть привязаны к отдельным значениям AutomatizmNode:
+Автоматизмы могут быть и не привязаны к конкретной ветке дерева, а быть привязаны к отдельным значениям AutomatismNode:
 - к ID образа действий с пульта ActivityID и тогда branchID начинается с 1000000,
-сохраняются в карте AutomatizmIdFromActionId
+сохраняются в карте AutomatismIdFromActionId
 - к ID фразы PhraseID  и тогда branchID начинается с 2000000,
-сохраняются в карте AutomatizmIdFromPhraseId
+сохраняются в карте AutomatismIdFromPhraseId
 
 Если задается Belief=2, остальные Belief=2 становится Belief=0.
-!!! ПОЭТОМУ ВСЕГДА нужно задавать с помощью SetAutomatizmBelief(atmzm *Automatizm,belief int))
+!!! ПОЭТОМУ ВСЕГДА нужно задавать с помощью SetAutomatismBelief(atmzm *Automatism,belief int))
 
-Если для прикрепленных к узлу дерева есть карта штатных AutomatizmBelief2FromTreeNodeId,
+Если для прикрепленных к узлу дерева есть карта штатных AutomatismBelief2FromTreeNodeId,
 то для прикрепленных к образам нужны ФУНКЦИИ ПОЛУЧЕНИЯ ШТАТНОГО ДЛЯ ДАННОГО ОБРАЗА:
-func GetAutomatizmBeliefFromActionId(activityID int)(*Automatizm){
-func GetAutomatizmBeliefFromPhraseId(verbalID int)(*Automatizm){
+func GetAutomatismBeliefFromActionId(activityID int)(*Automatism){
+func GetAutomatismBeliefFromPhraseId(verbalID int)(*Automatism){
 
 Концепция общих автоматизмов. Они сформированы на основе общего шаблона рефлексов и, как и рефлексы, перекрываются автоматизмами конца активной ветки, т.е. имеющими образ Стимула. Это – первичная реакция на текущее сочетание контекстов (в данном случае – на эмоцию). У узла эмоции может быть бесконечное число образов действия и блокировка общего автоматизма лишает первичной реакции у всех их. Но у.рефлекс может быть заморожен, а общий автоматизм сейчас – нет.
 Это значит, то в случае блокирующих действий для данной ветки, необходимо запускать автоматизм бездействия, останавливающий все более низкоуровневое.
@@ -33,22 +33,22 @@ import (
 
 // инициализирующий блок - в порядке последовательности инициализаций
 // вызывается из psychic.go
-func automatizmInit() {
-	loadAutomatizm()
-	//res:=RumAutomatizm(AutomatizmFromId[1])
+func automatismInit() {
+	loadAutomatism()
+	//res:=RumAutomatism(AutomatismFromId[1])
 	//if res{}
 }
 
-type Automatizm struct {
+type Automatism struct {
 	ID int
 	/* id объекта к кторому привязан автоматизм:
-	   (он может быть  привязан к узлу дерева, к фразе (AutomatizmIdFromPhraseId) или действиям (AutomatizmIdFromActionId)
+	   (он может быть  привязан к узлу дерева, к фразе (AutomatismIdFromPhraseId) или действиям (AutomatismIdFromActionId)
 	   т.е. втоматизмы могут быть и не привязаны к конкретному узлу ветки дерева,
-	   а быть привязаны к отдельным значениям AutomatizmNode:
+	   а быть привязаны к отдельным значениям AutomatismNode:
 	      к ID образа действий с пульта ActivityID и тогда branchID начинается с 1000000,
-	   сохраняются в карте AutomatizmIdFromActionId
+	   сохраняются в карте AutomatismIdFromActionId
 	      к ID фразы PhraseID  и тогда branchID начинается с 2000000,
-	   сохраняются в карте AutomatizmIdFromPhraseId
+	   сохраняются в карте AutomatismIdFromPhraseId
 
 	   Если бы автоматизм не привязывался к ветке через BranchID, а чтобы была карта для ветки с привязанными автоматизмами.
 	   Тогда один и тот же автоматизм мог бы быть привязан к любым веткам.
@@ -81,7 +81,7 @@ type Automatizm struct {
 		а даст ли такой автоматизм в самом деле обещанное улучшение.
 		Только один из автоматизмов, прикрепленных к ветке, может иметь Belief=2 - проверенное собственное знание
 		Если задается Belief=2, остальные Belief=2 становится Belief=0.
-	!!! ПОЭТОМУ ВСЕГДА нужно задавать с помощью SetAutomatizmBelief(atmzm *Automatizm,belief int)
+	!!! ПОЭТОМУ ВСЕГДА нужно задавать с помощью SetAutomatismBelief(atmzm *Automatism,belief int)
 	*/
 	Belief int // 0 - предположение, 1 - чужие сведения, 2 - проверенное собственное знание
 	/* В случае, если в результате автоматизма его Usefulness изменит знак, то
@@ -95,64 +95,64 @@ type Automatizm struct {
 }
 
 // все, привязанные к узлу дерева или привязанные к id образа действия и к id фразы.
-// var AutomatizmFromId = make(map[int]*Automatizm)
-var AutomatizmFromId []*Automatizm
+// var AutomatismFromId = make(map[int]*Automatism)
+var AutomatismFromId []*Automatism
 
 // запись члена
-func WriteAutomatizmFromId(index int, value *Automatizm) {
-	if index >= len(AutomatizmFromId) {
-		newSlice := make([]*Automatizm, index+1)
-		copy(newSlice, AutomatizmFromId)
-		AutomatizmFromId = newSlice
+func WriteAutomatismFromId(index int, value *Automatism) {
+	if index >= len(AutomatismFromId) {
+		newSlice := make([]*Automatism, index+1)
+		copy(newSlice, AutomatismFromId)
+		AutomatismFromId = newSlice
 	}
-	AutomatizmFromId[index] = value
+	AutomatismFromId[index] = value
 }
 
 // считывание члена
-func ReadeAutomatizmFromId(index int) (*Automatizm, bool) {
-	if index >= len(AutomatizmFromId) || AutomatizmFromId[index] == nil {
+func ReadeAutomatismFromId(index int) (*Automatism, bool) {
+	if index >= len(AutomatismFromId) || AutomatismFromId[index] == nil {
 		return nil, false
 	}
-	return AutomatizmFromId[index], true
+	return AutomatismFromId[index], true
 }
 
 ///////////////////////////////////////
 
 // ШТАТНЫЕ автоматизмы, прикрепленные к ID узла Дерева с Belief==2 т.е. ШТАТНЫЕ, выполняющиеся не раздумывая
 // у узла может быть только один штатный автоматизм с Belief==2
-var AutomatizmBelief2FromTreeNodeId = make(map[int]*Automatizm)
+var AutomatismBelief2FromTreeNodeId = make(map[int]*Automatism)
 
 // ЭТОТ ПУСТЬ БУДЕТ НА КАРТЕ
 
 // ///////////////////////////////////////////////////////////////
 // привязанные к ID образа действий с пульта ActivityID и тогда их branchID начинается с 1000000
 // среди привязанный к данному образуID может быть один штатный с Belief==2
-var AutomatizmIdFromActionId = make(map[int][]*Automatizm)
+var AutomatismIdFromActionId = make(map[int][]*Automatism)
 
 // привязанные к ID фразы PhraseID и тогда их branchID начинается с 2000000
 // среди привязанных к данной фразеID (неважны предыдущие условия) может быть один штатный с Belief==2
-var AutomatizmIdFromPhraseId = make(map[int][]*Automatizm)
+var AutomatismIdFromPhraseId = make(map[int][]*Automatism)
 
 /*
 	список удачных автоматизмов, относящихся к определенным условиям (привзяанных к определенной ветке Дерева)
 
 В этом списке поле Usefulness >0
 */
-var AutomatizmSuccessFromIdArr = make(map[int]*Automatizm)
+var AutomatismSuccessFromIdArr = make(map[int]*Automatism)
 
-// GetMotorsAutomatizmListFromTreeId(nodeID int) список всех автоматизмов для ID узла Дерева
-// ExistsAutomatizmForThisNodeID(nodeID int) есть ли штатный автоматизм (с Belief==2), привязанные к узлу дерева
-// GetBelief2AutomatizmListFromTreeId(nodeID int) штатный, невредный автоматизм, привязанный к ветке
+// GetMotorsAutomatismListFromTreeId(nodeID int) список всех автоматизмов для ID узла Дерева
+// ExistsAutomatismForThisNodeID(nodeID int) есть ли штатный автоматизм (с Belief==2), привязанные к узлу дерева
+// GetBelief2AutomatismListFromTreeId(nodeID int) штатный, невредный автоматизм, привязанный к ветке
 
-var lastAutomatizmID = 0        // ID последнего созданного автоматизма
+var lastAutomatismID = 0        // ID последнего созданного автоматизма
 var NoWarningCreateShow = false // true - не выдавать сообщение о новом автоматизме
 
 // удалить автоматизм
-func deleteAutomatizm(a *Automatizm) {
-	delete(AutomatizmBelief2FromTreeNodeId, a.ID)
+func deleteAutomatism(a *Automatism) {
+	delete(AutomatismBelief2FromTreeNodeId, a.ID)
 
-	//	delete(AutomatizmFromId, a.ID)
-	WriteAutomatizmFromId(a.ID, nil)
+	//	delete(AutomatismFromId, a.ID)
+	WriteAutomatismFromId(a.ID, nil)
 
 	a = nil
 }
@@ -164,7 +164,7 @@ func deleteAutomatizm(a *Automatizm) {
 
 checkLevel - глубина проверки на идентичность: 0 - нет проверки, 1 - поверхностная, 2 - полная
 */
-func createNewAutomatizmID(id int, BranchID int, ActionsImageID int, CheckUnicum bool) (int, *Automatizm) {
+func createNewAutomatismID(id int, BranchID int, ActionsImageID int, CheckUnicum bool) (int, *Automatism) {
 	/* Автоматизмы уникальны по сочетанию BranchID и ActionsImageID.
 	   	При попытке создать с таким же сочетанием возвращается уже созданный.
 	    к одной вентке могут быть прикреплены неограниченное число автоматизмов
@@ -175,37 +175,37 @@ func createNewAutomatizmID(id int, BranchID int, ActionsImageID int, CheckUnicum
 		return 0, nil
 	}
 	if CheckUnicum {
-		oldID, oldVal := checkUnicumMotorsAutomatizm(BranchID, ActionsImageID)
+		oldID, oldVal := checkUnicumMotorsAutomatism(BranchID, ActionsImageID)
 		if oldVal != nil {
 			return oldID, oldVal
 		}
 	}
 
 	if id == 0 {
-		lastAutomatizmID++
-		id = lastAutomatizmID
+		lastAutomatismID++
+		id = lastAutomatismID
 	} else {
-		if lastAutomatizmID < id {
-			lastAutomatizmID = id
+		if lastAutomatismID < id {
+			lastAutomatismID = id
 		}
 	}
 
-	var node Automatizm
+	var node Automatism
 	node.ID = id
 	node.BranchID = BranchID
 	node.Energy = 5
 	node.ActionsImageID = ActionsImageID
 
-	//	AutomatizmFromId[id] = &node
-	WriteAutomatizmFromId(id, &node)
+	//	AutomatismFromId[id] = &node
+	WriteAutomatismFromId(id, &node)
 
 	if BranchID > 1000000 && BranchID < 2000000 {
 		imgID := BranchID - 1000000
-		AutomatizmIdFromActionId[imgID] = append(AutomatizmIdFromActionId[imgID], &node)
+		AutomatismIdFromActionId[imgID] = append(AutomatismIdFromActionId[imgID], &node)
 	}
 	if BranchID > 2000000 {
 		imgID := BranchID - 2000000
-		AutomatizmIdFromPhraseId[imgID] = append(AutomatizmIdFromPhraseId[imgID], &node)
+		AutomatismIdFromPhraseId[imgID] = append(AutomatismIdFromPhraseId[imgID], &node)
 	}
 
 	if !NoWarningCreateShow {
@@ -219,12 +219,12 @@ func createNewAutomatizmID(id int, BranchID int, ActionsImageID int, CheckUnicum
 
 Функцию можно использовать для выборки автоматизма с заданными BranchID и ActionsImageID
 */
-func checkUnicumMotorsAutomatizm(BranchID int, ActionsImageID int) (int, *Automatizm) {
-	if AutomatizmFromId == nil {
+func checkUnicumMotorsAutomatism(BranchID int, ActionsImageID int) (int, *Automatism) {
+	if AutomatismFromId == nil {
 		return 0, nil
 	}
 
-	for id, v := range AutomatizmFromId {
+	for id, v := range AutomatismFromId {
 		if v == nil || (BranchID != v.BranchID || ActionsImageID != v.ActionsImageID) {
 			continue
 		}
@@ -236,49 +236,49 @@ func checkUnicumMotorsAutomatizm(BranchID int, ActionsImageID int) (int, *Automa
 }
 
 // создать новый автоматизм
-func CreateNewAutomatizm(BranchID int, ActionsImageID int) (int, *Automatizm) {
+func CreateNewAutomatism(BranchID int, ActionsImageID int) (int, *Automatism) {
 	// BranchID может быть ==0 для мозжечковых рефлексов
 	if ActionsImageID == 0 {
 		return 0, nil
 	}
 
-	id, verb := createNewAutomatizmID(0, BranchID, ActionsImageID, true)
+	id, verb := createNewAutomatismID(0, BranchID, ActionsImageID, true)
 
 	if doWritingFile {
-		SaveAutomatizm()
+		SaveAutomatism()
 	}
 
 	return id, verb
 }
 
 /*
-	создать дубликат автоматизма по образу имеющегося am *Automatizm
+	создать дубликат автоматизма по образу имеющегося am *Automatism
 
 т.е. неуникальный по привязке к ветке дерева и действию - для пополнения коллекции автоматизмов ветки.
 Полезность и коунтер - начальные (==0).
 */
-func createDuplicateAutomatizm(BranchID int, am *Automatizm) (int, *Automatizm) {
-	id, am := createNewAutomatizmID(0, BranchID, am.ActionsImageID, false)
+func createDuplicateAutomatism(BranchID int, am *Automatism) (int, *Automatism) {
+	id, am := createNewAutomatismID(0, BranchID, am.ActionsImageID, false)
 	return id, am
 }
 
 // создать новый автоматизм без записи в файл
-func CreateAtutomatizmNoSaveFile(BranchID int, ActionsImageID int) (int, *Automatizm) {
+func CreateAtutomatizmNoSaveFile(BranchID int, ActionsImageID int) (int, *Automatism) {
 	// BranchID может быть ==0 для мозжечковых рефлексов
 	if ActionsImageID == 0 {
 		return 0, nil
 	}
 
-	id, verb := createNewAutomatizmID(0, BranchID, ActionsImageID, true)
+	id, verb := createNewAutomatismID(0, BranchID, ActionsImageID, true)
 
 	return id, verb
 }
 
 // СОХРАНИТЬ структура записи: id|BranchID|Usefulness|ActionsImageID|NextID|Energy|Belief
 // В случае отсуствия пусковых стимулов создается ID такого отсутсвия, пример такой записи: 2|||0|0|
-func SaveAutomatizm() {
+func SaveAutomatism() {
 	var out = ""
-	for k, v := range AutomatizmFromId {
+	for k, v := range AutomatismFromId {
 		if v == nil {
 			continue
 		}
@@ -296,19 +296,19 @@ func SaveAutomatizm() {
 		out += "\r\n"
 	}
 
-	lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_psy/automatizm_images.txt", out)
+	lib.WriteFileContent(lib.GetMainPathExeFile()+"/memory_psy/automatism_images.txt", out)
 }
 
 // ЗАГРУЗИТЬ структура записи: id|BranchID|Usefulness||ActionsImageID||NextID|Energy|Belief
-func loadAutomatizm() {
+func loadAutomatism() {
 	NoWarningCreateShow = true
 
-	strArr, _ := lib.ReadLines(lib.GetMainPathExeFile() + "/memory_psy/automatizm_images.txt")
+	strArr, _ := lib.ReadLines(lib.GetMainPathExeFile() + "/memory_psy/automatism_images.txt")
 	if strArr == nil {
 		return
 	}
-	//AutomatizmFromId = make(map[int]*Automatizm)
-	AutomatizmFromId = make([]*Automatizm, len(strArr)) //задать сразу имеющиеся в файле число
+	//AutomatismFromId = make(map[int]*Automatism)
+	AutomatismFromId = make([]*Automatism, len(strArr)) //задать сразу имеющиеся в файле число
 	for n := 0; n < len(strArr); n++ {
 		if len(strArr[n]) == 0 {
 			continue
@@ -333,12 +333,12 @@ func loadAutomatizm() {
 		}
 		var saveDoWritingFile = doWritingFile
 		doWritingFile = false
-		_, a := createNewAutomatizmID(id, BranchID, ActionsImageID, false) // без проверки на уникальность
+		_, a := createNewAutomatismID(id, BranchID, ActionsImageID, false) // без проверки на уникальность
 		a.NextID = NextID
 		a.Usefulness = Usefulness
 		a.Energy = Energy
 		a.Count = Count
-		SetAutomatizmBelief(a, Belief)
+		SetAutomatismBelief(a, Belief)
 		doWritingFile = saveDoWritingFile
 	}
 	NoWarningCreateShow = false

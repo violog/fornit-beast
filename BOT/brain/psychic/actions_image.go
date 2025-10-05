@@ -4,7 +4,7 @@
 
 При каждой стимуляции с Пульта Дерева автоматизмов возникает образ восприятия curActiveActionsID, curActiveActions
 Еще есть функция "вытащить образ Стимула ActiveActions из ID узла дерева автоматизмов"
-func getActiveActionsFromAutomatizmTreeNode(automatizmTreeNodeID int)(int,*ActionsImage)
+func getActiveActionsFromAutomatismTreeNode(automatismTreeNodeID int)(int,*ActionsImage)
 
 Фактически структура повторяет TriggerStimuls из рефлексов и позволяет сохранять
 как образы действий в автоматизмах, так и образы действий оператора, отражаемые в дереве мот.автомтаизмов.
@@ -42,7 +42,7 @@ import (
   - это метка AmtzmNextString ID (десять миллионов) -
 
 ID акции является цепочкой действий AmtzmNextString, а не одним действием
-используется для automatizm_next.go
+используется для automatism_next.go
 */
 var prefixActionIdValue = 10000000 // если ID лействия больше prefixActionIdValue, то AmtzmNextString.ID=ID-prefixActionIdValue
 //////////////////////////////////////////
@@ -245,8 +245,8 @@ func GetActionsString(act int) string {
 	if act < prefixActionIdValue {
 		return getSingleAtcStr(act)
 	} else { // это последовательность действий типа AmtzmNextString
-		lib.MapFree(MapGwardAutomatizmNextStringFromID)
-		anArr, ok := AutomatizmNextStringFromID[act-prefixActionIdValue]
+		lib.MapFree(MapGwardAutomatismNextStringFromID)
+		anArr, ok := AutomatismNextStringFromID[act-prefixActionIdValue]
 		if !ok {
 			return ""
 		}

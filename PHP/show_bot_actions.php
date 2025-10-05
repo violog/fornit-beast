@@ -31,7 +31,7 @@ text-align:left;
 
 
 <script>
-var isAutomatizmShow=0;// для определения начала показа "Осталось времени..."
+var isAutomatismShow=0;// для определения начала показа "Осталось времени..."
 /*
 Каждая акция - в формате: вид действия (1 - действие рефлекса, 2 - фраза) затем строка акции,
 например: "1|Предлогает поиграть" или "2|Привет!"
@@ -40,7 +40,7 @@ var isAutomatizmShow=0;// для определения начала показ�
 */
 function new_bot_action(act_str)
 {
-isAutomatizmShow=0;
+isAutomatismShow=0;
 var aOut="";
 var actArr=act_str.split("||");
 var act="";
@@ -72,15 +72,15 @@ break;
 //aOut+="<b>Beast говорит:</b><br>"+actStr+"<br>";
 //break;
 case "3":// моторн.автоматизм
-isAutomatizmShow=1;
+isAutomatismShow=1;
 aOut+="<div style=\"position:relative;padding:10px;background-color:#CCE8FF;\">Бессознательный <b>Автоматизм:</b><br>"+actStr+"</div>";
 break;
 case "4":// ментальный запуск моторного автоматизма
-isAutomatizmShow=1;
+isAutomatismShow=1;
 aOut+="<div style=\"position:relative;padding:10px;background-color:#CCE8FF;\"><b>Осознанно:</b><br>"+actStr+"</div>";
 break;
 case "10":// непонимание, растерянность - в случае отсуствия пси-реакций но Лени.
-isAutomatizmShow=1;
+isAutomatismShow=1;
 aOut+="<div style=\"position:relative;padding:10px;background-color:#FFE8E8;\"><b>Непонимание, растерянность:</b><br>"+actStr+"</div>";
 break;
 //break;
@@ -93,7 +93,7 @@ break; // кривая акция
 document.getElementById('div_bot_action').style.boxShadow="0px 0px 83px 27px rgba(33, 180, 8, 0.69)"; 
 setTimeout("end_effect_bot_action()",1500);
 
-//if(isAutomatizmShow==1){alert(aOut);}
+//if(isAutomatismShow==1){alert(aOut);}
 show_dlg_bot_action(aOut);
 
 log=aOut.replace( /(<([^>]+)>)/ig, '' );

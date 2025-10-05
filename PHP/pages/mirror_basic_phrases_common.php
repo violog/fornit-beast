@@ -1,5 +1,5 @@
 <?
-/* Заполнить общий шаблон ответов  для http://go/pages/mirrors_automatizm.php
+/* Заполнить общий шаблон ответов  для http://go/pages/mirrors_automatism.php
 
 http://go/pages/mirror_basic_phrases_common.php
 
@@ -76,7 +76,7 @@ if (isset($_POST['gogogo']) && $_POST['gogogo'] == 1) {
 
 // Пусковые стимулы
 // все используемые фразы в шаблонах условных рефлексов
-include_once($_SERVER['DOCUMENT_ROOT'] . "/pages/mirrors_automatizm_get_all_phrases.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/pages/mirrors_automatism_get_all_phrases.php");
 
 
 ///////////////////////////////////////

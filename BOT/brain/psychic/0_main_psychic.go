@@ -59,9 +59,9 @@ func PsychicInit() {
 	if EvolushnStage < 2 { // еще нет психики
 		return
 	}
-	automatizmTreeInit()
+	automatismTreeInit()
 	loadActionsImageArr()
-	automatizmInit()
+	automatismInit()
 	loadAmtzmNextString()
 	emotionsInit()
 	loadActivityInit()
@@ -94,13 +94,13 @@ func PsychicInit() {
 		if atmzm!=nil{	}
 	*/
 
-	//	FormingMirrorAutomatizmFromList("/mirror_reflexes_basic_phrases/1_2.txt")
+	//	FormingMirrorAutomatismFromList("/mirror_reflexes_basic_phrases/1_2.txt")
 
-	//	FormingMirrorAutomatizmFromTempList("/lib/mirror_basic_phrases_common.txt")
+	//	FormingMirrorAutomatismFromTempList("/lib/mirror_basic_phrases_common.txt")
 
-	/*	lib.NoReflexWithAutomatizm = true
+	/*	lib.NoReflexWithAutomatism = true
 		lib.ActionsForPultStr = "0|qqqqqq||1|rrrrrrrrrrrrrr||3|wwwwwwwwwwww"
-		lib.ActionsForPultStr = lib.SharedReflexWithAutomatizm()
+		lib.ActionsForPultStr = lib.SharedReflexWithAutomatism()
 	*/
 	return
 }
@@ -134,20 +134,20 @@ func PsychicCountPuls(evolushnStage int, lifeTime int, puls int, sleepingType in
 		}
 	}
 
-	// тики в automatizm_result.go для удобства
+	// тики в automatism_result.go для удобства
 	orientarionPuls()
-	automatizmActionsPuls()
+	automatismActionsPuls()
 	moodePulse()
 
-	if lastAutomatizmRunPulsCount > 0 && (lastAutomatizmRunPulsCount+100 < PulsCount) {
+	if lastAutomatismRunPulsCount > 0 && (lastAutomatismRunPulsCount+100 < PulsCount) {
 		CurrentInformationEnvironment.IsIdleness100pulse = true
 	}
 
-	// в условии NoautomatizmAfterStimul>2 чтобы не повторялось lib.WritePultConsol
-	if NoautomatizmAfterStimul > 2 && (NoautomatizmAfterStimul < PulsCount-2) && PulsCount > 5 {
+	// в условии NoautomatismAfterStimul>2 чтобы не повторялось lib.WritePultConsol
+	if NoautomatismAfterStimul > 2 && (NoautomatismAfterStimul < PulsCount-2) && PulsCount > 5 {
 		// уже 2 пульса как нет автоматизма в ответ на Стимул, значит нет периода ожидания
-		NoautomatizmAfterStimul = 2 // - сигнал детектора отсуствия автоматизма на Стимул оператора
-		lib.WritePultConsol("<span style='color:blue;background-color:#C5FFCC'>ПРАВИЛА. Уже 2 пульса как нет автоматизма в ответ на Стимул, значит нет периода ожидания (установлено: NoautomatizmAfterStimul=2)</span>")
+		NoautomatismAfterStimul = 2 // - сигнал детектора отсуствия автоматизма на Стимул оператора
+		lib.WritePultConsol("<span style='color:blue;background-color:#C5FFCC'>ПРАВИЛА. Уже 2 пульса как нет автоматизма в ответ на Стимул, значит нет периода ожидания (установлено: NoautomatismAfterStimul=2)</span>")
 	}
 
 	if IsSleeping {
@@ -174,8 +174,8 @@ func PsychicCountPuls(evolushnStage int, lifeTime int, puls int, sleepingType in
 			ReadiStatus = 2 ////готовность Beast Для пульта
 
 			// запустить дерево автоматизмов в первый раз, иначе не будет информации для дерева проблем.
-			automatizmTreeActivation()
-			//!!	MentalReasonBlocing = consciousnessElementary() - будет запущен после automatizmTreeActivation()
+			automatismTreeActivation()
+			//!!	MentalReasonBlocing = consciousnessElementary() - будет запущен после automatismTreeActivation()
 			beginMentalCycle() // начать первый, главный цикл мышлления с вызовом func infoFunc8()
 		}
 
@@ -261,7 +261,7 @@ func SensorActivation(activationType int) bool {
 	//  получение текущего состояния информационной среды: отражение Базового состояния и Активных Базовых контекстов
 	//!!!! GetCurrentInformationEnvironment() только при ориентировочном рефлексе - смена самоощущения !!!
 
-	atomatizmID := automatizmTreeActivation()
+	atomatizmID := automatismTreeActivation()
 	if atomatizmID > 0 {
 
 		return true
@@ -291,8 +291,8 @@ func SaveAllPsihicMemory() {
 	SaveEmotionArr()
 	SaveActivityFromIdArr()
 	SaveVerbalFromIdArr()
-	SaveAutomatizmTree()
-	SaveAutomatizm()
+	SaveAutomatismTree()
+	SaveAutomatism()
 	SaveAmtzmNextString()
 	SaveSituationImage()
 	SaveActionsImageArr()

@@ -27,7 +27,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/show_waiting.php");
 var linking_address = '<? include($_SERVER["DOCUMENT_ROOT"] . "/common/linking_address.txt"); ?>';
 
 // ждем пока не включат бестию
-check_Beast_activnost(6);// после 6-го пульса И запускается get_info()
+check_activity(6);// после 6-го пульса И запускается get_info()
 //get_info();
 
 var old_size = 0;

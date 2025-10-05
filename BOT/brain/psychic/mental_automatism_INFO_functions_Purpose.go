@@ -67,7 +67,7 @@ func infoFunc8(c *cycleInfo) bool {
 	*/
 
 	// для каждой новой цели должен начинаться свой кадр ментальной эпиз.памяти
-	// !!!! clinerFuncSequence() не сбрасывать wasRunPurposeActionFunc !!!
+	// !!!! clearFuncSequence() не сбрасывать wasRunPurposeActionFunc !!!
 	infoFuncSequence = nil // т.к. с каждым стимулом обновляется главный цикл resetMineCycleAndBeginAsNew()
 
 	// если нет темы, после просыпания и т.п.
@@ -88,7 +88,7 @@ func infoFunc8(c *cycleInfo) bool {
 			if oldThemeImageType > 0 && oldThemeImageType == themeType { //  && mentalInfoStruct.mentalPurposeID >0
 				// если блокировать запуск дерево проблем при одинаковой теме, то значимости от разных стимулов будут привязываться
 				// к одному узлу дерева проблем, что явно не правильно. Тема может и одна, но situationTreeID и purposeID могут быть разные
-				if GetMotorsAutomatizmListFromTreeId(detectedActiveLastNodID) == nil {
+				if GetMotorsAutomatismListFromTreeId(detectedActiveLastNodID) == nil {
 					// блокировать активацию при одинаковой теме только если нет вообще никакого автоматизма - чтобы сработало func13
 					return false
 				}
@@ -135,7 +135,7 @@ func getMentalPurpose() bool { // обязательно находит Цель
 	//	mentalInfoStruct.mentalPurposeID=0  не нужно! т.к. обязательно находит Цель и перекрывает
 
 	//	theme:=mentalInfoStruct.ThemeImageType //не очищать mentalInfoStruct.ThemeImageType
-	//	clinerMentalInfo()// начинается новый цикл мышления
+	//	clearMentalInfo()// начинается новый цикл мышления
 	//	mentalInfoStruct.ThemeImageType=theme
 
 	if mentalInfoStruct.ThemeImageType == 0 || mentalInfoStruct.ThemeImageType == 17 { // не определена тема - тупо постараться улучшить настроение
@@ -399,23 +399,23 @@ func getMentalPurpose() bool { // обязательно находит Цель
 	}
 
 	// ?????????????????????????????
-	//	createAndRunPurposeAutomatizm()
+	//	createAndRunPurposeAutomatism()
 
 	return false
 }
 
 // //////////////////////////////////
-func createAndRunPurposeAutomatizm() {
+func createAndRunPurposeAutomatism() {
 	if mentalInfoStruct.mentalPurposeID == 0 {
 		return
 	}
 	// создать мент.автоматизм приоизвольной активацции ментальной цели
 	/*	actImgID,_:=CreateNewlastMentalActionsImagesID(0,3,mentalInfoStruct.mentalPurposeID,true)
 
-		id, matmzm := createMentalAutomatizmID(0, actImgID, 1)
+		id, matmzm := createMentalAutomatismID(0, actImgID, 1)
 		if id >0 {
 			// запустить мент.автоматизм
-			RunMentalAutomatizm(matmzm)
+			RunMentalAutomatism(matmzm)
 
 		}*/
 }

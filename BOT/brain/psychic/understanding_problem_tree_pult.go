@@ -14,7 +14,7 @@ func GetMentalPriblemTreeForPult(limit int) string {
 	problemTreeStr = ""
 	// против паники типа "одновременная запись и считывание карты"
 	if notAllowScanInTreeThisTime {
-		return "!Временно запрещена работа func GetAutomatizmTreeForPult() т.к. идет параллельная обработка."
+		return "!Временно запрещена работа func GetAutomatismTreeForPult() т.к. идет параллельная обработка."
 	}
 	if len(ProblemTree.Children) == 0 { // еще нет никаких веток
 		return "Еще нет Дерева проблем"
@@ -54,9 +54,9 @@ func scanMentalPriblemNodes(level int, node *ProblemTreeNode) {
 			}
 			out += getPurposeString(node.purposeID)
 			/* // привязанный мент.автоматизм
-			ma:=ExistsStaffMentAutomatizmForThisNodeID(node.ID)
+			ma:=ExistsStaffMentAutomatismForThisNodeID(node.ID)
 			if ma!=nil {
-				out += " Мент.автоматизм c ID=<b> <span style='cursor:pointer;color:blue' onClick='get_ment_automatizm(" + strconv.Itoa(ma.ID) + ")'></b>" + strconv.Itoa(ma.ID) + "</span>" + "\n"
+				out += " Мент.автоматизм c ID=<b> <span style='cursor:pointer;color:blue' onClick='get_ment_automatism(" + strconv.Itoa(ma.ID) + ")'></b>" + strconv.Itoa(ma.ID) + "</span>" + "\n"
 			}else{out += " Мент.авт-м не привязан."}
 			*/
 		}
@@ -72,8 +72,8 @@ func scanMentalPriblemNodes(level int, node *ProblemTreeNode) {
 
 func getAutomTreeNodeString(id int) string {
 
-	//	atmzm:=AutomatizmTreeFromID[id]
-	atmzm, ok := ReadeAutomatizmTreeFromID(id)
+	//	atmzm:=AutomatismTreeFromID[id]
+	atmzm, ok := ReadeAutomatismTreeFromID(id)
 	if !ok {
 		return ""
 	}
@@ -81,7 +81,7 @@ func getAutomTreeNodeString(id int) string {
 	if atmzm == nil {
 		out += "<span style='color:red'>Нет узла дерева автоматизма с ID=" + strconv.Itoa(id) + "</span>"
 	} else {
-		out += "ID дерева автоматизмов: <b> <span style='cursor:pointer;color:blue' onClick='show_node_automatizms(" + strconv.Itoa(id) + ")'>" + strconv.Itoa(id) + "</span>" + "</b>"
+		out += "ID дерева автоматизмов: <b> <span style='cursor:pointer;color:blue' onClick='show_node_automatisms(" + strconv.Itoa(id) + ")'>" + strconv.Itoa(id) + "</span>" + "</b>"
 	}
 	return out
 

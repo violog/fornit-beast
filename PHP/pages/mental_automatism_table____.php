@@ -1,6 +1,6 @@
 <?
 /*   список ментальных автоматизмов
-http://go/pages/ mental_automatizm_table.php  
+http://go/pages/ mental_automatism_table.php
 
 Формат записи:
 id|Usefulness|ActionsImageID|Count
@@ -20,7 +20,7 @@ $out_str_for_del = ""
 </div>
 
 
-<div id='automatizm_info_id' style='font-family:courier;font-size:16px;'></div>
+<div id='automatism_info_id' style='font-family:courier;font-size:16px;'></div>
 
 
 
@@ -31,7 +31,7 @@ $out_str_for_del = ""
 	;
 
 // ждем пока не включат бестию
-check_Beast_activnost(6);// после 6-го пульса И запускается get_info()
+check_activity(6);// после 6-го пульса И запускается get_info()
 
 var old_size = 0;
 var limitPage=0;//>0 - лимитировать показ постранично
@@ -40,13 +40,13 @@ var limitPage=0;//>0 - лимитировать показ постраничн�
 function get_info() {
 	end_dlg_alert();
 	wait_begin();
-		var AJAX = new ajax_support(linking_address + "?limitPage="+limitPage+"&get_mental_automatizm_list_info=1", sent_get_info);
+		var AJAX = new ajax_support(linking_address + "?limitPage="+limitPage+"&get_mental_automatism_list_info=1", sent_get_info);
 		AJAX.send_reqest();
 
 		function sent_get_info(res) {
 			//alert(res);
 			wait_end();
-			document.getElementById('automatizm_info_id').innerHTML = res;
+			document.getElementById('automatism_info_id').innerHTML = res;
 document.getElementById('div_id').innerHTML="Информация - по щелчку на Пусковой стимул или Действия автоматизма.";
 					}
 	}
@@ -84,11 +84,11 @@ show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",
 }
 
 
-function show_automatizm(id)
+function show_automatism(id)
 {
-var AJAX = new ajax_support(linking_address + "?autID="+id+"&get_automatizm=1", sent_automatizms_info);
+var AJAX = new ajax_support(linking_address + "?autID="+id+"&get_automatism=1", sent_automatisms_info);
 AJAX.send_reqest();
-function sent_automatizms_info(res) {
+function sent_automatisms_info(res) {
 			//alert(res);
 res=res.replace(/\<\/b\>/g,'</b><br>');
 show_dlg_alert("<div style='text-align:left;font-weight:normal;'>"+res+"</div>",0);

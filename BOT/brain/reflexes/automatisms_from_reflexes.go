@@ -16,9 +16,9 @@ import (
 	"strconv"
 )
 
-func testingRunMakeAutomatizmsFromReflexes() {
-	// RunMakeAutomatizmsFromReflexes()
-	// RunMakeAutomatizmsFromGeneticReflexes()
+func testingRunMakeAutomatismsFromReflexes() {
+	// RunMakeAutomatismsFromReflexes()
+	// RunMakeAutomatismsFromGeneticReflexes()
 }
 
 /*
@@ -27,10 +27,10 @@ func testingRunMakeAutomatizmsFromReflexes() {
 создавать ветку дерева автоматизма если такой еще нет,
 создавать автоматизм, прикрепляя его к нужно ветке.
 */
-func RunMakeAutomatizmsFromReflexes() string {
+func RunMakeAutomatismsFromReflexes() string {
 	// проверить готовность рабочих массивов и сообщить если нет
 	if ConditionReflexes == nil || len(ConditionReflexes) == 0 ||
-		psychic.AutomatizmTreeFromID == nil || len(psychic.AutomatizmTreeFromID) == 0 {
+		psychic.AutomatismTreeFromID == nil || len(psychic.AutomatismTreeFromID) == 0 {
 		return "Еще не сформировалась оперативная память, пожалуйста перезапустите процесс через пару секунд."
 	}
 	var newCount = 0
@@ -77,7 +77,7 @@ func RunMakeAutomatizmsFromReflexes() string {
 		//,,,,,,,,,,,,,,,,, для проверки
 		//		psychic.SaveAllPsihicMemory() // чтобы сразу видеть какой узел возник
 		/*
-			lastNode:=psychic.AutomatizmTreeFromID[nodeID]; if lastNode!=nil{}
+			lastNode:=psychic.AutomatismTreeFromID[nodeID]; if lastNode!=nil{}
 			if lastNode.PhraseID == 0{
 				continue
 			}
@@ -85,10 +85,10 @@ func RunMakeAutomatizmsFromReflexes() string {
 		//,,,,,,,,,,,,,,,,,
 		if nodeID > 0 {
 			// если есть привязанный к узлу автоматизм, то не привязывать еще
-			exists := psychic.ExistsAutomatizmForThisNodeID(nodeID)
+			exists := psychic.ExistsAutomatismForThisNodeID(nodeID)
 			if exists {
 				//,,,,,,,,,,,,,,,,, для проверки
-				//	aArr:=psychic.AutomatizmBelief2FromTreeNodeId[nodeID];if aArr!=nil{}
+				//	aArr:=psychic.AutomatismBelief2FromTreeNodeId[nodeID];if aArr!=nil{}
 				count++
 				continue
 			}
@@ -99,7 +99,7 @@ func RunMakeAutomatizmsFromReflexes() string {
 			psychic.NoWarningCreateShow = false
 			if autmzm != nil {
 				autmzm.Usefulness = 0                  // пока предположительно
-				psychic.SetAutomatizmBelief(autmzm, 2) // сделать автоматизм штатным
+				psychic.SetAutomatismBelief(autmzm, 2) // сделать автоматизм штатным
 				// ?? autmzm.GomeoIdSuccesArr какие ID гомео-параметров улучшает это действие
 				count++
 				newCount++
@@ -116,10 +116,10 @@ func RunMakeAutomatizmsFromReflexes() string {
 создавать ветку дерева автоматизма если такой еще нет,
 создавать автоматизм, прикрепляя его к нужно ветке.
 */
-func RunMakeAutomatizmsFromGeneticReflexes() string {
+func RunMakeAutomatismsFromGeneticReflexes() string {
 	// проверить готовность рабочих массивов и сообщить если нет
 	if GeneticReflexes == nil || len(GeneticReflexes) == 0 ||
-		psychic.AutomatizmTreeFromID == nil || len(psychic.AutomatizmTreeFromID) == 0 {
+		psychic.AutomatismTreeFromID == nil || len(psychic.AutomatismTreeFromID) == 0 {
 		return "Еще не сформировалась оперативная память, пожалуйста перезапустите процесс через пару секунд."
 	}
 	var newCount = 0
@@ -151,7 +151,7 @@ func RunMakeAutomatizmsFromGeneticReflexes() string {
 		//,,,,,,,,,,,,,,,,, для проверки
 		//		psychic.SaveAllPsihicMemory() // чтобы сразу видеть какой узел возник
 		/*
-			lastNode:=psychic.AutomatizmTreeFromID[nodeID]; if lastNode!=nil{}
+			lastNode:=psychic.AutomatismTreeFromID[nodeID]; if lastNode!=nil{}
 			if lastNode.PhraseID == 0{
 				continue
 			}
@@ -159,10 +159,10 @@ func RunMakeAutomatizmsFromGeneticReflexes() string {
 		//,,,,,,,,,,,,,,,,,
 		if nodeID > 0 {
 			// если есть привязанный к узлу автоматизм, то не привязывать еще
-			exists := psychic.ExistsAutomatizmForThisNodeID(nodeID)
+			exists := psychic.ExistsAutomatismForThisNodeID(nodeID)
 			if exists {
 				//,,,,,,,,,,,,,,,,, для проверки
-				//	aArr:=psychic.AutomatizmBelief2FromTreeNodeId[nodeID];if aArr!=nil{}
+				//	aArr:=psychic.AutomatismBelief2FromTreeNodeId[nodeID];if aArr!=nil{}
 				count++
 				continue
 			}
@@ -173,7 +173,7 @@ func RunMakeAutomatizmsFromGeneticReflexes() string {
 			psychic.NoWarningCreateShow = false
 			if autmzm != nil {
 				autmzm.Usefulness = 0                  // пока предположительно
-				psychic.SetAutomatizmBelief(autmzm, 2) // сделать автоматизм штатным
+				psychic.SetAutomatismBelief(autmzm, 2) // сделать автоматизм штатным
 				// ?? autmzm.GomeoIdSuccesArr какие ID гомео-параметров улучшает это действие
 				count++
 				newCount++

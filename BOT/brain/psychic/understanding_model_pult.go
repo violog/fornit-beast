@@ -29,7 +29,7 @@ if UnderstandingModelArr==nil{
 		if !ok {
 			continue
 		}
-		out += "<b>Образ ID=<b> <span style='cursor:pointer;color:blue' onClick='get_ment_model_index(" + strconv.Itoa(id) + ")'>" + strconv.Itoa(id) + "</span>" + ":</b> "
+		out += "<b>Образ ID=<b> <span style='cursor:pointer;color:blue' onClick='get_mental_model(" + strconv.Itoa(id) + ")'>" + strconv.Itoa(id) + "</span>" + ":</b> "
 		out += "<b>Кадры: <b>"
 		for i:=0; i < len(arr); i++ {
 			if i > 0 {

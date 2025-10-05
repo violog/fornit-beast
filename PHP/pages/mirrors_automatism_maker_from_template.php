@@ -1,7 +1,7 @@
 <?
 /* Сформировать автоматизмы для всех списков ответов.
 
-http://go/pages/mirrors_automatizm_maker_from_template.php
+http://go/pages/mirrors_automatism_maker_from_template.php
 
 использует файл mirror_basic_phrases_common.txt посылая 1 запрос в ГО 
 */
@@ -31,7 +31,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/linking.php");
 
 <div id='div_id' style='font-family:courier;font-size:16px;display:block;'><span
 		style="font-size:18px;color:red;"><b>Нужен коннект с Beast.</b></span> Включите Beast на Пульте и <a
-		href='/pages/mirrors_automatizm_maker_from_template.php'>перезагрузите эту страницу</a>.</div>
+		href='/pages/mirrors_automatism_maker_from_template.php'>перезагрузите эту страницу</a>.</div>
 
 
 <script Language="JavaScript" src="/ajax/ajax.js"></script>
@@ -41,12 +41,12 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/common/linking.php");
 	;
 
 // ждем пока не включат бестию
-check_Beast_activnost(4);// после 4-го пульса И запускается get_info()
+check_activity(4);// после 4-го пульса И запускается get_info()
 
 function get_info()
 {
 //wait_begin(); // wait_end();
-var AJAX = new ajax_support(linking_address+"?stop_activnost=1",sent_blocing);
+var AJAX = new ajax_support(linking_address+"?stop_activity=1",sent_blocing);
 AJAX.send_reqest();
 //var check_working_timer=setTimeout("check_working()",2000);
 function sent_blocing(res)
@@ -82,9 +82,9 @@ function end()
 wait_end();
 document.getElementById('div_id').innerHTML="Закончен процесс формирования зеркальных автоматизмов.";
 show_dlg_alert("Beast выключается для корректного сохранения информации.",2000);
-var AJAX = new ajax_support(linking_address+"?bot_closing=1",sent_bot_closing);
+var AJAX = new ajax_support(linking_address+"?bot_shutdown=1",sent_bot_shutdown);
 AJAX.send_reqest();
-function sent_bot_closing(res)
+function sent_bot_shutdown(res)
 {
 	// не будет ответа
 

@@ -215,11 +215,11 @@ $reflexCount = count($strArr); //exit("$reflexCount");
 
 ?>
 
-<div id="reflex_mem_cliner_id" style='position:absolute;top:0px;left:470px;cursor:pointer;font-size:16px;<?= $statusBG ?>
+<div id="reflex_mem_clear_id" style='position:absolute;top:0px;left:470px;cursor:pointer;font-size:16px;<?= $statusBG ?>
 border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;' title='Очистить всю память, зависимую от рефлексов.
-Это нужно делать при любом изменении рефлексов!' onClick='cliner_reflex_memory()'><b>Очистить память</b></div>
+Это нужно делать при любом изменении рефлексов!' onClick='clear_reflex_memory()'><b>Очистить память</b></div>
 <div style='position:absolute;top:0px;left:630px;cursor:pointer;color:#D70000;
-border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;' title='Удалить все рефлексы.' onClick='cliner_reflexes()'>Удалить рефлексы</div>
+border:solid 1px #8A3CA4;border-radius: 7px;padding-left:4px;padding-right:4px;' title='Удалить все рефлексы.' onClick='clear_reflexes()'>Удалить рефлексы</div>
 </div>
 
 <div style="position:relative;margin-bottom:4px;">
@@ -742,28 +742,28 @@ else
 location.href=location.href+"?delete_id="+cur_del_id;
 }
 ////////////////////////////////////
-function cliner_reflex_memory()
+function clear_reflex_memory()
 {
-show_dlg_confirm("Очистить память, зависимую от рефлексов: Дерево безусловных и условных рефлексов.","Очистить","Отменить",cliner_reflex_memory2);
+show_dlg_confirm("Очистить память, зависимую от рефлексов: Дерево безусловных и условных рефлексов.","Очистить","Отменить",clear_reflex_memory2);
 }
-function cliner_reflex_memory2()
+function clear_reflex_memory2()
 {
-var AJAX = new ajax_support("/lib/cliner_reflex_memory.php", sent_cliner_reflex_memory);
+var AJAX = new ajax_support("/lib/clear_reflex_memory.php", sent_clear_reflex_memory);
 AJAX.send_reqest();
-function sent_cliner_reflex_memory(res) {
+function sent_clear_reflex_memory(res) {
 show_dlg_alert("Память, зависимая от рефлексов, очищена. Теперь дерево рефлексов будет формироваться заново.",0);
 }
 }
 /////////////////////////////
-function cliner_reflexes()
+function clear_reflexes()
 {
-show_dlg_confirm("Удалить ВСЕ РЕФЛЕКСЫ и память, зависимую от рефлексов: Дерево безусловных и условных рефлексов.<br><br>Точно удалить рефлексы?","Удалить","Отменить",cliner_reflexes2);
+show_dlg_confirm("Удалить ВСЕ РЕФЛЕКСЫ и память, зависимую от рефлексов: Дерево безусловных и условных рефлексов.<br><br>Точно удалить рефлексы?","Удалить","Отменить",clear_reflexes2);
 }
-function cliner_reflexes2()
+function clear_reflexes2()
 {
-var AJAX = new ajax_support("/lib/cliner_reflexes.php", sent_cliner_reflex_reflexes);
+var AJAX = new ajax_support("/lib/clear_reflexes.php", sent_clear_reflex_reflexes);
 AJAX.send_reqest();
-function sent_cliner_reflex_reflexes(res) {
+function sent_clear_reflex_reflexes(res) {
 show_dlg_alert("Рефлексы и память, зависимая от рефлексов, очищены.<br>Перезагрузка страницы.",2000);
 setTimeout("location.reload(true)",2000);
 }

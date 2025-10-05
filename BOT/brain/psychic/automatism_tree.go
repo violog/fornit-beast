@@ -1,6 +1,6 @@
 /*  Дерево автоматизмов
 
-Все начинается с psychic.go (atomatizmID:=automatizmTreeActivation()) -> func automatizmTreeActivation()
+Все начинается с psychic.go (atomatizmID:=automatismTreeActivation()) -> func automatismTreeActivation()
 
 Это дерево активируется при:
 1. Всегда при любых событиях с Пульта – так же как дерево рефлексов, но если к ветке привязан автоматизм,
@@ -56,12 +56,12 @@ var StartPsichicNow = false
 
 // инициализирующий блок - в порядке последовательности инициализаций
 // из psychic.go
-func automatizmTreeInit() {
+func automatismTreeInit() {
 
-	loadAutomatizmTree()
-	if len(AutomatizmTree.Children) == 0 { // еще нет никаких веток
+	loadAutomatismTree()
+	if len(AutomatismTree.Children) == 0 { // еще нет никаких веток
 		// создать первые три ветки базовых состояний
-		createBasicAutomatizmTree()
+		createBasicAutomatismTree()
 	}
 	StartPsichicNow = true
 }
@@ -71,7 +71,7 @@ func automatizmTreeInit() {
 ////////////////////////////////////////////
 
 // //// ДЕРЕВО автоматизмов имеет фиксированных 6 уровней (кроме базового нулевого)
-type AutomatizmNode struct { // узел дерева автоматизмов
+type AutomatismNode struct { // узел дерева автоматизмов
 	ID     int
 	BaseID int // 1 - Похо, 2 - Норма, 3 - Хорошо, базовое состояние, !это еще не произвольно меняющееся PsyBaseMood
 	/* эмоция (type Emotion struct) Эмоция может произвольно меняться, независимо от базовых контекстов
@@ -87,35 +87,35 @@ type AutomatizmNode struct { // узел дерева автоматизмов
 	SimbolID   int
 	PhraseID   int // Verbal.ID // массив фраз. Может быть длинное сообщение из нескольких фраз.
 
-	Children   []AutomatizmNode // дочерние узлы (ветвление) НЕ АДРЕСА, А РЕАЛЬНЫЕ ОБЪЕКТЫ
+	Children   []AutomatismNode // дочерние узлы (ветвление) НЕ АДРЕСА, А РЕАЛЬНЫЕ ОБЪЕКТЫ
 	ParentID   int              // ID родителя
-	ParentNode *AutomatizmNode  // адрес родителя
+	ParentNode *AutomatismNode  // адрес родителя
 }
 
-var AutomatizmTree AutomatizmNode
+var AutomatismTree AutomatismNode
 
-//var AutomatizmTreeFromID=make(map[int]*AutomatizmNode)
-//var MapGwardAutomatizmTreeFromID=lib.RegNewMapGuard()
+//var AutomatismTreeFromID=make(map[int]*AutomatismNode)
+//var MapGwardAutomatismTreeFromID=lib.RegNewMapGuard()
 ///////////////////////////////////////
 
-var AutomatizmTreeFromID []*AutomatizmNode // узел по его ID
-// var AutomatizmTreeFromID = make([]*AutomatizmNode, 20000)//задать сразу имеющиеся в файле число
+var AutomatismTreeFromID []*AutomatismNode // узел по его ID
+// var AutomatismTreeFromID = make([]*AutomatismNode, 20000)//задать сразу имеющиеся в файле число
 // запись члена
-func WriteAutomatizmTreeFromID(index int, value *AutomatizmNode) {
-	if index >= len(AutomatizmTreeFromID) {
-		newSlice := make([]*AutomatizmNode, index+1)
-		copy(newSlice, AutomatizmTreeFromID)
-		AutomatizmTreeFromID = newSlice
+func WriteAutomatismTreeFromID(index int, value *AutomatismNode) {
+	if index >= len(AutomatismTreeFromID) {
+		newSlice := make([]*AutomatismNode, index+1)
+		copy(newSlice, AutomatismTreeFromID)
+		AutomatismTreeFromID = newSlice
 	}
-	AutomatizmTreeFromID[index] = value
+	AutomatismTreeFromID[index] = value
 }
 
 // считывание члена
-func ReadeAutomatizmTreeFromID(index int) (*AutomatizmNode, bool) {
-	if index >= len(AutomatizmTreeFromID) || AutomatizmTreeFromID[index] == nil {
+func ReadeAutomatismTreeFromID(index int) (*AutomatismNode, bool) {
+	if index >= len(AutomatismTreeFromID) || AutomatismTreeFromID[index] == nil {
 		return nil, false
 	}
-	return AutomatizmTreeFromID[index], true
+	return AutomatismTreeFromID[index], true
 }
 
 // последовательность узлов активной ветки
@@ -137,7 +137,7 @@ var curStimulImage *ActionsImage
 var curStimulImageID = 0
 
 // Допустимое число пульсов после Стимула чтобы считать его ответом на действие
-// ! НО УЖЕ ОПРЕДЕЛЕН ПЕРИОД ОЖИДАНИЯ ОТВЕТА - LastRunAutomatizmPulsCount, зачем еще этот??
+// ! НО УЖЕ ОПРЕДЕЛЕН ПЕРИОД ОЖИДАНИЯ ОТВЕТА - LastRunAutomatismPulsCount, зачем еще этот??
 var limitOfActionsAfterStimul = 5 //предел действий после стимула - не более 5 пульсов
 
 // //////////////////////////////////////
@@ -176,8 +176,8 @@ var detectedActiveLastUnderstandingNodPrevID = 0
 // нераспознанный остаток - НОВИЗНА
 var CurrentAutomatizTreeEnd []int
 var currentStepCount = 0
-var currentAutomatizmAfterTreeActivatedID = 0 //! это  не обязательно штатный автоматизм ветки, а выбранный мягким алгоритмом
-var wasCurrentAutomatizmAfterTree = 0         // для активации функции consciousnessElementary: 1 этот автоматизм из текущей активации дерева, есть currentAutomatizmAfterTreeActivatedID
+var currentAutomatismAfterTreeActivatedID = 0 //! это  не обязательно штатный автоматизм ветки, а выбранный мягким алгоритмом
+var wasCurrentAutomatismAfterTree = 0         // для активации функции consciousnessElementary: 1 этот автоматизм из текущей активации дерева, есть currentAutomatismAfterTreeActivatedID
 
 var curActivePhraseStr = ""
 var isUnrecognizedPhraseFromAtmtzmTreeActivation = false //true - при активации была нераспознанная фраза
@@ -188,12 +188,12 @@ var isUnrecognizedPhraseFromAtmtzmTreeActivation = false //true - при акт�
 только после действий оператора (а не активация по изменению гомео-параметров)
 если ==2 - активация дерева не вызвала автоматизм и не было периода ожидания
 */
-var NoautomatizmAfterStimul = 0
+var NoautomatismAfterStimul = 0
 
 /////////////////////////////////
 
 // активация дерева автоматизмов
-func automatizmTreeActivation() int {
+func automatismTreeActivation() int {
 
 	if PulsCount < 4 { // не активировать пока все не устаканится
 		return 0
@@ -207,8 +207,8 @@ func automatizmTreeActivation() int {
 	if IsSleeping {
 		return 0
 	}
-	/* НУЖНО, просто новый ор.рефлекс будет ждать окончания периода LastRunAutomatizmPulsCount
-	if LastRunAutomatizmPulsCount >0{// не активировать в период ожидания результатов действий!
+	/* НУЖНО, просто новый ор.рефлекс будет ждать окончания периода LastRunAutomatismPulsCount
+	if LastRunAutomatismPulsCount >0{// не активировать в период ожидания результатов действий!
 		return 0
 	}
 	*/
@@ -216,8 +216,8 @@ func automatizmTreeActivation() int {
 	/* ТЕПЕПЕРЬ ВСЕГДА АКТИВИРОВАТЬ потому как и по изменению состояния формируются Правила.
 	   Но нужно блокировать ор.рефлексы!
 	   // не активировать дерево по изменению гомеостатуса во время ожидания ответа оператора
-	   //  LastRunAutomatizmPulsCount устанавливается в RumAutomatizm(
-	   if LastRunAutomatizmPulsCount > 0{
+	   //  LastRunAutomatismPulsCount устанавливается в RumAutomatism(
+	   if LastRunAutomatismPulsCount > 0{
 	   if !WasOperatorActiveted {
 	   	return 0
 	   }
@@ -231,7 +231,7 @@ func automatizmTreeActivation() int {
 	ActiveBranchNodeArr = nil
 	CurrentAutomatizTreeEnd = nil
 	currentStepCount = 0
-	currentAutomatizmAfterTreeActivatedID = 0
+	currentAutomatismAfterTreeActivatedID = 0
 	isUnrecognizedPhraseFromAtmtzmTreeActivation = false
 
 	// вытащить 3 уровня условий в виде ID их образов
@@ -284,7 +284,7 @@ func automatizmTreeActivation() int {
 			lev4 = GetToneMoodID(verb.ToneID, verb.MoodID)
 			lev5 = verb.SimbolID
 			/* для дерева берется только первая фраза КАК ГЛАВНОЕ УСЛОВИЕ ВЕТКИ, остальные можно восстановить для сопоставлений из
-			AutomatizmNode.PhraseID.PhraseIDarr[]
+			AutomatismNode.PhraseID.PhraseIDarr[]
 			*/
 			lev6 = verb.ID
 		}
@@ -318,8 +318,8 @@ func automatizmTreeActivation() int {
 	} else { // образ действий оператора
 
 		// зафиксировать время появления Стимула и ждать запуска автоматизма 2 пульса, иначе detectedActiveLastNodID=2
-		NoautomatizmAfterStimul = PulsCount // хоть и синоним curActiveActionsPulsCount
-		// Внизу - после обработки clinerAutomatizmRunning() - новый симул сбрасывает ожидание ответа на старый
+		NoautomatismAfterStimul = PulsCount // хоть и синоним curActiveActionsPulsCount
+		// Внизу - после обработки clearAutomatismRunning() - новый симул сбрасывает ожидание ответа на старый
 
 		// сохраняем предыдущий Стимул
 		curStimulImage = curActiveActions
@@ -348,7 +348,7 @@ func automatizmTreeActivation() int {
 			ну и пусть. А пока что пусть выполнится привычный автоматизм по прежнему условию.
 			*/
 			setInterruptionEpisosde() //вставить пустой кадр эпиз.памяти - прервать тему
-			clinerAutomatizmRunning() // окончить период ожидания
+			clearAutomatismRunning()  // окончить период ожидания
 		}
 	}
 
@@ -361,9 +361,9 @@ func automatizmTreeActivation() int {
 	condArr := getActiveConditionsArr(lev1, lev2, lev3, lev4, lev5, lev6)
 	notAllowScanInTreeThisTime = true // защелка от повтора во время обработки
 	// основа дерева
-	cnt := len(AutomatizmTree.Children)
+	cnt := len(AutomatismTree.Children)
 	for n := 0; n < cnt; n++ {
-		node := AutomatizmTree.Children[n]
+		node := AutomatismTree.Children[n]
 		lev1 := node.BaseID
 		if condArr[0] == lev1 {
 			detectedActiveLastNodID = node.ID
@@ -372,7 +372,7 @@ func automatizmTreeActivation() int {
 
 			}
 
-			conditionAutomatizmFound(1, ost, &node)
+			conditionAutomatismFound(1, ost, &node)
 
 			break // другие ветки не смотреть
 		}
@@ -416,7 +416,7 @@ func automatizmTreeActivation() int {
 
 //////////////////////////////////////////////////////////////////
 
-func conditionAutomatizmFound(level int, cond []int, node *AutomatizmNode) {
+func conditionAutomatismFound(level int, cond []int, node *AutomatismNode) {
 	if cond == nil || len(cond) == 0 {
 		return
 	}
@@ -449,7 +449,7 @@ func conditionAutomatizmFound(level int, cond []int, node *AutomatizmNode) {
 		ActiveBranchNodeArr = append(ActiveBranchNodeArr, cld.ID)
 		level++
 		currentStepCount = level
-		conditionAutomatizmFound(level, ost, &node.Children[n])
+		conditionAutomatismFound(level, ost, &node.Children[n])
 		return // раз совпало, то другие ветки не смотреть
 	}
 }
@@ -463,9 +463,9 @@ var onliOnceWasConditionsActiveted = false // т.к. опять может пр�
 если нет никаких действий, то возвращает false, инчае - true для блокировки более низкоуровневого
 */
 func afterTreeActivation() bool {
-	/* Нельзя здесь определять currentAutomatizmAfterTreeActivatedID перед if LastRunAutomatizmPulsCount >0{
+	/* Нельзя здесь определять currentAutomatismAfterTreeActivatedID перед if LastRunAutomatismPulsCount >0{
 	// ЕСТЬ ЛИ АВТОМАТИЗМ В ВЕТКЕ и болеее ранних? выбрать лучший автоматизм для сформированной ветки nodeID
-	currentAutomatizmAfterTreeActivatedID = getAutomatizmFromNodeID(detectedActiveLastNodID)
+	currentAutomatismAfterTreeActivatedID = getAutomatismFromNodeID(detectedActiveLastNodID)
 	*/
 
 	// по каждому действию оператора задумываться
@@ -484,7 +484,7 @@ func afterTreeActivation() bool {
 	  	со стимулом от Оператора и НЕ бывает со стимулом - по изменению состояния.
 	*/
 
-	if LastRunAutomatizmPulsCount > 0 && ActivationTypeSensor > 1 { //Обработка нового ответа оператора
+	if LastRunAutomatismPulsCount > 0 && ActivationTypeSensor > 1 { //Обработка нового ответа оператора
 		effect := 0
 		// 	Контроль за изменением состояния, возвращает:
 		//	lastCommonDiffValue - насколько изменилось общее состояние
@@ -499,18 +499,18 @@ func afterTreeActivation() bool {
 			поэтому здесь это блокируем - иначе будет двойная оценка
 			*/
 			//if !action_sensor.IsPress3or4button {
-			calcAutomatizmResult(lastCommonDiffValue, gomeoParIdSuccesArr)
+			calcAutomatismResult(lastCommonDiffValue, gomeoParIdSuccesArr)
 			effect = lastCommonDiffValue
 			/*} else {
 				effect = effectPress3or4button
 				effectPress3or4button = 0
 			}*/
-			// по результатам обработки, но до очистки 	LastRunAutomatizmPulsCount и LastAutomatizmWeiting
+			// по результатам обработки, но до очистки 	LastRunAutomatismPulsCount и LastAutomatismWeiting
 			if EvolushnStage > 3 {
 				//	wasRunUnderstandingSituation=true
 				/* Здесь не активировать Дерево понимания ситуации. Активировать только 1 раз (зачем 2 раза??)- внизу,
-				   только после определения currentAutomatizmAfterTreeActivatedID
-				   ведь будет вызов consciousnessElementary() - обработка ситуации с currentAutomatizmAfterTreeActivatedID !!!
+				   только после определения currentAutomatismAfterTreeActivatedID
+				   ведь будет вызов consciousnessElementary() - обработка ситуации с currentAutomatismAfterTreeActivatedID !!!
 				*/
 				//understandingSituation(1)
 				// !!!return true
@@ -528,7 +528,7 @@ func afterTreeActivation() bool {
 			*/
 
 			// закончить период ожидания после реакции оператора
-			clinerAutomatizmRunning()
+			clearAutomatismRunning()
 			WasConditionsActiveted = false // иначе сразу сработает fixRulesBaseStateImage после изменения состояния при действиях
 		}
 
@@ -541,7 +541,7 @@ func afterTreeActivation() bool {
 		   			if EvolushnStage > 3 {
 		   				lastCommonDiffValue, _, _ := wasChangingMoodCondition(2)
 			   // записать ПРАВИЛО типа BaseStateImage Стимул - НЕ ОТ ОПЕРАТОРА, а при активации изменением состояния
-		   				fixRulesBaseStateImage(lastCommonDiffValue)// здесь корректируется успешность автоматизма - как в calcAutomatizmResult
+		   				fixRulesBaseStateImage(lastCommonDiffValue)// здесь корректируется успешность автоматизма - как в calcAutomatismResult
 		   				// Активировать Дерево Понимания: или запустить ментальный автоматизм или - ориентировочная реакция для осмысления
 		   				understandingSituation(1)
 
@@ -574,14 +574,14 @@ func afterTreeActivation() bool {
 	*/
 	if oldAtmzAfterTreeActivatedID == 0 {
 
-		currentAutomatizmAfterTreeActivatedID = getAutomatizmFromNodeID(detectedActiveLastNodID)
+		currentAutomatismAfterTreeActivatedID = getAutomatismFromNodeID(detectedActiveLastNodID)
 
 	} else {
-		// ID автоматизма, активировашегося на стимул ДО создания зеркального в calcAutomatizmResult()
-		currentAutomatizmAfterTreeActivatedID = oldAtmzAfterTreeActivatedID
+		// ID автоматизма, активировашегося на стимул ДО создания зеркального в calcAutomatismResult()
+		currentAutomatismAfterTreeActivatedID = oldAtmzAfterTreeActivatedID
 		oldAtmzAfterTreeActivatedID = 0
 	}
-	wasCurrentAutomatizmAfterTree = 1 // для активации функции consciousnessElementary: 1 этот автоматизм из текущей активации дерева, есть currentAutomatizmAfterTreeActivatedID
+	wasCurrentAutomatismAfterTree = 1 // для активации функции consciousnessElementary: 1 этот автоматизм из текущей активации дерева, есть currentAutomatismAfterTreeActivatedID
 
 	// всегда сначала активировать дерево понимания, результаты которого могут заблокировать все внизу
 	//if !wasRunUnderstandingSituation && EvolushnStage > 3 {
@@ -599,17 +599,17 @@ func afterTreeActivation() bool {
 	//////////////////////
 	//более примитивное реагирование, EvolushnStage < 4
 	if EvolushnStage < 4 {
-		if currentAutomatizmAfterTreeActivatedID > 0 { //ориентировочный рефлекс 2
+		if currentAutomatismAfterTreeActivatedID > 0 { //ориентировочный рефлекс 2
 			// EvolushnStage < 4  проверить подходит ли автоматизм к текущим условиям, если нет, - режим нахождения альтернативы  - ориентировочный рефлекс 2
-			atzm := orientation(currentAutomatizmAfterTreeActivatedID)
+			atzm := orientation(currentAutomatismAfterTreeActivatedID)
 			// если автоматизм в orientation прошел проверку, то он сразу запущен
-			if atzm > 0 { // блокировка рефлексов, если automatizmID > 0
+			if atzm > 0 { // блокировка рефлексов, если automatismID > 0
 				return true
 			}
 		} else {
 			// автоматизма нет у недоделанной ветки
 			atzm := orientation(0)
-			if atzm > 0 { // блокировка рефлексов, если automatizmID > 0
+			if atzm > 0 { // блокировка рефлексов, если automatismID > 0
 				return true
 			} else { // нет реакции
 				if EvolushnStage < 4 {
@@ -624,23 +624,23 @@ func afterTreeActivation() bool {
 
 	if EvolushnStage > 3 {
 		//- просто запустить штатный автоматизм, раз нет блокировки сознанием !MentalReasonBlocing
-		if currentAutomatizmAfterTreeActivatedID > 0 {
+		if currentAutomatismAfterTreeActivatedID > 0 {
 			if curFunc13ID > 0 {
 				/*  endBaseIdCycle(curFunc13ID) // подвисает
-				clinerFunctionsInAllCickles(13)
+				clearFunctionsInAllCickles(13)
 				IsEndWaitPeriodFunc13 = true */
 				curFunc13ID = 0 // закрываем маркер цикла func13
 			}
-			RumAutomatizmID(currentAutomatizmAfterTreeActivatedID)
+			RumAutomatismID(currentAutomatismAfterTreeActivatedID)
 		}
 	}
 
 	if EvolushnStage > 4 {
 		// отзеркаливание авторитарных действий - как решение доминант по аналогии
 		if existsBaseContext(2) || existsBaseContext(3) { // текущая эмоция - поиск или игра
-			if lastAutomatizmRun != nil && lastAutomatizmRunPulsCount > PulsCount-20 {
+			if lastAutomatismRun != nil && lastAutomatismRunPulsCount > PulsCount-20 {
 				// оператор ответил на действия Beast не позже, чем за 20 сек
-				checkRelevantAction(lastAutomatizmRun.ActionsImageID, curActions.ID, 2) // примем авторитарный эффект ==2
+				checkRelevantAction(lastAutomatismRun.ActionsImageID, curActions.ID, 2) // примем авторитарный эффект ==2
 			}
 		}
 	}

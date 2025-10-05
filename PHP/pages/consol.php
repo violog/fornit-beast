@@ -55,7 +55,7 @@ header('Content-Type: text/html; charset=UTF-8');
   setTimeout("get_info()", 100);
 
   function cline_log() {
-	var AJAX = new ajax_support('/pages/consol_cliner_info.php', sent_request_info);
+	var AJAX = new ajax_support('/pages/consol_clear_info.php', sent_request_info);
 	AJAX.send_reqest();
 
 	function sent_request_info(res) {

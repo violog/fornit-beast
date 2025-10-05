@@ -302,9 +302,9 @@ func getCurSituationImageID() int {
 	}
 	var sitID = 0
 
-	if LastRunAutomatizmPulsCount > 0 { // был и закончился ответом период ожидания на действия автоматизма
+	if LastRunAutomatismPulsCount > 0 { // был и закончился ответом период ожидания на действия автоматизма
 		// вышло время ожидания реакции
-		if (LastRunAutomatizmPulsCount + WaitingPeriodForActionsVal) < PulsCount {
+		if (LastRunAutomatismPulsCount + WaitingPeriodForActionsVal) < PulsCount {
 			// оператор не прореагировал на действия в течение периода ожидания - игнорирует? нужно достучаться?
 			id, _ := createSituationImage(0, detectedActiveLastNodID, 5, true)
 			if id > 0 {
@@ -316,10 +316,10 @@ func getCurSituationImageID() int {
 		if id > 0 {
 			return id
 		}
-	} //if LastRunAutomatizmPulsCount > 0
+	} //if LastRunAutomatismPulsCount > 0
 
 	// ЕСТЬ ЛИ АВТОМАТИЗМ В моторной ВЕТКЕ и болеее ранних?
-	if currentAutomatizmAfterTreeActivatedID > 0 {
+	if currentAutomatismAfterTreeActivatedID > 0 {
 		//был запуск автоматизма ветки
 		id, _ := createSituationImage(0, detectedActiveLastNodID, 2, true)
 		if id > 0 {

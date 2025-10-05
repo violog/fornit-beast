@@ -45,10 +45,10 @@ if v==nil{continue}
 	importanceConditinArr[ProblemID]=append(importanceConditinArr[ProblemID],&node)
 ///////////////////////////
 
-Можно спосокйно использовать for id, v := range AutomatizmFromId {
+Можно спосокйно использовать for id, v := range AutomatismFromId {
 и там просто проверять if v!=nil для массивов, возвращающих указатель
 
-	for k, v := range AutomatizmFromId {
+	for k, v := range AutomatismFromId {
 		if v==nil{
 			continue
 		}
